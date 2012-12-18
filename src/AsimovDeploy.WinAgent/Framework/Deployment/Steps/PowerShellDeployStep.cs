@@ -27,7 +27,7 @@ namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
                 // Redirect the output stream of the child process.
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
                 p.StartInfo.WorkingDirectory = _config.TempFolder;
                 p.StartInfo.FileName = @"C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe";
                 p.StartInfo.CreateNoWindow = true;
