@@ -1,0 +1,40 @@
+Asimov Deploy is making use of the following OSS projects:
+
+For full license files, look in folder library-licenses.
+
+The windows deploy agent
+========================================================================================
+* Newtonsoft.Json from James Newton-King (http://json.codeplex.com/) and is used under the MIT license: http://json.codeplex.com/license
+* Log4net(http://logging.apache.org/log4net) under the Apache license: http://logging.apache.org/log4net/license.html
+* nUnit (http://www.nunit.org/)
+* DotNetZip (http://dotnetzip.codeplex.com/) under the Microsoft Public License (Ms-PL): http://dotnetzip.codeplex.com/license
+* Nancy (http://nancyfx.org/) under the The MIT License (https://github.com/NancyFx/Nancy/blob/master/license.txt)
+* StructureMap (http://github.com/structuremap/structuremap) under the Apache License: https://github.com/structuremap/structuremap/blob/master/LICENSE.TXT
+* Topshelf (https://github.com/Topshelf/Topshelf) under the Apache License: http://www.apache.org/licenses/LICENSE-2.0.html
+
+
+The Web UI
+=========================================================================================
+* JQuery (http://jquery.com/) under the MIT licence: https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt)
+* Backbone (http://backbonejs.org/) under the MIT licence: https://github.com/documentcloud/backbone/blob/master/LICENSE
+* Backbone.Marionette (https://github.com/marionettejs/backbone.marionette) under the MIT license: http://mutedsolutions.mit-license.org/
+* Twitter bootstrap (http://twitter.github.com/bootstrap/) under the Apache License: https://github.com/twitter/bootstrap/blob/master/LICENSE
+* Almond (https://github.com/jrburke/almond) under the MIT license: https://github.com/jrburke/almond/blob/master/LICENSE
+* Handlebars (http://handlebarsjs.com/) under the MIT License: https://github.com/wycats/handlebars.js/blob/master/LICENSE
+* lodash (http://lodash.com/) under the MIT license: https://github.com/bestiejs/lodash/blob/master/LICENSE.txt
+* Modified Bootswatch Cyborg twitter bootstrap template (http://bootswatch.com/cyborg/) under the Apace License: http://www.apache.org/licenses/LICENSE-2.0
+* Require.js (http://requirejs.org/) under the MIT license: https://github.com/jrburke/requirejs/blob/master/LICENSE
+
+The Web UI Backend (not distributed in the source or binary package)
+=======================================================================================
+* Node.js
+* Express.js
+* restify
+* bbb
+* require.js
+* restify
+* jade
+* socket.io
+* grunt
+
+

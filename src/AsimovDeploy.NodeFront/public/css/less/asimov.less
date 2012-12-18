@@ -1,0 +1,142 @@
+
+@import "variables.less";
+@import "mixins.less";
+
+// SCAFFOLDING
+// -----------------------------------------------------
+
+html {
+
+}
+
+body {
+  	padding-top: 40px;
+  	padding-bottom: 160px;
+  	font-size: 14px;
+   background: @bodyBackground;
+}
+
+// NAVBAR
+// -----------------------------------------------------
+
+.navbar-inverse .nav-collapse {
+
+	.nav li.dropdown.open > .dropdown-toggle,
+	.nav li.dropdown.active > .dropdown-toggle,
+	.nav li.dropdown.open.active > .dropdown-toggle {
+		background-color: #111;
+	}
+
+	.nav > li > .dropdown-menu::before,
+	.nav > li > .dropdown-menu::after {
+		display: none;
+	}
+}
+
+.navbar .brand {
+   position: relative;
+   top: 2px;
+   left: -5px;
+   padding: 0;
+   margin: 0;
+   margin-right: 50px;
+}
+
+.navbar-fixed-top {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-inverse .nav .active > a, .navbar-inverse .nav .active > a:hover, .navbar-inverse .nav .active > a:focus {
+    background-color: inherit;
+    color: #EDEDED;
+    border-bottom: 3px solid #0792FF;
+    padding-bottom: 2px;
+}
+
+
+// DROPDOWNS
+// -----------------------------------------------------
+
+.dropdown-menu {
+	background-color: #191A1A;
+	.box-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.dropdown-menu li > a:hover {
+	color: @white;
+	background: transparent;
+}
+
+.dropdown-menu li > a {
+	color: #ADAFAE;
+}
+
+
+
+// MISC
+// -----------------------------------------------------
+
+.well, .hero-unit {
+	.border-radius(1px);
+}
+
+.well, .hero-unit {
+	border-top: solid 1px lighten(@grayDark, 5%);
+	.box-shadow(0 2px 4px rgba(0,0,0,.8));
+}
+
+// FOOTER
+// -----
+
+.footer {
+    margin-top: 45px;
+    padding: 5px 0 36px;
+    border-top: 1px solid #E5E5E5;
+}
+
+// Instance selection
+// ------
+#instance-selection .dropdown-toggle {
+    color: @blueDark;
+    text-shadow: 1px 1px 7px @blueDark;
+    font-weight: bold;
+    padding: 13px 10px 11px;
+    line-height: 1;
+    margin: 0;
+}
+
+ul#instance-selection .caret {
+    margin: 5px 0 0px 5px;
+}
+
+.unit-status-success {
+	.buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
+}
+
+a {
+	text-shadow: 1px 1px 7px @blueDark;
+}
+
+
+// ASIMOV VERSION FOOTER
+// ---------------------
+
+#asimov-version {
+    position: fixed;
+    right: 5px;
+    bottom: 170px;
+    color: #0797FF;
+    text-shadow: 1px 1px 7px #0797FF;
+}
+
+@import "forms.less";
+@import "modals.less";
+@import "tables.less";
+
+@import "page-layout.less";
+@import "deploy-dialog.less";
+@import "agent-log.less";
+@import "scrollbar.less";
+@import "buttons.less";
+
+

@@ -1,0 +1,71 @@
+// FORMS
+// -----------------------------------------------------
+
+legend, label {
+	color: @textColor;
+	border-bottom: 0px solid @grayDark;
+}
+
+legend {
+	margin:0;
+	border-bottom: 1px solid @grayDark;
+}
+
+input, textarea, select, .uneditable-input {
+	color: @grayDark;
+}
+
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly], .uneditable-input {
+	background-color: #555;
+	border-color: #444;
+}
+
+input:focus,
+textarea:focus,
+input.focused,
+textarea.focused {
+  border-color: rgba(82,168,236,1);
+  outline: 0;
+  outline: thin dotted \9; /* IE6-9 */
+}
+
+input[type="file"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus,
+select:focus {
+  .box-shadow(none); // override for file inputs
+  .tab-focus();
+}
+
+.form-actions {
+	border-top: 1px solid #222;
+	background: transparent;
+}
+
+.input-prepend {
+
+    .add-on {
+      background-color: #272727;
+      border: 1px solid #333;
+      text-shadow: none;
+      color: #BDBDBD;
+    }
+}
+
+// LOADBALANCER SETTINGS FORM
+// -----------------------------------------------------
+
+#loadbalancer-settings {
+   width: 430px;
+   padding: 10px;
+   margin-bottom: 25px;
+   margin-top: 15px;
+
+   .host {
+      margin-right: 20px;
+   }
+
+   .btn {
+      float: right;
+   }
+}

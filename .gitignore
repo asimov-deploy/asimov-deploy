@@ -1,0 +1,44 @@
+#Visual Studio files
+[Oo]bj/
+[Bb]in/
+debug/
+release/
+*.user
+/TestResults
+*.vspscc
+*.vssscc
+deploy
+deploy/*
+*.suo
+*.cache
+*.docstates
+*.csproj.user
+artifacts/*
+msbuild.log
+PublishProfiles/
+*.psess
+*.vsp
+*.pidb
+*.userprefs
+*DS_Store
+*.dbmdl
+*.dbproj.schemaview
+*.log
+node_modules/
+
+#Tooling
+_ReSharper*/
+*.resharper
+*[Rr]e[Ss]harper.user
+[Tt]est[Rr]esult*
+Ankh.NoLoad
+*.ncrunchsolution
+
+# Office Temp Files
+~$*
+
+#Generated files
+Site/js/eo_script/eo*
+Site/eo_web.ashx
+build_artifacts/
+config_overrides.js

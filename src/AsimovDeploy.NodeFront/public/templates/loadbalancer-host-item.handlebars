@@ -1,0 +1,28 @@
+<td>{{id}}</td>
+<td>{{name}}</td>
+<td style="text-align: center">
+	{{#if enabled}}
+		<button class="btn btn-success btn-loadbalancer"><i class="icon-share2" /></button>
+	{{else}}
+		<button class="btn btn-danger btn-loadbalancer"><i class="icon-share2" /></button>
+	{{/if}}	
+</td>
+<td>
+	{{#if action}}	
+		{{#if enabled}}
+			<button class="btn btn-danger btn-disable">Disable</button>
+		{{else}}
+			<button class="btn btn-success btn-enable">Enable</button>
+		{{/if}}
+	
+		<button class="btn btn-info btn-clear" style="margin-left: 10px">Clear</button>
+	{{else}}
+
+		{{#if enabled}}
+			<button class="btn btn-info btn-disable">Disable</button>			
+		{{else}}
+			<button class="btn btn-info btn-enable">Enable</button>	
+		{{/if}}
+
+	{{/if}}	
+</td>
