@@ -1,0 +1,14 @@
+﻿{
+	"WebPort":						 21233,
+	"DataFolder":					 "Data",
+	"HeartbeatIntervalSeconds": 10,
+	"NodeFrontUrl":				 "http://localhost:3333",
+	"ConfigVersion":				 1,
+
+	"PackageSources":  {
+	 },
+
+	"Agents": {
+
+	}
+}

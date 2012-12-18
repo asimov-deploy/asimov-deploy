@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FED92498-E135-4CF0-8B37-AC9618C1D02A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AsimovDeploy.WinAgent</RootNamespace>
+    <AssemblyName>AsimovDeploy.WinAgent</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Microsoft.Web.Administration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nancy">
+      <HintPath>..\..\packages\Nancy.0.11.0\lib\net40\Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Bootstrappers.StructureMap">
+      <HintPath>..\..\packages\Nancy.Bootstrappers.StructureMap.0.11.0\lib\net40\Nancy.Bootstrappers.StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Hosting.Self">
+      <HintPath>..\..\packages\Nancy.Hosting.Self.0.11.0\lib\net40\Nancy.Hosting.Self.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\..\packages\structuremap.2.6.3\lib\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Topshelf">
+      <HintPath>..\..\packages\TopShelf.2.3.0.0\lib\NET40\Topshelf.dll</HintPath>
+    </Reference>
+    <Reference Include="Topshelf.Log4NetIntegration">
+      <HintPath>..\..\packages\Topshelf.Log4Net.2.3.0.0\lib\NET40\Topshelf.Log4NetIntegration.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Framework\Common\AsimovTask.cs" />
+    <Compile Include="Framework\Common\NodeFront.cs" />
+    <Compile Include="Framework\Configuration\ActionParameterListJsonConverter.cs" />
+    <Compile Include="Framework\Deployment\Steps\FileCopyDeployStep.cs" />
+    <Compile Include="Framework\Models\ActionParameter.cs" />
+    <Compile Include="Framework\Models\ActionParameterList.cs" />
+    <Compile Include="Framework\Models\AsimovVersion.cs" />
+    <Compile Include="Framework\Common\DeployedVersion.cs" />
+    <Compile Include="Framework\Models\FileCopyDeployUnit.cs" />
+    <Compile Include="Framework\Models\ParameterValues.cs" />
+    <Compile Include="Framework\Models\DeployUnitInfo.cs" />
+    <Compile Include="Framework\Common\DirectoryUtil.cs" />
+    <Compile Include="Framework\Common\HostNameUtil.cs" />
+    <Compile Include="Framework\Common\IEventAggregator.cs" />
+    <Compile Include="Framework\Common\INodeFrontPublisher.cs" />
+    <Compile Include="Framework\Common\ITaskExecutor.cs" />
+    <Compile Include="Framework\Common\NodeFrontPublisherPublisher.cs" />
+    <Compile Include="Framework\Common\NodeFrontLogAppender.cs" />
+    <Compile Include="Framework\Common\NodeFrontMessage.cs" />
+    <Compile Include="Framework\Common\TaskExecutor.cs" />
+    <Compile Include="Framework\Common\VersionUtil.cs" />
+    <Compile Include="Framework\Common\WindowsServiceUtil.cs" />
+    <Compile Include="Framework\Models\AsimovConfig.cs" />
+    <Compile Include="Framework\Configuration\AsimovConfigConverter.cs" />
+    <Compile Include="Framework\Configuration\ConfigurationReader.cs" />
+    <Compile Include="Framework\Models\AsimovWebPackageSource.cs" />
+    <Compile Include="Framework\Models\DeployUnit.cs" />
+    <Compile Include="Framework\Configuration\DeployUnitConverter.cs" />
+    <Compile Include="Framework\Models\DeployUnits.cs" />
+    <Compile Include="Framework\Models\PasswordParameter.cs" />
+    <Compile Include="Framework\Models\TextActionParameter.cs" />
+    <Compile Include="Framework\Models\UnitStatus.cs" />
+    <Compile Include="Framework\Models\FileSystemPackageSource.cs" />
+    <Compile Include="Framework\Models\IIS6WebSiteDeployUnit.cs" />
+    <Compile Include="Framework\Configuration\PackageSourceListJsonConverter.cs" />
+    <Compile Include="Framework\Models\PackageInfo.cs" />
+    <Compile Include="Framework\Models\PackageSource.cs" />
+    <Compile Include="Framework\Models\PackageSourceList.cs" />
+    <Compile Include="Framework\Models\PowershellDeployUnit.cs" />
+    <Compile Include="Framework\Models\WebSiteDeployUnit.cs" />
+    <Compile Include="Framework\Models\WindowsServiceDeployUnit.cs" />
+    <Compile Include="Framework\Deployment\DeployContext.cs" />
+    <Compile Include="Framework\Deployment\DeployException.cs" />
+    <Compile Include="Framework\Deployment\IDeployStep.cs" />
+    <Compile Include="Framework\Deployment\Steps\CleanTempFolder.cs" />
+    <Compile Include="Framework\Deployment\Steps\CopyPackageToTempFolder.cs" />
+    <Compile Include="Framework\Deployment\Steps\PowerShellDeployStep.cs" />
+    <Compile Include="Framework\Deployment\Steps\UpdateWebSite.cs" />
+    <Compile Include="Framework\Deployment\Steps\UpdateWindowsService.cs" />
+    <Compile Include="Framework\Events\AsimovEvent.cs" />
+    <Compile Include="Framework\Events\HostLoadBalancerStateChanged.cs" />
+    <Compile Include="Framework\Events\UnitInfoUpdatedEvent.cs" />
+    <Compile Include="Framework\Events\VerifyProgressEvent.cs" />
+    <Compile Include="Framework\Heartbeat\HeartbeatService.cs" />
+    <Compile Include="Framework\Events\DeployCompletedEvent.cs" />
+    <Compile Include="Framework\LoadBalancers\LoadBalancerCommunicationException.cs" />
+    <Compile Include="Framework\LoadBalancers\ILoadBalancer.cs" />
+    <Compile Include="Framework\LoadBalancers\ILoadBalancerSettings.cs" />
+    <Compile Include="Framework\LoadBalancers\Alteon\AlteonLoadBalancer.cs" />
+    <Compile Include="Framework\Tasks\ChangeLoadBalancerStates.cs" />
+    <Compile Include="Framework\Tasks\DeployTask.cs" />
+    <Compile Include="Framework\Tasks\NoOpTask.cs" />
+    <Compile Include="Framework\Tasks\VerifyCommandTask.cs" />
+    <Compile Include="Framework\Tasks\VerifySiteTask.cs" />
+    <Compile Include="Framework\WebSiteManagement\IIS6WebServer.cs" />
+    <Compile Include="Framework\WebSiteManagement\IIS6\ApplicationPool.cs" />
+    <Compile Include="Framework\WebSiteManagement\IIS6\InternetInformationServer.cs" />
+    <Compile Include="Framework\WebSiteManagement\IIS6\ServerBinding.cs" />
+    <Compile Include="Framework\WebSiteManagement\IIS6\WebSite.cs" />
+    <Compile Include="Framework\WebSiteManagement\IIS6\WebVirtualDirectory.cs" />
+    <Compile Include="Framework\WebSiteManagement\IIS6\WmiObject.cs" />
+    <Compile Include="Framework\WebSiteManagement\IIS7WebServer.cs" />
+    <Compile Include="Framework\WebSiteManagement\IWebServer.cs" />
+    <Compile Include="Framework\WebSiteManagement\WebSiteData.cs" />
+    <Compile Include="Service\AsimovDeployService.cs" />
+    <Compile Include="Service\ComponentRegistration.cs" />
+    <Compile Include="Framework\Models\IAsimovConfig.cs" />
+    <Compile Include="Framework\Common\IStartable.cs" />
+    <Compile Include="Service\IAsimovDeployService.cs" />
+    <Compile Include="Web\Commands\DeployCommand.cs" />
+    <Compile Include="Web\Commands\ChangeLoadBalancerStateCommand.cs" />
+    <Compile Include="Web\Commands\VerifyCommand.cs" />
+    <Compile Include="Web\Contracts\DeployUnitInfoDTO.cs" />
+    <Compile Include="Web\Modules\DeployLogModule.cs" />
+    <Compile Include="Web\Modules\DeployUnitModule.cs" />
+    <Compile Include="Web\Modules\LoadBalancerModule.cs" />
+    <Compile Include="Web\Modules\VersionsModule.cs" />
+    <Compile Include="Web\Setup\CustomNancyBootstrapper.cs" />
+    <Compile Include="Web\Modules\MainModule.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Modules\DeployModule.cs" />
+    <Compile Include="Web\Setup\NancyErrorHandler.cs" />
+    <Compile Include="Web\Setup\WebServerStartup.cs" />
+    <Compile Include="Web\Contracts\DeployUnitVersionDTO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ConfigFiles\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,18 @@
+﻿{
+	"NodeFrontUrl": "http://overriden:3335",
+
+	"PackageSources": {
+		"Extra": { "Type": "FileSystem", "Uri": "file://extra" }
+	},
+
+	"Units": [
+		{
+			"Name": "TestService",
+			"Type": "WindowsService",										
+		
+			"ServiceName": "Test",
+
+			"PackageInfo": { "Source": "Extra", "InternalPath": "Muu" }
+		}
+	]
+}

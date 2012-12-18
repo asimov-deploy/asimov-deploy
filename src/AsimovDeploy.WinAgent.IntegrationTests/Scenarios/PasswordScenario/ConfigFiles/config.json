@@ -1,0 +1,30 @@
+{
+	"WebPort":						%AGENT_PORT%,			
+	"DataFolder":					"%DATA_FOLDER%",	
+	"HeartbeatIntervalSeconds":		10,
+	"NodeFrontUrl":					"%NODE_FRONT_URL%",
+	"Environment":					"dev",
+	"ConfigVersion":				1,
+
+	"PackageSources":  {
+		"Test":	{ "Type": "FileSystem", "Uri": "%PACKAGES_URI%" }			
+	},
+	
+	"Units": [
+
+        {
+			"Name": "PasswordTest",
+			"Type": "FileCopy",
+
+            "TargetPath": "%DATA_FOLDER%\\FileCopyTarget",
+					
+			"PackageInfo": { "Source": "Test" },
+
+            "DeployParameters": {
+                "Password": { "Type": "Password", "Password": "the secret" }
+            }
+		}
+
+            
+	]
+}

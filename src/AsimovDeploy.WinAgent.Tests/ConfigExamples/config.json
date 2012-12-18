@@ -1,0 +1,37 @@
+﻿{
+	"WebPort": 21233,	
+	"HeartbeatIntervalSeconds": 10,
+	"DataFolder": "\\Data",	
+	"ConfigVersion": 101,
+	"nodeFrontUrl": "http://default:3335",
+	"Environment": "default",
+
+	"PackageSources":  {
+		"Default":	{ "Type": "FileSystem", "Uri": "file://test"	},
+		"Prod":		{ "Type": "FileSystem", "Uri": "file://test2"	},
+		"Asimov":	{ "Type": "AsimovWeb",  "Uri": "http://asimov"	},
+	},
+
+	"Units": [
+		{
+			"Name": "DefaultSite",
+			"Type": "WebSite",										
+			"SiteName": "DeployTestWeb",
+			"UnitPackagePath": "DefaultSitePath",
+			"CleanDeploy": true,
+
+			"PackageInfo": { Source: "Prod", InternalPath: "DefaultSitePath" },
+			
+			"VerifyCommand": "phantomjs.exe",
+			"VerifyZipPath": "SiteVerify.zip",
+
+			"SiteUrl": "http://localhost/DefaultSite",
+		}
+	],
+	
+	"Agents": { 
+		"testagent1": { "Environment" : "test1" },
+		"testagent2": { "Environment" : "test2" },
+		"deploy-parameters": { "Environment" : "deploy-parameters" }
+	}	
+}

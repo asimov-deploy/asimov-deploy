@@ -1,0 +1,22 @@
+﻿{
+	"NodeFrontUrl": "http://overriden:3335",
+
+	"PackageSources": {
+		"Extra": { "Type": "FileSystem", "Uri": "file://extra" }
+	},
+
+	"Units": [
+		{
+			"Name": "UnitWithParameters",
+			"Type": "WindowsService",										
+		
+			"ServiceName": "Test",
+
+			"DeployParameters": {
+                "Tasks": { "Type": "Text", "Default": "Deploy-Everything" }
+            },
+
+			"PackageInfo": { "Source": "Extra", "InternalPath": "Muu" }
+		}
+	]
+}

@@ -1,0 +1,75 @@
+// TABLES
+// ---------------
+
+
+.table {
+	margin-bottom: 0;
+	&.full-width {
+		td:first-child, th:first-child {
+			padding-left: 25px;
+		}
+	}
+
+	td, th, thead th {
+		vertical-align: middle;
+		padding: 6px 10px 6px 10px;
+	}
+}
+
+.table-bordered {
+	border: 0;
+}
+
+
+// DeployUnit Table
+// --------------------------
+
+.table.deploy-unit-list {
+	td, th {
+		white-space: nowrap;
+		width: 1px;
+	}
+
+	a.status-Deploying, a.status-DeployFailed, a.status-NotFound, a.status-Stopped {
+		color: lighten(@purple, 15%);
+		text-shadow: 1px 1px 7px lighten(@purple, 15%);
+	}
+
+}
+
+.verify-step {
+    display: inline-block;
+    width: 10px;
+    height: 16px;
+    line-height: 16px;
+     -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+    margin: 0 0 4px;
+    vertical-align: middle;
+}
+
+// Deploy Log
+// --------------------------
+
+.deploy-status-DeployFailed {
+	color: lighten(@purple, 15%);
+   text-shadow: 1px 1px 7px lighten(@purple, 15%);
+}
+
+.deploy-status-Success {
+	color: @blue;
+   text-shadow: 1px 1px 7px @blue;
+}
+
+
+// Version Table
+// -------------
+.version-table {
+	tr td {
+		cursor: pointer;
+	}
+	tbody tr:hover td {
+		color: white;
+	}
+}

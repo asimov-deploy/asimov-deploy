@@ -1,0 +1,65 @@
+<td>
+	{{#if url}}
+		<a href="{{url}}" target="_blank">{{unitName}}</a>	
+	{{else}}
+		{{unitName}}
+	{{/if}}
+</td>
+<td>{{agentName}}</td>
+<td>	
+	<a href="test" data-bypass="1" class="select-version">{{version}}</a>	  
+</td>
+<td>	
+	{{branch}}
+</td>
+<td style="text-align: center">	
+	<a href="deploy-log" data-bypass="1" class="deploy-log-link status-{{status}}">		
+		{{status}}
+	</a>
+</td>
+<td style="text-align: center">
+	{{#if loadBalancerEnabled}}
+		<button class="btn btn-success btn-loadbalancer"><i class="icon-share2" /></button>
+	{{/if}}
+	{{#ifEqFalse loadBalancerEnabled}}
+		<button class="btn btn-danger btn-loadbalancer"><i class="icon-share2" /></button>
+	{{/ifEqFalse}}
+	{{#ifUndefined loadBalancerEnabled}}
+		<button class="btn btn-info btn-loadbalancer"><i class="icon-share2" /></button>
+	{{/ifUndefined}}
+</td>
+<td style="text-align: center;">
+	{{#if enableDeploy}}
+		<button class="btn btn-danger btn-deploy btn-small" data-loading-text="Deploying...">
+			<i class="icon-white icon-upload"></i> Deploy
+	 	</button>			
+	{{else}}				
+		<button class="btn btn-primary btn-verify btn-small">
+			<i class="icon-white icon-ok"></i> Verify
+		</button>			
+	 {{/if}}	
+</td>
+<td>
+	{{#ifDeploying}}	
+		<img src='/img/loading.gif' />
+	{{/ifDeploying}}
+
+	{{#if info.verifying}}	
+		<a href="verify-log" data-bypass="1" class="verify-log-link">Verifying: </a>
+
+		{{#each info.steps}}		
+			{{#if completed}}
+				<i class="icon-ok" />				
+			{{else}}
+				{{#if pass}}
+					<div class="verify-step btn-success" title="{{message}}" />					
+				{{else}}
+					<div class="verify-step btn-danger" title="{{message}}" />
+				{{/if}}								
+			{{/if}}			
+		{{/each}}
+	{{else}}
+		{{{info}}}
+	{{/if}}
+</td>
+

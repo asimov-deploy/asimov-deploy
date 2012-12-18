@@ -1,0 +1,34 @@
+{
+	"WebPort":						%AGENT_PORT%,			
+	"DataFolder":					"%DATA_FOLDER%",	
+	"HeartbeatIntervalSeconds":		10,
+	"NodeFrontUrl":					"%NODE_FRONT_URL%",
+	"Environment":					"dev",
+	"ConfigVersion":				1,
+
+	"PackageSources":  {
+		"Test":	{ "Type": "FileSystem", "Uri": "%PACKAGES_URI%" }			
+	},
+	
+	"Units": [
+		{
+			"Name": "PSTest",
+			"Type": "PowerShell",
+			
+			"PackageInfo": { "Source": "Test" },
+
+            "Url": "http://localhost:2121",
+            
+            "DeployParameters": {
+                "Tasks": { "Type": "Text", "Default": "Deploy-Everything" }
+            },
+
+            "Script":
+			"
+                $Tasks.Split(\" \") | ForEach {
+                    New-Item \"$_.txt\" -type file
+                }
+			"
+		}
+	]
+}

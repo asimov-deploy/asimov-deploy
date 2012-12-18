@@ -1,0 +1,46 @@
+// MODALS 
+// ------------------
+
+
+.modal {
+	background-color: @bodyBackground;
+  .border-radius(0px);
+  .background-clip(padding-box); 
+  border-top: solid 2px @blueDark;
+  border-bottom: solid 2px @blueDark;
+  .box-shadow(0 4px 6px rgba(0,0,0,.9));  
+  width: 700px;
+}
+
+.modal-header {    
+  border-color: @navbarInverseBorder;
+
+  h3 {
+		font-size: 18px;		
+  }
+}
+
+.modal-footer {
+	border-top: @navbarInverseBorder;
+	background-color: transparent;
+	.box-shadow(none);  	
+}
+
+.modal-body {
+	margin: 0;
+	padding: 0;
+}
+
+.modal-backdrop {
+	background-color: @grayDark;
+}
+
+.modal-backdrop,
+.modal-backdrop.fade.in {
+  .opacity(50);
+}
+
+.close {
+	color: white;
+	opacity: 0.6;
+}
