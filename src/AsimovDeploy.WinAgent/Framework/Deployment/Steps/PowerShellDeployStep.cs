@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using AsimovDeploy.WinAgent.Framework.Configuration;
 using AsimovDeploy.WinAgent.Framework.Models;
+using log4net.Core;
 
 namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
 {
@@ -26,6 +27,7 @@ namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
                 // Redirect the output stream of the child process.
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.WorkingDirectory = _config.TempFolder;
                 p.StartInfo.FileName = @"C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe";
                 p.StartInfo.CreateNoWindow = true;
@@ -34,7 +36,8 @@ namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
 
                 p.Start();
 
-                Redirect(p.StandardOutput, context);
+                Redirect(p.StandardOutput, str => context.Log.Info(str));
+                Redirect(p.StandardError, str => context.Log.Info(str));
                 
                 p.WaitForExit((int)TimeSpan.FromMinutes(20).TotalMilliseconds);
             
@@ -64,7 +67,7 @@ namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
             }
         }
 
-        private void Redirect(StreamReader input, DeployContext context)
+        private void Redirect(StreamReader input, Action<string> logAction)
         {
             new Thread(a =>
             {
@@ -75,12 +78,10 @@ namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
                     str.Append(buffer[0]);
                     if (buffer[0] == '\n')
                     {
-                        context.Log.Info(str);
+                        logAction(str.ToString());
                         str.Clear();
                     }
                 };
-
-                context.Log.Info("Powershell script output ended");
             }).Start();
         }
     }
