@@ -1,3 +1,19 @@
+/*******************************************************************************
+* Copyright (C) 2012 eBay Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+******************************************************************************/
+
 define([
 	"backbone",
 	"app",
@@ -66,15 +82,8 @@ function(Backbone, app) {
 		var href = $(this).attr("href");
 		var protocol = this.protocol + "//";
 
-		// Ensure the protocol is not part of URL, meaning it's relative.
-		if (href && href.slice(0, protocol.length) !== protocol && href.indexOf("javascript:") !== 0) {
-			// Stop the default event to ensure the link will not cause a page
-			// refresh.
+		if (href && href.slice(0, protocol.length) !== protocol) {
 			evt.preventDefault();
-
-			// `Backbone.history.navigate` is sufficient for all Routers and will
-			// trigger the correct events. The Router's internal `navigate` method
-			// calls this anyways.
 			Backbone.history.navigate(href, true);
 		}
 	});
