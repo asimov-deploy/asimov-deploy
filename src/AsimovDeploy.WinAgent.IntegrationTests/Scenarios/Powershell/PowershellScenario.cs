@@ -48,7 +48,7 @@ namespace AsimovDeploy.WinAgent.IntegrationTests.Scenarios.Powershell
 
             var parameters = new Dictionary<string, object>();
             parameters["Tasks"] = "some text value";
-            
+
             Agent.Post("/deploy/deploy", NodeFront.ApiKey, new DeployCommand
                 {
                     unitName = "PSTest",

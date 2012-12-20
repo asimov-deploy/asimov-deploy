@@ -1,59 +1,23 @@
-﻿namespace AsimovDeploy.WinAgent.Framework.Deployment
+﻿/*******************************************************************************
+* Copyright (C) 2012 eBay Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+******************************************************************************/
+
+namespace AsimovDeploy.WinAgent.Framework.Deployment
 {
     public interface IDeployStep
     {
         void Execute(DeployContext context);
     }
-
-    //public class Asd
-    //{
-    //    public void test()
-    //    {
-    //        var list = new List<IStep<DeployUnit>>();
-    //        list.Add(new Step());
-    //    }
-    //}
-
-    //public interface IStep
-    //{
-    //    void Ex(IContext<object> context);
-    //}
-
-    //public interface IStep<T> : IStep
-    //{
-    //    void Ex(IContext<T> asd);
-    //}
-
-    //public interface IContext<out T>
-    //{
-    //    T Get();
-    //}
-
-    //public class Step : IStep<WebSiteDeployUnit>
-    //{
-    //    public void Ex(IContext<WebSiteDeployUnit> asd)
-    //    {
-            
-    //    }
-
-    //    public void Ex(IContext<object> context)
-    //    {
-            
-    //    }
-    //}
-
-    //public class Context<T> : IContext<T>
-    //{
-    //    private readonly T _deployUnit;
-
-    //    public Context(T deployUnit)
-    //    {
-    //        _deployUnit = deployUnit;
-    //    }
-
-    //    public T Get()
-    //    {
-    //        return _deployUnit;
-    //    }
-    //}
 }

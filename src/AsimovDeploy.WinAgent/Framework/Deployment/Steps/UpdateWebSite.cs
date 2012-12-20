@@ -1,4 +1,20 @@
-﻿using System.IO;
+﻿/*******************************************************************************
+* Copyright (C) 2012 eBay Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+******************************************************************************/
+
+using System.IO;
 using AsimovDeploy.WinAgent.Framework.Common;
 using AsimovDeploy.WinAgent.Framework.Configuration;
 using AsimovDeploy.WinAgent.Framework.Models;
@@ -24,7 +40,7 @@ namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
                 throw new DeployException("Site not found: " + deployUnit.SiteName);
 
             context.Log.Info("Stopping AppPool...");
-            webServer.StopAppPool(); 
+            webServer.StopAppPool();
 
             context.PhysicalPath = siteData.PhysicalPath;
 
@@ -39,7 +55,7 @@ namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
         private void CopyNewFilesToPhysicalPath(DeployContext context)
         {
             context.Log.Info("Copying files...");
-            
+
             DirectoryUtil.CopyDirectory(context.TempFolderWithNewVersionFiles, context.PhysicalPath);
         }
 
@@ -48,7 +64,7 @@ namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
             if (cleanDeploy)
             {
                 context.Log.Info("Cleaning site physical path...");
-                DirectoryUtil.Clean(context.PhysicalPath);    
+                DirectoryUtil.Clean(context.PhysicalPath);
             }
             else
             {

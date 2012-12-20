@@ -1,3 +1,19 @@
+/*******************************************************************************
+* Copyright (C) 2012 eBay Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+******************************************************************************/
+
 using System;
 using System.Linq;
 using System.Threading;
@@ -12,7 +28,7 @@ namespace AsimovDeploy.WinAgent.Framework.WebSiteManagement
 
         private readonly string _siteName;
         private readonly string _appPath;
-        
+
         public IIS7WebServer(string siteName, string siteUrl)
         {
             _siteName = siteName;
@@ -28,10 +44,10 @@ namespace AsimovDeploy.WinAgent.Framework.WebSiteManagement
             using (var serverManager = new ServerManager())
             {
                 var site = serverManager.Sites.Single(x => x.Name == _siteName);
-                
+
                 var webApp = site.Applications.Single(x => x.Path == _appPath);
                 var appPool = serverManager.ApplicationPools[webApp.ApplicationPoolName];
-                
+
                 appPool.Start();
             }
         }
@@ -45,9 +61,9 @@ namespace AsimovDeploy.WinAgent.Framework.WebSiteManagement
                 var rootApp = site.Applications.Single(x => x.Path == _appPath);
                 var appPool = serverManager.ApplicationPools[rootApp.ApplicationPoolName];
 
-                if (appPool.State == ObjectState.Started) 
+                if (appPool.State == ObjectState.Started)
                     appPool.Stop();
-                
+
                 do
                 {
                     Thread.Sleep(500);

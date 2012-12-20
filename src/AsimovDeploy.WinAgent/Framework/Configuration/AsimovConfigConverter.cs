@@ -1,3 +1,19 @@
+/*******************************************************************************
+* Copyright (C) 2012 eBay Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+******************************************************************************/
+
 using System;
 using System.IO;
 using AsimovDeploy.WinAgent.Framework.Models;
@@ -10,7 +26,7 @@ namespace AsimovDeploy.WinAgent.Framework.Configuration
     public class AsimovConfigConverter : JsonConverter
     {
         private static ILog Log = LogManager.GetLogger(typeof (AsimovConfigConverter));
-        
+
         private readonly string _configDir;
         private readonly string _machineName;
 
@@ -41,7 +57,7 @@ namespace AsimovDeploy.WinAgent.Framework.Configuration
             {
                 Log.ErrorFormat("Could not find agent specific config / environment for: {0}", _machineName);
             }
-            
+
             var envConfigFile = Path.Combine(_configDir, string.Format("config.{0}.json", config.Environment));
 
             if (!File.Exists(envConfigFile))
