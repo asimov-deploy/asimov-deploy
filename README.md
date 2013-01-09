@@ -27,10 +27,12 @@ Asimov Deploy is a simple distributed deployment tool that enables you to deploy
 ## Deploy UI Features
 * List deploy units from all agents that have reported in
 * User can select a version to deploy to a specific machine
+* View deploy unit status (running / stopped / deploying / etc)
+* View deploy logs (logs are fetched from the agents)
 * Load balancer integration (optional feature)
-** Shows all machines and deploy units along with the load balancer status
-** Allows you to manually enable / disable machines in load balancer
-* View live agent logs where agents can report in what they are doing.
+   * Shows all machines and deploy units along with the load balancer status
+   * Allows you to enable / disable machines in load balancer
+* View live agent logs where agents can report in what they are currently doing.
 * Execute verify step on each deploy unit / machine, what the verify step does is up to the agent and depends on the deploy unit type.
 
 ## Screenshots
