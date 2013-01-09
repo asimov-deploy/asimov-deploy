@@ -33,6 +33,13 @@ Asimov Deploy is a simple distributed deployment tool that enables you to deploy
 * View live agent logs where agents can report in what they are doing.
 * Execute verify step on each deploy unit / machine, what the verify step does is up to the agent and depends on the deploy unit type.
 
+## Screenshots
+Until a full project page is created and a demo site, you can view these screenshots to get an idea of how it looks and behaves.
+* [Deploy dashboard](https://raw.github.com/asimov-deploy/asimov-deploy/gh-pages/images/screenshots/screenshot-1.png)
+* [Version selection](https://github.com/asimov-deploy/asimov-deploy/raw/gh-pages/images/screenshots/screenshot-2-select-version.PNG)
+* [Deploy dialog](https://github.com/asimov-deploy/asimov-deploy/raw/gh-pages/images/screenshots/screenshot-3-confirm-deploy.PNG)
+* [Load balancer action](https://github.com/asimov-deploy/asimov-deploy/raw/gh-pages/images/screenshots/screenshot-4-loadbalancer.PNG)
+
 ## Roadmap
 * Documentation (Getting started Guide / Deploy Agent configuration guide)
 * Demo & Project site
