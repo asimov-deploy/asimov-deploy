@@ -2,7 +2,9 @@
 var app = require('express')();
 var eventSender = require('./eventSender');
 
-eventSender.sendHeartBeat();
+eventSender.sendlog();
+
+//eventSender.sendHeartBeat();
 
 var deployUnits = [
 	{

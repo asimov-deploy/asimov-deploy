@@ -1,6 +1,6 @@
 var restify = require('restify');
 
-var client = restify.createJsonClient({ url: 'http://localhost:3333' });
+var client = restify.createJsonClient({ url: 'http://tranquil-mesa-7514.herokuapp.com' });
 
 module.exports = {
    sendHeartBeat: function() {
@@ -12,6 +12,18 @@ module.exports = {
       };
 
       client.post('/agent/heartbeat', heartbeatData, function() {});
+   },
+
+   sendlog: function() {
+     var logs = [{
+         agentName: "test",
+         timestamp: "2012-05-10 10:00:00",
+         time: "10:00:00",
+         level: "info",
+         message: "hello"
+      }];
+
+      client.post('/agent/log', logs, function() {});
    },
 
    sendEvent: function(data) {
