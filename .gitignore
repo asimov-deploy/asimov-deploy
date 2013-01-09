@@ -1,0 +1,11 @@
+#Tooling
+_ReSharper*/
+*.resharper
+*[Rr]e[Ss]harper.user
+[Tt]est[Rr]esult*
+Ankh.NoLoad
+*.ncrunchsolution
+*.orig
+*.user
+*.suo
+/src
