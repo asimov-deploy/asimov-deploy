@@ -5,7 +5,7 @@ Asimov Deploy is a simple distributed deployment tool that enables you to deploy
 
 ## Main Features
 * Cross platform web interface for distributed deployment (written in nodejs, and single page web UI with backbone.js)
-* Deploy windows and IIS Web applications or Sites
+* Deploy windows services and IIS Web Applications or Sites
 * Automate load balancer and view load balancer status together with deploy units / machine status.
 
 ## Windows deploy agent features
