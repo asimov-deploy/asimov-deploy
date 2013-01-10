@@ -4,26 +4,66 @@
 // ------
 
 .agent-log-wrapper {
-	border-top: 1px solid #444444;
-	.box-shadow(0px -2px 4px rgba(0,0,0,.8));
-	position: fixed;        
+	position: fixed;
 	width: 100%;
 	bottom: 0;
-	color: #C6C6C6;     
-	margin: 0;   
-	background: @bodyBackground; 
+	margin: 0;
+ }
+
+ .agent-log-header {
+
+ }
+
+ .agent-log-divider {
+ 	border-top: 1px solid #444444;
+ 	margin-top: 6px;
+ }
+
+ .live-log-header {
+ 	font-weight: bold;
+ 	margin: 0px 10px 0px 10px;
+ }
+
+ .live-log-filter-selection {
+ 	font-size: 12px;
+ 	line-height: 21px;
+ 	margin-left: 10px;
+ 	padding: 0px 8px;
+	.border-radius(4px);
+	border: 1px solid @navbarInverseBorder;
+	#gradient > .vertical(@navbarInverseBackgroundHighlight, @navbarInverseBackground);
+
+	label {
+		display: inline;
+		font-size: 12px;
+		cursor: pointer;
+	}
+
+	label:hover {
+		color: @grayLighter;
+	}
+
+	.divider-vertical {
+		border-left: 1px solid @navbarInverseBackground;
+  		border-right: 1px solid @navbarInverseBackgroundHighlight;
+  		height: 21px;
+  		margin: 0 7px;
+	}
+
+	li {
+		list-style: none;
+		float: left;
+	}
  }
 
 .agent-log {
-	margin: 0px;        
-	min-height: 150px;   
+	color: #C6C6C6;
+	background-color: darken(@bodyBackground, 1%);
+	margin: 0px;
+	min-height: 150px;
 	max-height: 478px;
 	height: 98px;
-	padding: 5px;
-	-moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset;
-	-webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset;
-	-o-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset;
-	box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.8) 0 1px 7px 0px inset;
+	padding: 0px 5px 5px 10px;
 	overflow: auto;
 	border: none;
 }
