@@ -181,7 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ConfigFiles\config.json">
+    <None Include="ConfigFiles\config.empty.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

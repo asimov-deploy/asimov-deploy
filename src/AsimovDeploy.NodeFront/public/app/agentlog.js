@@ -65,9 +65,35 @@ function($, _, Backbone, Marionette, app) {
 
 	});
 
+	var LiveLogFilterSelectionViewItem = Marionette.ItemView.extend({
+		template: "live-log-filter-item",
+		tagName: "li"
+	});
+
+	var LiveLogFilterSelectionView = Marionette.CollectionView.extend({
+		itemView: LiveLogFilterSelectionViewItem,
+
+		initialize: function(){
+			this.collection = new Backbone.Collection();
+
+			app.vent.on("agent:log", function(logItems) {
+
+				_.each(logItems, function(item) {
+					var agent = this.collection.get(item.agentName);
+					if (!agent) {
+						this.collection.add(new Backbone.Model({ id: item.agentName }));
+					}
+				}, this);
+
+			}, this);
+		}
+
+	});
+
 	app.addInitializer(function() {
 
 		var agentLogView = new LogListView({ el: $(".agent-log") });
+		var filterView = new LiveLogFilterSelectionView({ el: $(".live-log-filter-selection") });
 
 	});
 
