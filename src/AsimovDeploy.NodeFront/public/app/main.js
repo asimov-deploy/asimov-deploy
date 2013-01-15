@@ -19,7 +19,7 @@ require([
 	"app",
 	"router",
 	"socket-con",
-	"agentlog",
+	"livelog/livelog",
 	"bootstrap",
 	"handlebarsHelpers"],
 function($, app, Router) {

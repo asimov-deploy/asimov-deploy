@@ -1,6 +1,6 @@
 
 
-// Agent Log
+// Live Log
 // ------
 
 .agent-log-wrapper {
@@ -10,28 +10,20 @@
 	margin: 0;
  }
 
- .agent-log-header {
-
- }
-
- .agent-log-divider {
- 	border-top: 1px solid #444444;
- 	margin-top: 6px;
- }
-
  .live-log-header {
- 	font-weight: bold;
- 	margin: 0px 10px 0px 10px;
- }
-
- .live-log-filter-selection {
+  	font-weight: bold;
  	font-size: 12px;
  	line-height: 21px;
- 	margin-left: 10px;
- 	padding: 0px 8px;
-	.border-radius(4px);
+ 	margin-left: 0px;
+ 	margin-bottom: 2px;
+ 	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 3px 5px rgba(0, 0, 0, 0.2);
+ 	padding: 0px 0px 0px 10px;
 	border: 1px solid @navbarInverseBorder;
 	#gradient > .vertical(@navbarInverseBackgroundHighlight, @navbarInverseBackground);
+
+	span {
+		padding-right: 10px;
+	}
 
 	label {
 		display: inline;
@@ -50,6 +42,18 @@
   		margin: 0 7px;
 	}
 
+	.btn-live-log-filter {
+		.opacity(55);
+	}
+
+	.btn-live-log-filter:hover {
+		.opacity(100);
+	}
+
+	ul {
+		margin: 0px 0px 0px 10px;
+	}
+
 	li {
 		list-style: none;
 		float: left;
@@ -62,6 +66,7 @@
 	margin: 0px;
 	min-height: 150px;
 	max-height: 478px;
+	font-size: 12px;
 	height: 98px;
 	padding: 0px 5px 5px 10px;
 	overflow: auto;
