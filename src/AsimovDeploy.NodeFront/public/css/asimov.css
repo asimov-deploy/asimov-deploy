@@ -138,7 +138,7 @@ a {
 #asimov-version {
   position: fixed;
   right: 5px;
-  bottom: 170px;
+  bottom: 160px;
   color: #666666;
 }
 legend,
@@ -384,7 +384,7 @@ select:focus {
   font-size: 12px;
   line-height: 21px;
   margin-left: 0px;
-  margin-bottom: 2px;
+  margin-bottom: 5px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 3px 5px rgba(0, 0, 0, 0.2);
   padding: 0px 0px 0px 10px;
   border: 1px solid #252525;
@@ -408,12 +408,6 @@ select:focus {
 .live-log-header label:hover {
   color: #eeeeee;
 }
-.live-log-header .divider-vertical {
-  border-left: 1px solid #111111;
-  border-right: 1px solid #222222;
-  height: 21px;
-  margin: 0 7px;
-}
 .live-log-header .btn-live-log-filter {
   opacity: 0.55;
   filter: alpha(opacity=55);
@@ -428,6 +422,21 @@ select:focus {
 .live-log-header li {
   list-style: none;
   float: left;
+  padding: 0px 5px 0px 5px;
+}
+.live-log-header li i {
+  opacity: 0.55;
+  filter: alpha(opacity=55);
+}
+.live-log-header li.show-filter-enabled label {
+  color: #33b5e5;
+  text-shadow: 1px 1px 7px #0792ff;
+}
+.live-log-header li:not(:first-child) {
+  border-left: 1px solid #111111;
+}
+.live-log-header li:not(:last-child) {
+  border-right: 1px solid #222222;
 }
 .agent-log {
   color: #C6C6C6;

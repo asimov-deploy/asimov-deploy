@@ -2,8 +2,6 @@
 var app = require('express')();
 var eventSender = require('./eventSender');
 
-eventSender.sendHeartBeat();
-
 var deployUnits = [
 	{
 		"name": "Progressive.NET",
@@ -54,6 +52,7 @@ var count = 0;
 setInterval(function() {
 	count += 1;
 
+	eventSender.sendHeartBeat();
 	eventSender.sendlog();
 
 }, 1000);

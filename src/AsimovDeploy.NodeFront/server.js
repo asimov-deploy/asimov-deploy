@@ -19,7 +19,7 @@ var socketio = require( 'socket.io' );
 var restify = require("restify");
 var path = require('path');
 var http = require('http');
-
+var _ = require('underscore');
 var app = express();
 
 app.configure(function(){
@@ -57,12 +57,16 @@ require("./app/versions")(app, secure);
 
 app.get('/', secure, function(req, res) {
 
+   var agents = _.where(config.agents, {dead: false});
+   agents = _.pluck(agents, ["name"]);
+
 	var viewModel = {
 		hostName: req.headers.host.replace(/:\d+/, ''),
 		version: config.version,
 		port: config.port,
 		instances: machine_config.instances,
-		instanceName: config.name
+		instanceName: config.name,
+      agents: agents
 	};
 
   res.render('index', viewModel);

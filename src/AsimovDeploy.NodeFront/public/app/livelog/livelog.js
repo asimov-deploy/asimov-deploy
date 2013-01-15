@@ -19,83 +19,29 @@ define([
 	"underscore",
 	"backbone",
 	"marionette",
-	"app"
+	"app",
+	"./livelog-list-view",
+	"./livelog-filter-view"
 ],
-function($, _, Backbone, Marionette, app) {
+function($, _, Backbone, Marionette, app, LiveLogListView, LiveLogFilterView) {
 
-	var LogItemView = Marionette.ItemView.extend({
-		template: "agent-log-item"
-	});
+	var liveLog = {};
 
-	var LogListView = Backbone.View.extend({
-
-		events: {
-			"dblclick": "toggleExpand"
-		},
-
-		initialize: function(){
-
-			app.vent.on("agent:log", function(logItems) {
-				var models = _.map(logItems, function(item) { return new Backbone.Model(item); });
-				var views = _.map(models, function(m) { return new LogItemView({model: m}); });
-
-				var fragment = document.createDocumentFragment();
-				_.each(views, function(view) {
-					view.render();
-					fragment.appendChild(view.el);
-				});
-
-				this.$el.append(fragment);
-				this.$el.scrollTop(this.$el[0].scrollHeight);
-
-			}, this);
-		},
-
-		toggleExpand: function(){
-			var current = Math.round($(this.el).height()) + "px";
-			var min = $(this.el).css("min-height");
-			var max = $(this.el).css("max-height");
-
-			if (current == min) {
-				$(this.el).animate({ height: max}, 500);
-			} else {
-				$(this.el).animate({ height: min}, 500);
-			}
-		}
-
-	});
-
-	var LiveLogFilterSelectionViewItem = Marionette.ItemView.extend({
-		template: "live-log-filter-item",
-		tagName: "li"
-	});
-
-	var LiveLogFilterSelectionView = Marionette.CollectionView.extend({
-		itemView: LiveLogFilterSelectionViewItem,
-
-		initialize: function(){
-			this.collection = new Backbone.Collection();
-
-			app.vent.on("agent:log", function(logItems) {
-
-				_.each(logItems, function(item) {
-					var agent = this.collection.get(item.agentName);
-					if (!agent) {
-						this.collection.add(new Backbone.Model({ id: item.agentName }));
-					}
-				}, this);
-
-			}, this);
-		}
-
-	});
+	var agentsCollection = new Backbone.Collection();
 
 	app.addInitializer(function() {
 
-		var agentLogView = new LogListView({ el: $(".agent-log") });
-		var filterView = new LiveLogFilterSelectionView({ el: $(".live-log-filter-selection") });
+		var agentLogView = new LiveLogListView({ el: $(".agent-log") });
+		var filterView = new LiveLogFilterView({ collection: agentsCollection, el: $(".live-log-filter-selection") });
 
 	});
 
+	// PUBLIC API
+	liveLog.bootstrap = function(agents) {
+		_.each(agents, function(item) {
+				agentsCollection.add(new Backbone.Model({ id: item }));
+		});
+	};
 
+	return liveLog;
 });
