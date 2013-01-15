@@ -73,7 +73,6 @@ function($, _, Backbone, Marionette, app) {
             return;
          }
 
-
          var show = _.contains(this.agentFilters, view.model.get('agentName'));
          $(view.el).toggle(show);
       },
