@@ -54,9 +54,9 @@ function($, _, Backbone, Marionette, app) {
 
       filterToggle: function() {
          var agents = this.collection.where({show: true});
-         var names = agents.length === 0 ? this.collection.pluck(["id"]) : _.pluck(agents, ["id"]);
+         var names = agents.length > 0 ? _.pluck(agents, ["id"]) : null;
 
-         app.trigger("livelog:filterUpdated", names);
+         app.vent.trigger("livelog:filterUpdated", names);
       }
 
    });
