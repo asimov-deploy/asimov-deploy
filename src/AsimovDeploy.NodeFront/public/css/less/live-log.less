@@ -15,7 +15,7 @@
  	font-size: 12px;
  	line-height: 21px;
  	margin-left: 0px;
- 	margin-bottom: 2px;
+ 	margin-bottom: 5px;
  	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 3px 5px rgba(0, 0, 0, 0.2);
  	padding: 0px 0px 0px 10px;
 	border: 1px solid @navbarInverseBorder;
@@ -35,13 +35,6 @@
 		color: @grayLighter;
 	}
 
-	.divider-vertical {
-		border-left: 1px solid @navbarInverseBackground;
-  		border-right: 1px solid @navbarInverseBackgroundHighlight;
-  		height: 21px;
-  		margin: 0 7px;
-	}
-
 	.btn-live-log-filter {
 		.opacity(55);
 	}
@@ -57,7 +50,21 @@
 	li {
 		list-style: none;
 		float: left;
+		padding: 0px 5px 0px 5px;
+		i {
+			.opacity(55);
+		}
+
+		&.show-filter-enabled label {
+			color: @blue;
+			text-shadow: 1px 1px 7px @blueDark;
+		}
 	}
+
+	li:not(:first-child) { border-left: 1px solid @navbarInverseBackground; }
+	li:not(:last-child) { border-right: 1px solid @navbarInverseBackgroundHighlight; }
+
+
  }
 
 .agent-log {
