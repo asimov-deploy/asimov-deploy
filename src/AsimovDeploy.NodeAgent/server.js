@@ -2,9 +2,7 @@
 var app = require('express')();
 var eventSender = require('./eventSender');
 
-eventSender.sendlog();
-
-//eventSender.sendHeartBeat();
+eventSender.sendHeartBeat();
 
 var deployUnits = [
 	{
@@ -51,21 +49,14 @@ app.post('/deploy/deploy', function(req, res) {
 
 
 
-//var count = 0;
+var count = 0;
 
-//setInterval(function() {
-//	count += 1;
+setInterval(function() {
+	count += 1;
 
-//	client.post('/agent/event', {
-//			agentName: "NodeAgent",
-//			unitName: "NodeDeploy",
-//			eventName:  "unitDataUpdated",
-//			unitData: {
-//				version: "5.0." + count
-//			}
-//	}, function() {});
+	eventSender.sendlog();
 
-// }, 1000);
+}, 1000);
 
 
 app.listen(4333);

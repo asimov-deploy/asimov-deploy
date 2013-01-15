@@ -1,6 +1,6 @@
 var restify = require('restify');
 
-var client = restify.createJsonClient({ url: 'http://tranquil-mesa-7514.herokuapp.com' });
+var client = restify.createJsonClient({ url: 'http://localhost:3333' });
 
 module.exports = {
    sendHeartBeat: function() {
