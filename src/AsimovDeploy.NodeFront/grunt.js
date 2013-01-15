@@ -50,19 +50,19 @@ module.exports = function(grunt) {
 
     less: {
       bootstrap: {
-        options: { paths: ["public/css/less/bootstrap/"]  },
-        files: { 'public/css/bootstrap.css' : 'public/css/less/bootstrap/bootstrap.less'  }
+        options: { paths: ["public/css/bootstrap/"]  },
+        files: { 'dist/debug/bootstrap.css' : 'public/css/bootstrap/bootstrap.less'  }
       },
       asimov: {
-        options: { paths: ["public/css/less/", "public/css/less/bootstrap/"] },
-        files: { 'public/css/asimov.css' : 'public/css/less/asimov.less' }
+        options: { paths: ["public/css/", "public/css/bootstrap/"] },
+        files: { 'dist/debug/asimov.css' : 'public/css/asimov.less' }
       }
     },
 
     mincss: {
       "dist/release/asimov.css": [
-        "public/css/bootstrap.css",
-        "public/css/asimov.css"
+        "dist/debug/bootstrap.css",
+        "dist/debug/asimov.css"
       ]
     },
 
