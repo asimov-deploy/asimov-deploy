@@ -33,22 +33,10 @@ function($, _, Backbone, Marionette, app) {
          "dblclick": "toggleExpand"
       },
 
-      initialize: function(){
-
-         app.vent.on("agent:log", function(logItems) {
-            var models = _.map(logItems, function(item) { return new Backbone.Model(item); });
-            var views = _.map(models, function(m) { return new LogItemView({model: m}); });
-
-            var fragment = document.createDocumentFragment();
-            _.each(views, function(view) {
-               view.render();
-               fragment.appendChild(view.el);
-            });
-
-            this.$el.append(fragment);
-            this.$el.scrollTop(this.$el[0].scrollHeight);
-
-         }, this);
+      initialize: function() {
+         app.vent.on("agent:log", this.addLogItems, this);
+         app.vent.on("livelog:filterUpdated", this.filterUpdated, this);
+         this.views = [];
       },
 
       toggleExpand: function(){
@@ -61,6 +49,38 @@ function($, _, Backbone, Marionette, app) {
          } else {
             $(this.el).animate({ height: min}, 500);
          }
+      },
+
+      addLogItems: function(logItems) {
+         var models = _.map(logItems, function(item) { return new Backbone.Model(item); });
+         var newViews = _.map(models, function(m) { return new LogItemView({model: m}); });
+
+         var fragment = document.createDocumentFragment();
+         _.each(newViews, function(view) {
+            this.views.push(view);
+            view.render();
+            fragment.appendChild(view.el);
+            this.showOrHideLogItemView(view);
+         }, this);
+
+         this.$el.append(fragment);
+         this.$el.scrollTop(this.$el[0].scrollHeight);
+      },
+
+      showOrHideLogItemView: function(view) {
+         if (!this.agentFilters) {
+            $(view.el).show(show);
+            return;
+         }
+
+
+         var show = _.contains(this.agentFilters, view.model.get('agentName'));
+         $(view.el).toggle(show);
+      },
+
+      filterUpdated: function(agentFilters) {
+         this.agentFilters = agentFilters;
+         this.views.forEach(this.showOrHideLogItemView, this);
       }
 
    });
