@@ -40,15 +40,14 @@ html(lang="en")
                       a(href='http://#{hostName}:#{item.port}') #{item.name}
     #main-region
 
-    .agent-log-wrapper
+    .live-log-wrapper
       .live-log-header
         span.pull-left Live Log
-        a.pull-left.btn-live-log-filter(href="#")
+        a.pull-left.btn-live-log-filter(href="#", title="show/hide filters", data-bypass=1)
           i.icon-filter.icon-white
-        ul.live-log-filter-selection.pull-left
+        ul.live-log-filter-selection.pull-left(style='display: none')
         .clearfix
-      .agent-log-divider
-      .agent-log
+      .live-log
 
 
 

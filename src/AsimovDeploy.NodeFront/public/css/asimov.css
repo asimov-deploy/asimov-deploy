@@ -373,7 +373,7 @@ select:focus {
   margin: 0;
   padding-left: 10px;
 }
-.agent-log-wrapper {
+.live-log-wrapper {
   position: fixed;
   width: 100%;
   bottom: 0;
@@ -438,7 +438,7 @@ select:focus {
 .live-log-header li:not(:last-child) {
   border-right: 1px solid #222222;
 }
-.agent-log {
+.live-log {
   color: #C6C6C6;
   background-color: #0e0e0e;
   margin: 0px;
