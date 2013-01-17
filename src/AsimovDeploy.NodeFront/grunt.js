@@ -99,6 +99,6 @@ module.exports = function(grunt) {
   grunt.registerTask("default", "clean lint requirejs handlebars concat");
 
   grunt.registerTask("debug", "default");
-  grunt.registerTask("release", "default min mincss");
+  grunt.registerTask("release", "default min less mincss");
 
 };
