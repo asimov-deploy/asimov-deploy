@@ -8,7 +8,7 @@ properties {
 	$tools_dir = "$base_dir\tools"
 	$configuration = "Debug"
 	$drop_folder = "$base_dir\build_artifacts\drop"
-	$version = "1.0"
+	$version = "0.5"
 	$commit = "1234567"
 	$branch = "master"
 	$build = "10"
@@ -24,7 +24,7 @@ task Init -depends Clean {
 	$script:version = "$version.$build"
 	$script:commit = $commit.substring(0,7)
 
-	#exec { git.exe update-index --assume-unchanged "$base_dir\src\SharedAssemblyInfo.cs" }
+	exec { git.exe update-index --assume-unchanged "$base_dir\src\SharedAssemblyInfo.cs" }
 	(Get-Content "$base_dir\src\SharedAssemblyInfo.cs") |
 		Foreach-Object { $_ -replace "{version}", $script:version } |
 		Set-Content "$base_dir\src\SharedAssemblyInfo.cs" -Encoding UTF8
@@ -63,7 +63,7 @@ task CopyAsimovDeployNodeFront {
 	& npm install
 	& .\node_modules\.bin\bbb release
 
-	Copy-Item "$base_dir\src\AsimovDeploy.NodeFront" "$build_dir\packages\AsimovDeploy.NodeFront" -Recurse -Force -include $include
+	Copy-Item "$base_dir\src\AsimovDeploy.NodeFront" "$build_dir\packages" -Recurse -Force -include $include
 
 	$nodeFrontConfig = "$build_dir\packages\AsimovDeploy.NodeFront\app\config.js"
 
@@ -84,7 +84,7 @@ task Compile -depends Init {
 	} catch {
 		Throw
 	} finally {
-
+		exec { git.exe checkout "$base_dir\src\SharedAssemblyInfo.cs" }
 	}
 }
 
