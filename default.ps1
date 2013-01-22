@@ -94,7 +94,7 @@ task Compile -depends Init {
 	} catch {
 		Throw
 	} finally {
-		exec { git.exe checkout "$base_dir\src\SharedAssemblyInfo.cs" }
+		exec { git checkout "$base_dir\src\SharedAssemblyInfo.cs" }
 	}
 }
 
