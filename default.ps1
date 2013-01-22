@@ -44,7 +44,7 @@ function CreateZipFile([string] $name, [string] $folder) {
 }
 
 task CopyAsimovDeployWinAgent {
-	$exclude = @('AsimovDeploy.WinAgentUpdater*', "packages", "*Tests", "ConfigExamples", "drop")
+	$exclude = @('AsimovDeploy.WinAgentUpdater*', "packages", "*Tests*", "ConfigExamples", "drop")
 	Copy-Item "$build_dir\*" "$build_dir\packages\AsimovDeploy.WinAgent" -Recurse -Force -Exclude $exclude
 
 	CreateZipFile("AsimovDeploy.WinAgent")
@@ -52,7 +52,7 @@ task CopyAsimovDeployWinAgent {
 
 task CopyAsimovDeployWinAgentUpdater {
 
-	$include = @('AsimovDeploy.WinAgentUpdater*', "log4net*", "topshelf*")
+	$include = @('AsimovDeploy.WinAgentUpdater*', "log4net*", "topshelf*", "Ionic.Zip*")
 	Copy-Item "$build_dir\*" "$build_dir\packages\AsimovDeploy.WinAgentUpdater" -Recurse -Force -include $include
 
 	CreateZipFile("AsimovDeploy.WinAgentUpdater")
@@ -72,6 +72,16 @@ task CopyAsimovDeployNodeFront {
 		Set-Content $nodeFrontConfig -Encoding UTF8
 
 	CreateZipFile("AsimovDeploy.NodeFront")
+}
+
+task CreateDistributionPackage {
+	New-Item $build_dir\packages\AsimovDeploy -Type directory -ErrorAction SilentlyContinue | Out-Null
+	Copy-Item "$build_dir\packages\*.zip" "$build_dir\packages\AsimovDeploy" -Force -ErrorAction SilentlyContinue
+
+	$licenseFiles = @('LICENSE', "NOTICE", "library-licenses")
+	Copy-Item "$base_dir\*" "$build_dir\packages\AsimovDeploy" -Recurse -Force -include $licenseFiles
+
+	CreateZipFile("AsimovDeploy")
 }
 
 task Compile -depends Init {
@@ -114,6 +124,7 @@ task DoRelease -depends Compile, `
 	CopyAsimovDeployWinAgentUpdater, `
 	CopyAsimovDeployWinAgent, `
 	CopyAsimovDeployNodeFront, `
+	CreateDistributionPackage, `
 	CopyToDropFolder {
 	Write-Host "Done building AsimovDeploy"
 }
