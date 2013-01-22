@@ -10,14 +10,17 @@
     "restify": "1.4.4",
     "socket.io": "0.9.10",
     "underscore": ">= 1.4.3",
-    "jade": "0.27.2"
+    "jade": "0.27.2",
+    "nconf": "~0.6.7"
   },
 
   "devDependencies": {
-  	"supervisor": "0.3.2",
     "bbb": "0.1.4",
     "handlebars": "1.0.5beta"
   },
 
-  "engine": "node >= 0.6.18"
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
 }

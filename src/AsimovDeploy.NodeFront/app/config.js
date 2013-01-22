@@ -17,7 +17,16 @@
 
 var agents = [];
 var _ = require("underscore");
-var machine_config = require("./machine_config");
+var nconf = require('nconf');
+
+nconf.file({ file: 'config.json' });
+
+nconf.defaults({
+   "username": "deploy",
+   "password": "secret",
+   "name": "Deploy UI",
+   "port": 3333
+});
 
 var getAgent = function(param) {
 	if (param.name) {
@@ -39,10 +48,13 @@ var current_instance = 0;
 
 var nextInstance = function() {
 	current_instance += 1;
-	if (current_instance >= machine_config.instances.length)
+	var instances = nconf.get('instances');
+	if (instances && current_instance >= instances.length) {
+		console.log("Error: port not available!");
 		return false;
+	}
 
-	var instance = machine_config.instances[current_instance];
+	var instance = instances[current_instance];
 
 	module.exports.port = instance.port;
 	module.exports.name = instance.name;
@@ -51,15 +63,30 @@ var nextInstance = function() {
 };
 
 module.exports = {
-	name: machine_config.instances[current_instance].name,
-	port: machine_config.instances[current_instance].port,
 	agents: agents,
 	version: "{version}",
-	username: "deploy",
-	password: "secret",
-
 	getAgent: getAgent,
 	loadBalancerStatusChanged: loadBalancerStatusChanged,
 	nextInstance: nextInstance
 };
 
+module.exports.username = nconf.get('username');
+module.exports.password = nconf.get('password');
+
+if (nconf.get('instances')) {
+	var instances = nconf.get('instances');
+	var instance = instances[0];
+	module.exports.port = instance.port;
+	module.exports.name = instance.name;
+	module.exports.instances = instances;
+}
+else {
+	module.exports.port = nconf.get('port');
+	module.exports.name = nconf.get('name');
+	module.exports.instances = [
+		{
+			name: module.exports.name,
+			port: module.exports.port
+		}
+	];
+}
