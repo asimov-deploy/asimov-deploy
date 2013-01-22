@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using AsimovDeploy.WinAgent.Framework.Models;
 using Newtonsoft.Json;
@@ -39,7 +40,10 @@ namespace AsimovDeploy.WinAgent.Framework.Common
 
         public void Notify(string url, object data)
         {
-            _messages.Add(new NodeFrontMessage() { Url = url, Data = data});
+            if (!_messages.IsAddingCompleted)
+            {
+                _messages.Add(new NodeFrontMessage() { Url = url, Data = data });    
+            }
         }
 
         private void SendMessage(NodeFrontMessage message)
