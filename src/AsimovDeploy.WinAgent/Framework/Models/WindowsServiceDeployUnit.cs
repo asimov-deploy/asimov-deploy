@@ -23,7 +23,13 @@ namespace AsimovDeploy.WinAgent.Framework.Models
 {
     public class WindowsServiceDeployUnit : DeployUnit
     {
-        public string ServiceName { get; set; }
+        private string _serviceName; 
+        public string ServiceName 
+        {
+            get { return _serviceName ?? Name;}
+            set { _serviceName = value; } 
+        }
+
         public string Url { get; set; }
 
         public override AsimovTask GetDeployTask(AsimovVersion version, ParameterValues parameterValues)
