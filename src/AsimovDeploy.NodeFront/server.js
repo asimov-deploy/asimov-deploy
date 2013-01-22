@@ -48,7 +48,6 @@ app.use("/libs", express["static"]( __dirname + '/public/libs' ));
 
 
 var config = require('./app/config');
-var machine_config = require("./app/machine_config");
 var secure = express.basicAuth(config.username, config.password);
 
 require("./app/agents")(app, secure);
@@ -66,7 +65,7 @@ app.get('/', secure, function(req, res) {
 		hostName: req.headers.host.replace(/:\d+/, ''),
 		version: config.version,
 		port: config.port,
-		instances: machine_config.instances,
+		instances: config.instances,
 		instanceName: config.name,
       agents: agents
 	};
@@ -94,7 +93,7 @@ server.on("error", function(err) {
 });
 
 server.on("listening", function() {
-	console.log("Instance name: " + config.name + " Port: ");
+	console.log("Instance name: " + config.name + " Port: " + config.port);
 
 	GLOBAL.clientSockets = socketio.listen(server);
 	GLOBAL.clientSockets.sockets.on('connection', function(socket) { });
