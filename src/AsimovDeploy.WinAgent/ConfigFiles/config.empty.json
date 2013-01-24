@@ -1,14 +1,26 @@
 ﻿{
-	"WebPort":						 21233,
-	"DataFolder":					 "Data",
-	"HeartbeatIntervalSeconds": 10,
-	"NodeFrontUrl":				 "http://localhost:3333",
-	"ConfigVersion":				 1,
+   /* HTTP port for the deploy agent */
+   "WebPort":                 21233,
+   /* Directory where the Agent Temp folder, and logs are stored */
+   "DataFolder":              "Data",
+   /* interval in seconds that heartbeats are sent to the deploy ui */
+   "HeartbeatIntervalSeconds": 10,
+   /* Deploy UI Url  */
+   "NodeFrontUrl":            "http://localhost:3333",
+   /* Used to by the updater to update config files */
+   "ConfigVersion":           1,
 
-	"PackageSources":  {
-	 },
+   "PackageSources":  {
+      "Builds":  { "Type": "FileSystem", "Uri": "file://some-file-share/drops" }
+    },
 
-	"Agents": {
+   "Units" : [
+      {
+         "Name": "MyApp",
+         "Type": "WindowsService",
 
-	}
+         "PackageInfo": { "Source": "Builds" }
+      }
+   ]
+
 }
