@@ -1,33 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
     <title>Asimov-deploy by asimov-deploy</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
-
   <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/asimov-deploy/asimov-deploy">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/asimov-deploy/asimov-deploy/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/asimov-deploy/asimov-deploy/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
-    <header>
-      <div class="container">
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Asimov-deploy</h1>
+          <p>Simple Distributed Deployment</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/asimov-deploy">asimov-deploy</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
         <h1>Asimov Deploy</h1>
-        <h2>Simple Distributed Deployment</h2>
 
-        <section id="downloads">
-          <a href="https://github.com/asimov-deploy/asimov-deploy/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/asimov-deploy/asimov-deploy/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/asimov-deploy/asimov-deploy" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
 <p>Asimov Deploy is a simple distributed deployment tool that enables you to deploy applications to multiple machines through a simple to use web interface. Actual deploymentents are handled on each machine by the locally installed deploy agent.</p>
 
 <h2>Main Features</h2>
@@ -82,8 +94,9 @@
 <li>Add support for more load balancers</li>
 </ul>
       </section>
+
     </div>
-
-
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
