@@ -56,6 +56,10 @@ function(_, app, DeployUnitListView, DeployUnitCollection) {
 
         steps.push({ pass: data.pass, completed: data.completed, message: data.message });
 
+        if (data.started) {
+            steps = [];
+        }
+
         var update = {
             info: {
                 verifying: true,
