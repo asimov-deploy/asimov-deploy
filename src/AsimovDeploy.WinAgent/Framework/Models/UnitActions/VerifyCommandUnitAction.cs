@@ -15,9 +15,12 @@ namespace AsimovDeploy.WinAgent.Framework.Models
 {
 	public class VerifyCommandUnitAction : UnitAction
 	{
+		public string ZipPath { get; set; }
+		public string Command { get; set; }
+		
 		public override AsimovTask GetTask(DeployUnit unit)
 		{
-			return new VerifyCommandTask((WebSiteDeployUnit)unit);
+			return new VerifyCommandTask((WebSiteDeployUnit)unit, ZipPath, Command);
 		}
 	}
 }

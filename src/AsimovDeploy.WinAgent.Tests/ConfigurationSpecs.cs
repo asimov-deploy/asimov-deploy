@@ -30,9 +30,8 @@ namespace AsimovDeploy.WinAgent.Tests
             webSite.SiteUrl.ShouldBe("http://localhost/DefaultSite");
             webSite.PackageInfo.InternalPath.ShouldBe("DefaultSitePath");
             webSite.PackageInfo.Source.ShouldBe("Prod");
-            webSite.VerifyCommand.ShouldBe("phantomjs.exe");
-            webSite.VerifyZipPath.ShouldBe("SiteVerify.zip");
-
+            
+           
             webSite.CleanDeploy.ShouldBe(true);
         }
 
@@ -70,8 +69,12 @@ namespace AsimovDeploy.WinAgent.Tests
             
             config.Units[0].Actions[0].ShouldBeTypeOf<VerifyUrlsUnitAction>();
             config.Units[0].Actions[1].ShouldBeTypeOf<VerifyCommandUnitAction>();
+            
+            var commandAction = (VerifyCommandUnitAction)config.Units[0].Actions[1];
+            commandAction.ZipPath.ShouldBe("SiteVerify.zip");
+            commandAction.Command.ShouldBe("phantomjs.exe");
         }
-
+	
         [Test]
         public void env_config_file_can_override_and_add_packages_sources_and_units()
         {

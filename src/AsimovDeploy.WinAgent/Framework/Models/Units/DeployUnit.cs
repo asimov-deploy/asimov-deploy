@@ -28,9 +28,7 @@ namespace AsimovDeploy.WinAgent.Framework.Models
         public string Name { get; set; }
         public PackageInfo PackageInfo { get; set; }
         public string DataDirectory { get; set; }
-        public string VerifyZipPath { get; set; }
-        public string VerifyCommand { get; set; }
-
+      
         public DeployStatus DeployStatus { get; protected set; }
         public DeployedVersion Version { get; protected set; }
         public string[] OnlyOnAgents { get; set; }
@@ -47,11 +45,6 @@ namespace AsimovDeploy.WinAgent.Framework.Models
         }
 
         public abstract AsimovTask GetDeployTask(AsimovVersion version, ParameterValues parameterValues);
-
-        public virtual AsimovTask GetVerifyTask()
-        {
-            return new NoOpTask();
-        }
 
         public virtual DeployUnitInfo GetUnitInfo()
         {

@@ -42,16 +42,7 @@ namespace AsimovDeploy.WinAgent.Framework.Models
             task.AddDeployStep<UpdateWebSite>();
             return task;
         }
-
-        public override AsimovTask GetVerifyTask()
-        {
-            if (!string.IsNullOrEmpty(VerifyCommand))
-            {
-                return new VerifyCommandTask(this);
-            }
-            return new VerifySiteTask(this);
-        }
-
+        
         public virtual IWebServer GetWebServer()
         {
             return new IIS7WebServer(SiteName, SiteUrl);

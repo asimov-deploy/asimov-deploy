@@ -21,13 +21,10 @@
 			"CleanDeploy": true,
 
 			"PackageInfo": { Source: "Prod", InternalPath: "DefaultSitePath" },
-			
-			"VerifyCommand": "phantomjs.exe",
-			"VerifyZipPath": "SiteVerify.zip",
-			
+		
 			"Actions": {
 				"verify1": { "Type": "VerifyUrls" },
-				"verify2": { "Type": "VerifyCommand" }
+				"verify2": { "Type": "VerifyCommand", "ZipPath": "SiteVerify.zip", "Command": "phantomjs.exe" }
 			},
 
 			"SiteUrl": "http://localhost/DefaultSite",

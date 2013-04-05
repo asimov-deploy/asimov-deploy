@@ -31,10 +31,14 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
     {
         private WebSiteDeployUnit _deployUnit;
         private bool allPassed;
+        private string _zipPath;
+        private string _command;
 
-        public VerifyCommandTask(WebSiteDeployUnit webSiteDeployUnit)
+        public VerifyCommandTask(WebSiteDeployUnit webSiteDeployUnit, string zipPath, string command)
         {
             _deployUnit = webSiteDeployUnit;
+            _zipPath = zipPath;
+            _command = command;
         }
 
         protected override void Execute()
@@ -84,7 +88,7 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
 
             var webAppInfo = _deployUnit.GetWebServer().GetInfo();
 
-            var zipPath = Path.Combine(webAppInfo.PhysicalPath, _deployUnit.VerifyZipPath);
+            var zipPath = Path.Combine(webAppInfo.PhysicalPath, _zipPath);
 
             using (var zipFile = ZipFile.Read(zipPath))
             {
@@ -95,7 +99,7 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
         private string[] GetCommandParts()
         {
             var siteUrl = _deployUnit.SiteUrl.Replace("localhost", HostNameUtil.GetFullHostName());
-            var verifyCommand = _deployUnit.VerifyCommand.Replace("%SITE_URL%", siteUrl);
+            var verifyCommand = _command.Replace("%SITE_URL%", siteUrl);
             var commandParts = verifyCommand.Split(new[] {' '});
             return commandParts;
         }

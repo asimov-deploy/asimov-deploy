@@ -8,6 +8,8 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using AsimovDeploy.WinAgent.Framework.Common;
 using AsimovDeploy.WinAgent.Framework.Tasks;
 
@@ -19,7 +21,7 @@ namespace AsimovDeploy.WinAgent.Framework.Models
 		
 		public override AsimovTask GetTask(DeployUnit unit)
 		{
-			return new VerifySiteTask((WebSiteDeployUnit)unit);
+			return new VerifySiteTask((WebSiteDeployUnit)unit, Urls.ToArray());
 		}
 	}
 }

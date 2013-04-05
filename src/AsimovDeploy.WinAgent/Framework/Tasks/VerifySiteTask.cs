@@ -26,21 +26,25 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
     public class VerifySiteTask : AsimovTask
     {
         private readonly WebSiteDeployUnit _deployUnit;
+        private string[] _urls;
 
-        public VerifySiteTask(WebSiteDeployUnit deployUnit)
+        public VerifySiteTask(WebSiteDeployUnit deployUnit, string[] urls)
         {
             _deployUnit = deployUnit;
+            _urls = urls;
         }
 
         protected override void Execute()
         {
-            if (_deployUnit.VerifyUrls.Count == 0)
+            if (_urls.Length == 0)
             {
                 Log.Warn("No verify urls configured for site");
                 return;
             }
+            
+            NodeFront.Notify(new VerifyProgressEvent() { started = true, unitName = _deployUnit.Name });
 
-            foreach (string url in _deployUnit.VerifyUrls)
+            foreach (string url in _urls)
             {
                 try
                 {

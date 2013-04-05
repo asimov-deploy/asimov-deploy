@@ -39,11 +39,6 @@ namespace AsimovDeploy.WinAgent.Framework.Models
             return task;
         }
 
-        public override AsimovTask GetVerifyTask()
-        {
-            return new NoOpTask();
-        }
-
         public override DeployUnitInfo GetUnitInfo()
         {
             var serviceManager = new ServiceController(ServiceName);
