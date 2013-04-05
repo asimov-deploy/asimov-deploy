@@ -51,15 +51,6 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             confirmView.show();
         },
 
-        verify: function(e) {
-            new VerifyCommand({
-                agentName: this.model.get("agentName"),
-                unitName: this.model.get("unitName")
-            }).save();
-
-            this.model.set({ info: { verifying: true, steps: [], pass: true } });
-        },
-
         verifyLog: function(e) {
             e.preventDefault();
             new VerifyLogView({model: this.model}).show();

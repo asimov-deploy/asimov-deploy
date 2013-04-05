@@ -15,16 +15,11 @@ using AsimovDeploy.WinAgent.Framework.Tasks;
 
 namespace AsimovDeploy.WinAgent.Framework.Models
 {
-	public class VerifyUrlsUnitAction : UnitAction
-	{
-		public IList<string> Urls { get; set; }		
-		
+	public class StopWebApplication : UnitAction 
+	{		
 		public override AsimovTask GetTask(DeployUnit unit)
 		{
-			return new VerifySiteTask((WebSiteDeployUnit)unit, Urls.ToArray());
+			throw new NotImplementedException();
 		}
-		
 	}
-	
-
 }

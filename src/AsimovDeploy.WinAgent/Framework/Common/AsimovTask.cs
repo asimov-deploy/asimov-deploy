@@ -38,6 +38,11 @@ namespace AsimovDeploy.WinAgent.Framework.Common
         {
             return "";
         }
+        
+        protected virtual string GetTaskName() 
+        {
+        	return GetType().Name;
+        }
 
         public event Action<Exception> Completed;
 
@@ -45,7 +50,7 @@ namespace AsimovDeploy.WinAgent.Framework.Common
         {
             try
             {
-                Log.InfoFormat("Executing {0} - {1}", GetType().Name, InfoString());
+            	Log.InfoFormat("Executing {0} - {1}", GetTaskName(), InfoString());
                 Execute();
                 RaiseExecuted(null);
             }

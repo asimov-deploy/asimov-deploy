@@ -116,6 +116,7 @@
     <Compile Include="Framework\Configuration\DeployUnitConverter.cs" />
     <Compile Include="Framework\Models\PasswordParameter.cs" />
     <Compile Include="Framework\Models\TextActionParameter.cs" />
+    <Compile Include="Framework\Models\UnitActions\StopWebApplication.cs" />
     <Compile Include="Framework\Models\UnitActions\UnitAction.cs" />
     <Compile Include="Framework\Models\UnitActions\UnitActionList.cs" />
     <Compile Include="Framework\Models\UnitActions\VerifyCommandUnitAction.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Framework\LoadBalancers\Alteon\AlteonLoadBalancer.cs" />
     <Compile Include="Framework\Tasks\ChangeLoadBalancerStates.cs" />
     <Compile Include="Framework\Tasks\DeployTask.cs" />
+    <Compile Include="Framework\Tasks\LambdaTask.cs" />
     <Compile Include="Framework\Tasks\NoOpTask.cs" />
     <Compile Include="Framework\Tasks\VerifyCommandTask.cs" />
     <Compile Include="Framework\Tasks\VerifySiteTask.cs" />

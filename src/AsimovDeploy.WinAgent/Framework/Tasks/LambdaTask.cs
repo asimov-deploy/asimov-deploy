@@ -14,17 +14,30 @@
 * limitations under the License.
 ******************************************************************************/
 
+using System;
 using AsimovDeploy.WinAgent.Framework.Common;
 
 namespace AsimovDeploy.WinAgent.Framework.Tasks
 {
-    public class NoOpTask : AsimovTask
-    {
-        protected override void Execute()
-        {
-            Log.Info("Did nothing!");
-        }
-    }
-    
-
+	public class LambdaTask : AsimovTask
+	{
+		private Action _action;
+		private string _taskName;
+		
+		public LambdaTask(string taskName, Action action)
+		{
+			_taskName = taskName;
+			_action = action;
+		}
+		
+		protected override string GetTaskName()
+		{
+			return _taskName;
+		}
+		
+		protected override void Execute()
+		{
+			_action();
+		}
+	}
 }
