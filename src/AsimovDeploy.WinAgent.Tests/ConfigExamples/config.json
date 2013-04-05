@@ -24,6 +24,11 @@
 			
 			"VerifyCommand": "phantomjs.exe",
 			"VerifyZipPath": "SiteVerify.zip",
+			
+			"Actions": {
+				"verify1": { "Type": "VerifyUrls" },
+				"verify2": { "Type": "VerifyCommand" }
+			},
 
 			"SiteUrl": "http://localhost/DefaultSite",
 		}
