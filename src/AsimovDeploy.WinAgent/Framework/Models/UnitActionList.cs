@@ -15,19 +15,13 @@
 ******************************************************************************/
 
 using System.Collections.Generic;
+using AsimovDeploy.WinAgent.Framework.Configuration;
+using Newtonsoft.Json;
 
-namespace AsimovDeploy.WinAgent.Web.Commands
+namespace AsimovDeploy.WinAgent.Framework.Models
 {
-    public class DeployCommand : AsimovCommand
-    {
-        public string unitName { get; set; }
-        public string versionId { get; set; }
-
-        public Dictionary<string, object> parameters { get; set; }
-    }
-
-    public class AsimovCommand
-    {
-
-    }
+	public class UnitActionList : List<UnitAction>
+	{
+		
+	}
 }
