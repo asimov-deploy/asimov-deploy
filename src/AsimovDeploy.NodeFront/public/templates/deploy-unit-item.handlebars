@@ -33,11 +33,13 @@
 		<button class="btn btn-danger btn-deploy btn-small" data-loading-text="Deploying...">
 			<i class="icon-white icon-upload"></i> Deploy
 	 	</button>			
-	{{else}}				
-		<button class="btn btn-primary btn-verify btn-small">
-			<i class="icon-white icon-ok"></i> Verify
-		</button>			
-	 {{/if}}	
+	{{else}}
+		{{#each actions}}
+			<div style="white-space:nowrap;">
+				<a href="action" class="unit-action" data-action-name="{{this}}">{{this}}</>
+			</div>
+	    {{/each}}
+	{{/if}}	
 </td>
 <td>
 	{{#ifDeploying}}	
