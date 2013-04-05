@@ -24,8 +24,8 @@ define([
 ],
 function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, DeployLogDialogView) {
 
-	var VerifyCommand = Backbone.Model.extend({
-        url: "/deploy/verify"
+	var AgentActionCommand = Backbone.Model.extend({
+        url: "/agent/action"
     });
 
 	return Backbone.Marionette.ItemView.extend({
@@ -34,10 +34,10 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
         className: "deploy-unit",
         events: {
             "click .btn-deploy": "deploy",
-            "click .btn-verify": "verify",
             "click .verify-log-link": "verifyLog",
             "click .select-version": "selectVersion",
-            "click .deploy-log-link": "openDeployLog"
+            "click .deploy-log-link": "openDeployLog",
+            "click .unit-action": "unitAction"
         },
 
         initialize: function() {
@@ -89,9 +89,19 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             var deployLog = new DeployLogDialogView({ agentName: this.model.get('agentName'), unitName: this.model.get('unitName') });
             deployLog.show();
 
+        },
+
+        unitAction: function(e) {
+            e.preventDefault();
+
+            var actionName = $(e.target).data("action-name");
+            
+            new AgentActionCommand({
+                agentName: this.model.get("agentName"),
+                unitName: this.model.get("unitName"),
+                actionName: actionName
+            }).save();
         }
-
-
 
     });
 });

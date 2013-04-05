@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using AsimovDeploy.WinAgent.Framework.Common;
+using AsimovDeploy.WinAgent.Framework.Tasks;
 
 namespace AsimovDeploy.WinAgent.Framework.Models
 {
@@ -16,9 +17,9 @@ namespace AsimovDeploy.WinAgent.Framework.Models
 	{
 		public IList<string> Urls { get; set; }		
 		
-		public override AsimovTask GetTask()
+		public override AsimovTask GetTask(DeployUnit unit)
 		{
-			throw new NotImplementedException();
+			return new VerifySiteTask((WebSiteDeployUnit)unit);
 		}
 	}
 }

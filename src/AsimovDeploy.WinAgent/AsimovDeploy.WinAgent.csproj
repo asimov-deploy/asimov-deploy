@@ -88,12 +88,15 @@
     <Compile Include="Framework\Configuration\AsimovListJsonConverter.cs" />
     <Compile Include="Framework\Configuration\AsimovListTypeAttribute.cs" />
     <Compile Include="Framework\Deployment\Steps\FileCopyDeployStep.cs" />
-    <Compile Include="Framework\Models\UnitAction.cs" />
     <Compile Include="Framework\Models\ActionParameter.cs" />
     <Compile Include="Framework\Models\ActionParameterList.cs" />
     <Compile Include="Framework\Models\AsimovVersion.cs" />
     <Compile Include="Framework\Common\DeployedVersion.cs" />
-    <Compile Include="Framework\Models\FileCopyDeployUnit.cs" />
+    <Compile Include="Framework\Models\PackageSources\AsimovWebPackageSource.cs" />
+    <Compile Include="Framework\Models\PackageSources\FileSystemPackageSource.cs" />
+    <Compile Include="Framework\Models\PackageSources\PackageInfo.cs" />
+    <Compile Include="Framework\Models\PackageSources\PackageSource.cs" />
+    <Compile Include="Framework\Models\PackageSources\PackageSourceList.cs" />
     <Compile Include="Framework\Models\ParameterValues.cs" />
     <Compile Include="Framework\Models\DeployUnitInfo.cs" />
     <Compile Include="Framework\Common\DirectoryUtil.cs" />
@@ -110,22 +113,21 @@
     <Compile Include="Framework\Models\AsimovConfig.cs" />
     <Compile Include="Framework\Configuration\AsimovConfigConverter.cs" />
     <Compile Include="Framework\Configuration\ConfigurationReader.cs" />
-    <Compile Include="Framework\Models\AsimovWebPackageSource.cs" />
-    <Compile Include="Framework\Models\DeployUnit.cs" />
     <Compile Include="Framework\Configuration\DeployUnitConverter.cs" />
-    <Compile Include="Framework\Models\DeployUnits.cs" />
     <Compile Include="Framework\Models\PasswordParameter.cs" />
     <Compile Include="Framework\Models\TextActionParameter.cs" />
-    <Compile Include="Framework\Models\UnitActionList.cs" />
+    <Compile Include="Framework\Models\UnitActions\UnitAction.cs" />
+    <Compile Include="Framework\Models\UnitActions\UnitActionList.cs" />
+    <Compile Include="Framework\Models\UnitActions\VerifyCommandUnitAction.cs" />
+    <Compile Include="Framework\Models\UnitActions\VerifyUrlsUnitAction.cs" />
     <Compile Include="Framework\Models\UnitStatus.cs" />
-    <Compile Include="Framework\Models\FileSystemPackageSource.cs" />
-    <Compile Include="Framework\Models\IIS6WebSiteDeployUnit.cs" />
-    <Compile Include="Framework\Models\PackageInfo.cs" />
-    <Compile Include="Framework\Models\PackageSource.cs" />
-    <Compile Include="Framework\Models\PackageSourceList.cs" />
-    <Compile Include="Framework\Models\PowershellDeployUnit.cs" />
-    <Compile Include="Framework\Models\WebSiteDeployUnit.cs" />
-    <Compile Include="Framework\Models\WindowsServiceDeployUnit.cs" />
+    <Compile Include="Framework\Models\Units\DeployUnit.cs" />
+    <Compile Include="Framework\Models\Units\DeployUnits.cs" />
+    <Compile Include="Framework\Models\Units\FileCopyDeployUnit.cs" />
+    <Compile Include="Framework\Models\Units\IIS6WebSiteDeployUnit.cs" />
+    <Compile Include="Framework\Models\Units\PowershellDeployUnit.cs" />
+    <Compile Include="Framework\Models\Units\WebSiteDeployUnit.cs" />
+    <Compile Include="Framework\Models\Units\WindowsServiceDeployUnit.cs" />
     <Compile Include="Framework\Deployment\DeployContext.cs" />
     <Compile Include="Framework\Deployment\DeployException.cs" />
     <Compile Include="Framework\Deployment\IDeployStep.cs" />
@@ -166,7 +168,7 @@
     <Compile Include="Service\IAsimovDeployService.cs" />
     <Compile Include="Web\Commands\DeployCommand.cs" />
     <Compile Include="Web\Commands\ChangeLoadBalancerStateCommand.cs" />
-    <Compile Include="Web\Commands\VerifyCommand.cs" />
+    <Compile Include="Web\Commands\ActionCommand.cs" />
     <Compile Include="Web\Contracts\DeployUnitInfoDTO.cs" />
     <Compile Include="Web\Modules\DeployLogModule.cs" />
     <Compile Include="Web\Modules\DeployUnitModule.cs" />
@@ -188,7 +190,11 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Framework\Models\PackageSources" />
+    <Folder Include="Framework\Models\Units" />
+    <Folder Include="Framework\Models\UnitActions" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

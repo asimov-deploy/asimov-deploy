@@ -49,6 +49,7 @@ function($, Backbone, DeployUnit) {
 							info: unit.info,
 							version: unit.version,
 							branch: unit.branch,
+							actions: unit.actions,
 							hasDeployParameters: unit.hasDeployParameters
 						}));
 					});

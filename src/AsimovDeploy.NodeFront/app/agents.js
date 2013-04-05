@@ -80,12 +80,11 @@ module.exports = function(server, secure) {
 		agentCommand.send(req.body.agentName, '/deploy/deploy', req.body);
 	});
 
-	server.post("/deploy/verify", secure, function(req, res) {
+	server.post("/agent/action", secure, function(req, res) {
 		res.json('ok');
 
-		agentCommand.send(req.body.agentName, '/deploy/verify', req.body);
+		agentCommand.send(req.body.agentName, '/action', req.body);
 	});
-
 
 	server.get("/agent/query", function(req, res) {
 		var agent =  config.getAgent({ name: req.query.agentName });

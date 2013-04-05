@@ -16,7 +16,7 @@
 
 namespace AsimovDeploy.WinAgent.Web.Commands
 {
-    public class ActionCommand
+    public class UnitActionCommand
     {
         public string unitName { get; set; }
         public string actionName { get;set; }

@@ -47,13 +47,14 @@ namespace AsimovDeploy.WinAgent.Web.Modules
                 return "OK";
             };
 
-            Post["/deploy/verify"] = _ =>
+            Post["/action"] = _ =>
             {
-                var command =  this.Bind<VerifyCommand>();
+                var command =  this.Bind<UnitActionCommand>();
                 var deployUnit = config.GetUnitByName(command.unitName);
-                var verifyTask = deployUnit.GetVerifyTask();
+                var action = deployUnit.Actions[command.actionName];
+                var task = action.GetTask(deployUnit);
 
-                _taskExecutor.AddTask(verifyTask);
+                _taskExecutor.AddTask(task);
 
                 return "OK";
             };

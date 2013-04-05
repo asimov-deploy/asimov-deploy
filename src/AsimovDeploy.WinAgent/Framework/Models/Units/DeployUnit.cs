@@ -43,6 +43,7 @@ namespace AsimovDeploy.WinAgent.Framework.Models
         protected DeployUnit()
         {
             DeployParameters = new ActionParameterList();
+            Actions = new UnitActionList();
         }
 
         public abstract AsimovTask GetDeployTask(AsimovVersion version, ParameterValues parameterValues);

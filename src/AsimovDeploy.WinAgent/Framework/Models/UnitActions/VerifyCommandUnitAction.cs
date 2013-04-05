@@ -9,16 +9,15 @@
 using System;
 using System.Collections.Generic;
 using AsimovDeploy.WinAgent.Framework.Common;
+using AsimovDeploy.WinAgent.Framework.Tasks;
 
 namespace AsimovDeploy.WinAgent.Framework.Models
 {
 	public class VerifyCommandUnitAction : UnitAction
 	{
-		
-		
-		public override AsimovTask GetTask()
+		public override AsimovTask GetTask(DeployUnit unit)
 		{
-			throw new NotImplementedException();
+			return new VerifyCommandTask((WebSiteDeployUnit)unit);
 		}
 	}
 }

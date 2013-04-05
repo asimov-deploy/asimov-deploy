@@ -25,6 +25,7 @@ namespace AsimovDeploy.WinAgent.Web.Contracts
         public string status { get; set; }
         public string info { get; set; }
         public bool hasDeployParameters { get; set; }
+        public string[] actions { get; set;}
     }
 
     public class DeployedVersionDTO

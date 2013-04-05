@@ -8,21 +8,18 @@
  */
 using System;
 using System.Collections.Generic;
+using AsimovDeploy.WinAgent.Framework.Common;
 
 namespace AsimovDeploy.WinAgent.Framework.Models
 {
 	public abstract class UnitAction
 	{
 		public string Name { get; set; }
-	}
-	
-	public class VerifyUrlsUnitAction : UnitAction
-	{
-		public IList<string> Urls { get; set; }		
-	}
-	
-	public class VerifyCommandUnitAction : UnitAction
-	{
 		
+		public abstract AsimovTask GetTask(DeployUnit unit);
 	}
+	
+
+	
+
 }
