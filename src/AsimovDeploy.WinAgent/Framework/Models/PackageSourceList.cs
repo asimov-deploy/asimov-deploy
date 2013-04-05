@@ -20,7 +20,9 @@ using Newtonsoft.Json;
 
 namespace AsimovDeploy.WinAgent.Framework.Models
 {
-    [JsonConverter(typeof(PackageSourceListJsonConverter))]
+    [JsonConverter(typeof(AsimovListJsonConverter))]
+	[AsimovListType("FileSystem", typeof(FileSystemPackageSource))]
+	[AsimovListType("AsimovWeb", typeof(AsimovWebPackageSource))]
     public class PackageSourceList : List<PackageSource>
     {
 

@@ -13,12 +13,16 @@ namespace AsimovDeploy.WinAgent.Framework.Models
 {
 	public abstract class UnitAction
 	{
-		
+		public string Name { get; set; }
 	}
 	
-	public class UrlVerifyAction
+	public class VerifyUrlsUnitAction : UnitAction
 	{
-		public IList<string> Urls { get; set; }
+		public IList<string> Urls { get; set; }		
+	}
+	
+	public class VerifyCommandUnitAction : UnitAction
+	{
 		
 	}
 }

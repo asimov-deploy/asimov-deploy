@@ -20,6 +20,9 @@ using Newtonsoft.Json;
 
 namespace AsimovDeploy.WinAgent.Framework.Models
 {
+	[JsonConverter(typeof(AsimovListJsonConverter))]
+	[AsimovListType("VerifyUrls", typeof(VerifyUrlsUnitAction))]
+	[AsimovListType("VerifyCommand", typeof(VerifyCommandUnitAction))]
 	public class UnitActionList : List<UnitAction>
 	{
 		

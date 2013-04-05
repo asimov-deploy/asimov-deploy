@@ -60,6 +60,17 @@ namespace AsimovDeploy.WinAgent.Tests
             var source3 = (AsimovWebPackageSource)config.PackageSources[2];
             source3.Uri.ShouldBe(new Uri("http://asimov"));
         }
+        
+        [Test]
+        public void can_read_unit_actions()
+        {
+            var config = ReadConfig("asd");
+
+            config.Units[0].Actions.Count.ShouldBe(2);
+            
+            config.Units[0].Actions[0].ShouldBeTypeOf<VerifyUrlsUnitAction>();
+            config.Units[0].Actions[1].ShouldBeTypeOf<VerifyCommandUnitAction>();
+        }
 
         [Test]
         public void env_config_file_can_override_and_add_packages_sources_and_units()

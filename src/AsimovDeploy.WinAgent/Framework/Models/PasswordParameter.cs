@@ -19,7 +19,7 @@ using System.Text;
 
 namespace AsimovDeploy.WinAgent.Framework.Models
 {
-    public class PasswordParameter : ActionParameter
+    public class PasswordActionParameter : ActionParameter
     {
         public string Password { get; set; }
 

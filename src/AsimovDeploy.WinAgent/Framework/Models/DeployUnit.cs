@@ -35,6 +35,8 @@ namespace AsimovDeploy.WinAgent.Framework.Models
         public DeployedVersion Version { get; protected set; }
         public string[] OnlyOnAgents { get; set; }
       
+        public UnitActionList Actions { get;set; }
+        
         public ActionParameterList DeployParameters { get; protected set; }
         public bool HasDeployParameters { get { return DeployParameters.Count > 0; } }
 

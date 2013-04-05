@@ -85,7 +85,8 @@
     </Compile>
     <Compile Include="Framework\Common\AsimovTask.cs" />
     <Compile Include="Framework\Common\NodeFront.cs" />
-    <Compile Include="Framework\Configuration\ActionParameterListJsonConverter.cs" />
+    <Compile Include="Framework\Configuration\AsimovListJsonConverter.cs" />
+    <Compile Include="Framework\Configuration\AsimovListTypeAttribute.cs" />
     <Compile Include="Framework\Deployment\Steps\FileCopyDeployStep.cs" />
     <Compile Include="Framework\Models\UnitAction.cs" />
     <Compile Include="Framework\Models\ActionParameter.cs" />
@@ -119,7 +120,6 @@
     <Compile Include="Framework\Models\UnitStatus.cs" />
     <Compile Include="Framework\Models\FileSystemPackageSource.cs" />
     <Compile Include="Framework\Models\IIS6WebSiteDeployUnit.cs" />
-    <Compile Include="Framework\Configuration\PackageSourceListJsonConverter.cs" />
     <Compile Include="Framework\Models\PackageInfo.cs" />
     <Compile Include="Framework\Models\PackageSource.cs" />
     <Compile Include="Framework\Models\PackageSourceList.cs" />
