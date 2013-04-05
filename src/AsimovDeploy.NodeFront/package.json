@@ -5,12 +5,12 @@
   "version": "1.0.0",
 
   "dependencies": {
-    "async": "0.1.22",
-    "express": "3.0.0rc4",
-    "restify": "1.4.4",
-    "socket.io": "0.9.10",
-    "underscore": ">= 1.4.3",
-    "jade": "0.27.2",
+    "async": ">= 0.1.22",
+    "express": "3.1.1",
+    "restify": "2.3.5",
+    "socket.io": "0.9.14",
+    "underscore": "1.4.4",
+    "jade": "0.28.2",
     "nconf": "~0.6.7"
   },
 
