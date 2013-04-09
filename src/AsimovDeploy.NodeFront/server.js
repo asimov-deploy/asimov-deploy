@@ -97,5 +97,12 @@ server.on("listening", function() {
 
 	GLOBAL.clientSockets = socketio.listen(server);
 	GLOBAL.clientSockets.sockets.on('connection', function(socket) { });
+	GLOBAL.clientSockets.sockets.on('error', function (exc) {
+    console.log("socket io exception: " + exc);
+	});
+
 });
 
+process.on('uncaughtException', function (err) {
+  console.log('Caught process exception: ' + err);
+});

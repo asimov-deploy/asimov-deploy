@@ -28,6 +28,7 @@ function($, Backbone) {
                branch: data.branch,
                status: "Deploying",
                enableDeploy: false,
+               showSpinner: true,
                info: ""
          });
       },
@@ -37,7 +38,8 @@ function($, Backbone) {
                version: data.version,
                branch: data.branch,
                status: "DeployFailed",
-               info: "Deploy failed!"
+               info: "Deploy failed!",
+               showSpinner: false
          });
       },
 
@@ -46,8 +48,15 @@ function($, Backbone) {
                version: data.version,
                branch: data.branch,
                status: data.status,
-               info: "Deploy completed!"
+               info: "Deploy completed!",
+               showSpinner: false
          });
+      },
+
+      changeStatus: function(status) {
+         var update = { status: status };
+         update.showSpinner = status === 'Stopping' || status == "Starting";
+         this.set(update);
       }
 
    });
