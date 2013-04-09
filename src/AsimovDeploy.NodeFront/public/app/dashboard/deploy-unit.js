@@ -54,7 +54,7 @@ function($, Backbone) {
       },
 
       changeStatus: function(status) {
-         var update = { status: status };
+         var update = { status: status, info: "" };
          update.showSpinner = status === 'Stopping' || status == "Starting";
          this.set(update);
       }

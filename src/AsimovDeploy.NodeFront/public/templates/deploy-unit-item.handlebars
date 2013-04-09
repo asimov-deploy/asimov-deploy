@@ -28,30 +28,6 @@
 		<button class="btn btn-info btn-loadbalancer"><i class="icon-share2" /></button>
 	{{/ifUndefined}}
 </td>
-<td style="text-align: center;">
-	{{#if enableDeploy}}
-		<button class="btn btn-danger btn-deploy btn-small" data-loading-text="Deploying...">
-			<i class="icon-white icon-upload"></i> Deploy
-	 	</button>
-	{{else}}
-		<div class="btn-group unit-actions-btn-group">
-			<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-				<i class="icon-cog icon-white" />
-				Action <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu unit-actions-dropdown">
-				{{#each actions}}
-					<li>
-						<a href="action" class="unit-action" data-bypass="1" data-action-name="{{this}}">
-							<icon class="{{iconForUnitAction this}} icon-white" />
-							{{this}}
-						</a>
-					</li>
-				{{/each}}
-			</ul>
-		</div>
-	{{/if}}
-</td>
 <td>
 	{{#if showSpinner}}
 		<img src='/img/loading.gif' />
@@ -74,5 +50,24 @@
 	{{else}}
 		{{{info}}}
 	{{/if}}
+
+	<ul class="unit-actions">
+		{{#if enableDeploy}}
+			<li>
+				<button class="btn-hover btn-deploy" data-loading-text="Deploying...">
+					<i class="icon-white icon-upload"></i> Deploy
+				</button>
+			</li>
+		{{/if}}
+		{{#each actions}}
+		<li>
+			<button class="btn-hover btn-unit-action" data-action-name="{{this}}">
+				<icon class="{{iconForUnitAction this}} icon-white" />
+				{{this}}
+			</button>
+		</li>
+		{{/each}}
+	</ul>
+
 </td>
 

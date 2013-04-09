@@ -12,28 +12,50 @@
 		color: lighten(@purple, 15%);
 		text-shadow: 1px 1px 7px lighten(@purple, 15%);
 	}
-}
-
-
-.unit-actions-btn-group {
-  button {
-    padding: 4px 7px 4px 7px;
-    color: #CCCCCC;
-    .caret {
-    	margin-top: 6px;
-    }
+  tr:hover .unit-actions {
+    display: block;
+  }
+  tr:hover td {
+    background-color: @bodyBackground;
   }
 }
 
-.unit-actions-dropdown {
-	min-width: 100px;
-	a {
-		padding: 1px 20px;
-    text-shadow: none;
-	}
-	li {
-		text-align: left;
-	}
+.btn-hover {
+  text-shadow: none;
+  color: #ADAFAE;
+  display: inline-block;
+  padding: 1px 8px;
+  margin-bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  background-color: #212121;
+
+  :hover {
+    color: white;
+    background-color: #313131;
+  }
+}
+
+.btn-deploy {
+
+}
+
+
+.unit-actions {
+  list-style-type: none;
+  margin: 0;
+  float: right;
+  height: 18px;
+
+  li {
+    display: block;
+    float:left;
+    margin-right: 4px;
+    list-style-type: none;
+  }
 }
 
 .verify-step {

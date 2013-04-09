@@ -1,6 +1,7 @@
 
 @import "variables.less";
 @import "mixins.less";
+@import "asimov_variables.less";
 
 // SCAFFOLDING
 // -----------------------------------------------------
@@ -13,7 +14,7 @@ body {
   	padding-top: 40px;
   	padding-bottom: 160px;
   	font-size: 14px;
-   background: @bodyBackground;
+    background: @bodyBackground;
 }
 
 // NAVBAR
@@ -114,6 +115,9 @@ ul#instance-selection .caret {
 
 a {
 	text-shadow: 1px 1px 7px @blueDark;
+}
+a:hover {
+  text-decoration:none;
 }
 
 
