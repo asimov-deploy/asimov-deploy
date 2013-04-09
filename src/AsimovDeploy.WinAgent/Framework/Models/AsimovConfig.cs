@@ -20,6 +20,8 @@ using System.IO;
 using System.Linq;
 using AsimovDeploy.WinAgent.Framework.Common;
 using AsimovDeploy.WinAgent.Framework.LoadBalancers;
+using AsimovDeploy.WinAgent.Framework.Models.PackageSources;
+using AsimovDeploy.WinAgent.Framework.Models.Units;
 
 namespace AsimovDeploy.WinAgent.Framework.Models
 {

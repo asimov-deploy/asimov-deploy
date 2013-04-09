@@ -20,6 +20,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using AsimovDeploy.WinAgent.Framework.Models;
+using AsimovDeploy.WinAgent.Framework.Models.Units;
 
 namespace AsimovDeploy.WinAgent.Framework.Deployment.Steps
 {

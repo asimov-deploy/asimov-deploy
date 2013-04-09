@@ -19,9 +19,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AsimovDeploy.WinAgent.Framework.Common;
 using AsimovDeploy.WinAgent.Framework.Events;
-using AsimovDeploy.WinAgent.Framework.Tasks;
+using AsimovDeploy.WinAgent.Framework.Models.PackageSources;
+using AsimovDeploy.WinAgent.Framework.Models.UnitActions;
 
-namespace AsimovDeploy.WinAgent.Framework.Models
+namespace AsimovDeploy.WinAgent.Framework.Models.Units
 {
     public abstract class DeployUnit
     {

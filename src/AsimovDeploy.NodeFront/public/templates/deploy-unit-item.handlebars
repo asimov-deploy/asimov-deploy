@@ -1,19 +1,19 @@
 <td>
 	{{#if url}}
-		<a href="{{url}}" target="_blank">{{unitName}}</a>	
+		<a href="{{url}}" target="_blank">{{unitName}}</a>
 	{{else}}
 		{{unitName}}
 	{{/if}}
 </td>
 <td>{{agentName}}</td>
-<td>	
-	<a href="test" data-bypass="1" class="select-version">{{version}}</a>	  
+<td>
+	<a href="test" data-bypass="1" class="select-version">{{version}}</a>
 </td>
-<td>	
+<td>
 	{{branch}}
 </td>
-<td style="text-align: center">	
-	<a href="deploy-log" data-bypass="1" class="deploy-log-link status-{{status}}">		
+<td style="text-align: center">
+	<a href="deploy-log" data-bypass="1" class="deploy-log-link status-{{status}}">
 		{{status}}
 	</a>
 </td>
@@ -32,33 +32,43 @@
 	{{#if enableDeploy}}
 		<button class="btn btn-danger btn-deploy btn-small" data-loading-text="Deploying...">
 			<i class="icon-white icon-upload"></i> Deploy
-	 	</button>			
+	 	</button>
 	{{else}}
-		{{#each actions}}
-			<div style="white-space:nowrap;">
-				<a href="action" class="unit-action" data-bypass="1" data-action-name="{{this}}">{{this}}</>
+		{{#if actions}}
+			<div class="btn-group unit-actions-btn-group">
+				<button class="btn btn-info unit-action" data-action-name="{{actions.[0]}}">{{actions.[0]}}</button>
+				<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu unit-actions-dropdown">
+					{{#each actions}}
+						<li>
+							<a href="action" class="unit-action" data-bypass="1" data-action-name="{{this}}">{{this}}</>
+						</li>
+					{{/each}}
+				</ul>
 			</div>
-	    {{/each}}
-	{{/if}}	
+		{{/if}}
+	{{/if}}
 </td>
 <td>
-	{{#ifDeploying}}	
+	{{#if showSpinner}}
 		<img src='/img/loading.gif' />
-	{{/ifDeploying}}
+	{{/if}}
 
-	{{#if info.verifying}}	
+	{{#if info.verifying}}
 		<a href="verify-log" data-bypass="1" class="verify-log-link">Verifying: </a>
 
-		{{#each info.steps}}		
+		{{#each info.steps}}
 			{{#if completed}}
-				<i class="icon-ok" />				
+				<i class="icon-ok" />
 			{{else}}
 				{{#if pass}}
-					<div class="verify-step btn-success" title="{{message}}" />					
+					<div class="verify-step btn-success" title="{{message}}" />
 				{{else}}
 					<div class="verify-step btn-danger" title="{{message}}" />
-				{{/if}}								
-			{{/if}}			
+				{{/if}}
+			{{/if}}
 		{{/each}}
 	{{else}}
 		{{{info}}}

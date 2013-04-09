@@ -21,6 +21,7 @@ using AsimovDeploy.WinAgent.Framework.Common;
 using AsimovDeploy.WinAgent.Framework.Deployment;
 using AsimovDeploy.WinAgent.Framework.Deployment.Steps;
 using AsimovDeploy.WinAgent.Framework.Models;
+using AsimovDeploy.WinAgent.Framework.Models.Units;
 using StructureMap;
 using log4net.Appender;
 using log4net.Layout;

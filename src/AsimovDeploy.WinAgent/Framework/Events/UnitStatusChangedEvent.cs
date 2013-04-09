@@ -14,19 +14,20 @@
 * limitations under the License.
 ******************************************************************************/
 
+using AsimovDeploy.WinAgent.Framework.Models;
+
 namespace AsimovDeploy.WinAgent.Framework.Events
 {
-    public class UnitInfoUpdatedEvent : AsimovEvent
+    public class UnitStatusChangedEvent : AsimovEvent
     {
         public string unitName { get; set; }
-        public bool running { get; set; }
-        public string info { get; set; }
-
-        public UnitInfoUpdatedEvent(string unitName, string info)
+		public string status { get; set; }
+        
+		public UnitStatusChangedEvent(string unitName, UnitStatus status)
         {
-            this.eventName = "unitInfoUpdated";
+			this.eventName = "unitStatusChanged";
             this.unitName = unitName;
-            this.info = info;
+			this.status = status.ToString();
         }
 
     }

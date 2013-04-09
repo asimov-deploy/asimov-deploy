@@ -14,7 +14,7 @@
 * limitations under the License.
 ******************************************************************************/
 
-namespace AsimovDeploy.WinAgent.Framework.Models
+namespace AsimovDeploy.WinAgent.Framework.Models.PackageSources
 {
     public class PackageInfo
     {

@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ionic.Zip;
 
-namespace AsimovDeploy.WinAgent.Framework.Models
+namespace AsimovDeploy.WinAgent.Framework.Models.PackageSources
 {
     public abstract class PackageSource
     {

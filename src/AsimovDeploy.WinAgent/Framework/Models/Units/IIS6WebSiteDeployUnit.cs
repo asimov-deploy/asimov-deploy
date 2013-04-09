@@ -16,7 +16,7 @@
 
 using AsimovDeploy.WinAgent.Framework.WebSiteManagement;
 
-namespace AsimovDeploy.WinAgent.Framework.Models
+namespace AsimovDeploy.WinAgent.Framework.Models.Units
 {
     public class IIS6WebSiteDeployUnit : WebSiteDeployUnit
     {

@@ -17,10 +17,11 @@
 using System.Collections.Generic;
 using AsimovDeploy.WinAgent.Framework.Common;
 using AsimovDeploy.WinAgent.Framework.Deployment.Steps;
+using AsimovDeploy.WinAgent.Framework.Models.UnitActions;
 using AsimovDeploy.WinAgent.Framework.Tasks;
 using AsimovDeploy.WinAgent.Framework.WebSiteManagement;
 
-namespace AsimovDeploy.WinAgent.Framework.Models
+namespace AsimovDeploy.WinAgent.Framework.Models.Units
 {
     public class WebSiteDeployUnit : DeployUnit
     {
@@ -34,6 +35,8 @@ namespace AsimovDeploy.WinAgent.Framework.Models
         public WebSiteDeployUnit()
         {
             CleanDeploy = true; // default to true
+			Actions.Add(new StartWebApplication() { Sort = 10 });
+			Actions.Add(new StopWebApplication() { Sort = 11 });
         }
 
         public override AsimovTask GetDeployTask(AsimovVersion version, ParameterValues parameterValues)

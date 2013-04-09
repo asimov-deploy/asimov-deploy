@@ -96,8 +96,10 @@ namespace AsimovDeploy.WinAgent.Framework.Heartbeat
             try
             {
                 webRequest.ContentLength = bytes.Length;
-                var os = webRequest.GetRequestStream();
-                os.Write(bytes, 0, bytes.Length);
+                using (var os = webRequest.GetRequestStream())
+                {
+					os.Write(bytes, 0, bytes.Length);    
+                }
             }
             catch (WebException e)
             {

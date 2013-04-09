@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AsimovDeploy.WinAgent.Framework.Models
+namespace AsimovDeploy.WinAgent.Framework.Models.PackageSources
 {
     public class AsimovWebPackageSource : PackageSource
     {

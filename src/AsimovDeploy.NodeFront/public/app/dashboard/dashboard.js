@@ -49,6 +49,11 @@ function(_, app, DeployUnitListView, DeployUnitCollection) {
         });
     });
 
+    app.vent.on("agent:event:unitStatusChanged", function(data) {
+        var unit = deployUnitList.getDeployUnit(data.unitName, data.agentName);
+        unit.changeStatus(data.status);
+    });
+
     app.vent.on("agent:event:verify-progress", function(data) {
         var unit = deployUnitList.getDeployUnit(data.unitName, data.agentName);
         var info = unit.get("info");

@@ -20,6 +20,7 @@ using AsimovDeploy.WinAgent.Framework.Common;
 using AsimovDeploy.WinAgent.Framework.Configuration;
 using AsimovDeploy.WinAgent.Framework.Events;
 using AsimovDeploy.WinAgent.Framework.Models;
+using AsimovDeploy.WinAgent.Framework.Models.Units;
 
 namespace AsimovDeploy.WinAgent.Framework.Tasks
 {
@@ -33,6 +34,11 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
             _deployUnit = deployUnit;
             _urls = urls;
         }
+
+		protected override string InfoString()
+		{
+			return "For " + _deployUnit.Name;
+		}
 
         protected override void Execute()
         {

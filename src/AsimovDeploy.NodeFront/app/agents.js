@@ -41,7 +41,6 @@ module.exports = function(server, secure) {
 	});
 
 	server.post("/agent/heartbeat", function(req, res) {
-		res.json('ok');
 
 		var agent = config.getAgent({ name: req.body.name });
 		if (!agent) {
@@ -57,33 +56,33 @@ module.exports = function(server, secure) {
 		agent.configVersion = req.body.configVersion;
 		agent.loadBalancerId = req.body.loadBalancerId;
 
+		res.json('ok');
 	});
 
 	server.post("/agent/event", function(req, res) {
-		res.json("ok");
-
 		clientSockets.sockets.volatile.emit('agent:event', req.body);
 
 		if (req.body.eventName == "loadBalancerStateChanged") {
 			config.loadBalancerStatusChanged(req.body.id, req.body.enabled);
 		}
+
+		res.json("ok");
 	});
 
 	server.post("/agent/log", function(req, res) {
-		res.json("ok");
 		clientSockets.sockets.volatile.emit('agent:log', req.body);
+
+		res.json("ok");
 	});
 
 	server.post("/deploy/deploy", secure, function(req, res) {
-		res.json('ok');
-
 		agentCommand.send(req.body.agentName, '/deploy/deploy', req.body);
+		res.json('ok');
 	});
 
 	server.post("/agent/action", secure, function(req, res) {
-		res.json('ok');
-
 		agentCommand.send(req.body.agentName, '/action', req.body);
+		res.json('ok');
 	});
 
 	server.get("/agent/query", function(req, res) {

@@ -51,7 +51,7 @@ namespace AsimovDeploy.WinAgent.Web.Modules
                     unitInfoDto.version = unitInfo.Version.VersionNumber;
                     unitInfoDto.branch = unitInfo.Version.VersionBranch;
                     unitInfoDto.hasDeployParameters = unitInfo.HasDeployParameters;
-                    unitInfoDto.actions = deployUnit.Actions.Select(x => x.Name).ToArray();
+					unitInfoDto.actions = deployUnit.Actions.OrderBy(x => x.Sort).Select(x => x.Name).ToArray();
 
                     units.Add(unitInfoDto);
                 }

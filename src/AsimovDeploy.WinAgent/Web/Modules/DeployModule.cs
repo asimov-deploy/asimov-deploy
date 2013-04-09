@@ -26,13 +26,10 @@ namespace AsimovDeploy.WinAgent.Web.Modules
 {
     public class DeployModule : NancyModule
     {
-        private readonly ITaskExecutor _taskExecutor;
         private static ILog Log = LogManager.GetLogger(typeof (DeployModule));
 
         public DeployModule(ITaskExecutor taskExecutor, IAsimovConfig config)
         {
-            _taskExecutor = taskExecutor;
-
             Post["/deploy/deploy"] = _ =>
             {
                 var command = this.Bind<DeployCommand>();
@@ -42,21 +39,9 @@ namespace AsimovDeploy.WinAgent.Web.Modules
                 var version = packageSource.GetVersion(command.versionId, deployUnit.PackageInfo);
                 var deployTask = deployUnit.GetDeployTask(version, new ParameterValues(command.parameters));
 
-                _taskExecutor.AddTask(deployTask);
+                taskExecutor.AddTask(deployTask);
 
-                return "OK";
-            };
-
-            Post["/action"] = _ =>
-            {
-                var command =  this.Bind<UnitActionCommand>();
-                var deployUnit = config.GetUnitByName(command.unitName);
-                var action = deployUnit.Actions[command.actionName];
-                var task = action.GetTask(deployUnit);
-
-                _taskExecutor.AddTask(task);
-
-                return "OK";
+				return Response.AsJson(new { OK = true });
             };
         }
     }

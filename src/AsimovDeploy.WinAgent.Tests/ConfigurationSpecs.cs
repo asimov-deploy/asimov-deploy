@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using AsimovDeploy.WinAgent.Framework.Configuration;
 using AsimovDeploy.WinAgent.Framework.Models;
+using AsimovDeploy.WinAgent.Framework.Models.PackageSources;
+using AsimovDeploy.WinAgent.Framework.Models.UnitActions;
+using AsimovDeploy.WinAgent.Framework.Models.Units;
 using NUnit.Framework;
 using Shouldly;
 

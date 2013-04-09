@@ -116,6 +116,7 @@
     <Compile Include="Framework\Configuration\DeployUnitConverter.cs" />
     <Compile Include="Framework\Models\PasswordParameter.cs" />
     <Compile Include="Framework\Models\TextActionParameter.cs" />
+    <Compile Include="Framework\Models\UnitActions\StartWebApplication.cs" />
     <Compile Include="Framework\Models\UnitActions\StopWebApplication.cs" />
     <Compile Include="Framework\Models\UnitActions\UnitAction.cs" />
     <Compile Include="Framework\Models\UnitActions\UnitActionList.cs" />
@@ -139,7 +140,7 @@
     <Compile Include="Framework\Deployment\Steps\UpdateWindowsService.cs" />
     <Compile Include="Framework\Events\AsimovEvent.cs" />
     <Compile Include="Framework\Events\HostLoadBalancerStateChanged.cs" />
-    <Compile Include="Framework\Events\UnitInfoUpdatedEvent.cs" />
+    <Compile Include="Framework\Events\UnitStatusChangedEvent.cs" />
     <Compile Include="Framework\Events\VerifyProgressEvent.cs" />
     <Compile Include="Framework\Heartbeat\HeartbeatService.cs" />
     <Compile Include="Framework\Events\DeployCompletedEvent.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Web\Modules\DeployLogModule.cs" />
     <Compile Include="Web\Modules\DeployUnitModule.cs" />
     <Compile Include="Web\Modules\LoadBalancerModule.cs" />
+    <Compile Include="Web\Modules\UnitActionModule.cs" />
     <Compile Include="Web\Modules\VersionsModule.cs" />
     <Compile Include="Web\Setup\CustomNancyBootstrapper.cs" />
     <Compile Include="Web\Modules\MainModule.cs" />
@@ -192,11 +194,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Framework\Models\PackageSources" />
-    <Folder Include="Framework\Models\Units" />
-    <Folder Include="Framework\Models\UnitActions" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

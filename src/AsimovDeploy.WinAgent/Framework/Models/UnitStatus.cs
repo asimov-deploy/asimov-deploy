@@ -21,7 +21,9 @@ namespace AsimovDeploy.WinAgent.Framework.Models
         NA = 0,
         NotFound = 1,
         Running = 2,
-        Stopped = 3
+        Stopped = 3,
+		Stopping = 4,
+		Starting = 5
     }
 
     public enum DeployStatus
