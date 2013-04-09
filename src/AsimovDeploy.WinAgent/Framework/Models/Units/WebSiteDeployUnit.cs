@@ -23,20 +23,17 @@ using AsimovDeploy.WinAgent.Framework.WebSiteManagement;
 
 namespace AsimovDeploy.WinAgent.Framework.Models.Units
 {
-    public class WebSiteDeployUnit : DeployUnit
+	public class WebSiteDeployUnit : DeployUnit, ICanBeStopStarted
     {
         public string SiteName { get; set; }
         public string SiteUrl { get; set; }
-
         public bool CleanDeploy { get; set; }
-
-        public IList<string> VerifyUrls { get; set; }
-
+		
         public WebSiteDeployUnit()
         {
             CleanDeploy = true; // default to true
-			Actions.Add(new StartWebApplication() { Sort = 10 });
-			Actions.Add(new StopWebApplication() { Sort = 11 });
+			Actions.Add(new StartDeployUnitAction() { Sort = 10 });
+			Actions.Add(new StopDeployUnitAction() { Sort = 11 });
         }
 
         public override AsimovTask GetDeployTask(AsimovVersion version, ParameterValues parameterValues)
@@ -70,5 +67,15 @@ namespace AsimovDeploy.WinAgent.Framework.Models.Units
 
             return siteInfo;
         }
+
+		public AsimovTask GetStopTask()
+		{
+			return new StartStopWebApplicationTask(this, stop: true);
+		}
+
+		public AsimovTask GetStartTask()
+		{
+			return new StartStopWebApplicationTask(this, stop: false);
+		}
     }
 }

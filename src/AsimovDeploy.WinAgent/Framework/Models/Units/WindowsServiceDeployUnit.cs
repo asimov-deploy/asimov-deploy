@@ -17,11 +17,12 @@
 using System.ServiceProcess;
 using AsimovDeploy.WinAgent.Framework.Common;
 using AsimovDeploy.WinAgent.Framework.Deployment.Steps;
+using AsimovDeploy.WinAgent.Framework.Models.UnitActions;
 using AsimovDeploy.WinAgent.Framework.Tasks;
 
 namespace AsimovDeploy.WinAgent.Framework.Models.Units
 {
-    public class WindowsServiceDeployUnit : DeployUnit
+    public class WindowsServiceDeployUnit : DeployUnit, ICanBeStopStarted
     {
         private string _serviceName; 
         public string ServiceName 
@@ -31,6 +32,12 @@ namespace AsimovDeploy.WinAgent.Framework.Models.Units
         }
 
         public string Url { get; set; }
+
+	    public WindowsServiceDeployUnit()
+	    {
+			Actions.Add(new StartDeployUnitAction() { Sort = 10 });
+			Actions.Add(new StopDeployUnitAction() { Sort = 11 });
+	    }
 
         public override AsimovTask GetDeployTask(AsimovVersion version, ParameterValues parameterValues)
         {
@@ -59,5 +66,15 @@ namespace AsimovDeploy.WinAgent.Framework.Models.Units
 
             return unitInfo;
         }
+
+	    public AsimovTask GetStopTask()
+	    {
+		    return new StartStopWindowsServiceTask(this, stop: true);
+	    }
+
+	    public AsimovTask GetStartTask()
+	    {
+			return new StartStopWindowsServiceTask(this, stop: false);
+	    }
     }
 }

@@ -23,38 +23,21 @@ using log4net;
 
 namespace AsimovDeploy.WinAgent.Framework.Models.UnitActions
 {
-	public class StopWebApplication : UnitAction
+	public class StopDeployUnitAction : UnitAction
 	{
-		private static ILog _log = LogManager.GetLogger(typeof (StopWebApplication));
+		private static ILog _log = LogManager.GetLogger(typeof (StopDeployUnitAction));
 
-		public StopWebApplication()
+		public StopDeployUnitAction()
 		{
 			Name = "Stop";
 		}
 
 		public override AsimovTask GetTask(DeployUnit unit)
 		{
-			if (!(unit is WebSiteDeployUnit))
-				throw new ArgumentException("Action is only supported for WebSite deploy units");
+			if (!(unit is ICanBeStopStarted))
+				throw new ArgumentException("Action is only supported for deploy units that implement ICanBeStopStarted");
 
-			return new LambdaTask("Stopp AppPool for " + unit.Name, () => Execute((WebSiteDeployUnit)unit));
-		}
-
-		private void Execute(WebSiteDeployUnit unit)
-		{
-			NodeFront.Notify(new UnitStatusChangedEvent(unit.Name, UnitStatus.Stopping));
-
-			var server = unit.GetWebServer();
-			server.StopAppPool();
-
-			var unitInfo = unit.GetUnitInfo();
-
-			if (unitInfo.Status != UnitStatus.Stopped)
-			{
-				_log.Error("Failed to stop " + unit.Name);
-			}
-
-			NodeFront.Notify(new UnitStatusChangedEvent(unit.Name, unitInfo.Status));
+			return ((ICanBeStopStarted)unit).GetStopTask();
 		}
 	}
 }

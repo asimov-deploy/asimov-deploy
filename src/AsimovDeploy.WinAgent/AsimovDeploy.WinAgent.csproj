@@ -116,8 +116,8 @@
     <Compile Include="Framework\Configuration\DeployUnitConverter.cs" />
     <Compile Include="Framework\Models\PasswordParameter.cs" />
     <Compile Include="Framework\Models\TextActionParameter.cs" />
-    <Compile Include="Framework\Models\UnitActions\StartWebApplication.cs" />
-    <Compile Include="Framework\Models\UnitActions\StopWebApplication.cs" />
+    <Compile Include="Framework\Models\UnitActions\StartDeployUnitAction.cs" />
+    <Compile Include="Framework\Models\UnitActions\StopDeployUnitAction.cs" />
     <Compile Include="Framework\Models\UnitActions\UnitAction.cs" />
     <Compile Include="Framework\Models\UnitActions\UnitActionList.cs" />
     <Compile Include="Framework\Models\UnitActions\VerifyCommandUnitAction.cs" />
@@ -126,6 +126,7 @@
     <Compile Include="Framework\Models\Units\DeployUnit.cs" />
     <Compile Include="Framework\Models\Units\DeployUnits.cs" />
     <Compile Include="Framework\Models\Units\FileCopyDeployUnit.cs" />
+    <Compile Include="Framework\Models\Units\ICanBeStopStarted.cs" />
     <Compile Include="Framework\Models\Units\IIS6WebSiteDeployUnit.cs" />
     <Compile Include="Framework\Models\Units\PowershellDeployUnit.cs" />
     <Compile Include="Framework\Models\Units\WebSiteDeployUnit.cs" />
@@ -152,6 +153,8 @@
     <Compile Include="Framework\Tasks\DeployTask.cs" />
     <Compile Include="Framework\Tasks\LambdaTask.cs" />
     <Compile Include="Framework\Tasks\NoOpTask.cs" />
+    <Compile Include="Framework\Tasks\StartStopWebApplicationTask.cs" />
+    <Compile Include="Framework\Tasks\StartStopWindowsServiceTask.cs" />
     <Compile Include="Framework\Tasks\VerifyCommandTask.cs" />
     <Compile Include="Framework\Tasks\VerifySiteTask.cs" />
     <Compile Include="Framework\WebSiteManagement\IIS6WebServer.cs" />
