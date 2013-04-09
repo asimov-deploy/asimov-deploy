@@ -26,8 +26,4 @@ namespace AsimovDeploy.WinAgent.Framework.Models.UnitActions
 		
 		public abstract AsimovTask GetTask(DeployUnit unit);
 	}
-	
-
-	
-
 }
