@@ -1,0 +1,49 @@
+
+// DeployUnit Table
+// --------------------------
+
+.table.deploy-unit-list {
+	td, th {
+		white-space: nowrap;
+		width: 1px;
+	}
+
+	a.status-Deploying, a.status-DeployFailed, a.status-NotFound, a.status-Stopped, a.status-Stopping, a.status-Starting {
+		color: lighten(@purple, 15%);
+		text-shadow: 1px 1px 7px lighten(@purple, 15%);
+	}
+}
+
+
+.unit-actions-btn-group {
+  button {
+    padding: 4px 7px 4px 7px;
+    color: #CCCCCC;
+    .caret {
+    	margin-top: 6px;
+    }
+  }
+}
+
+.unit-actions-dropdown {
+	min-width: 100px;
+	a {
+		padding: 1px 20px;
+    text-shadow: none;
+	}
+	li {
+		text-align: left;
+	}
+}
+
+.verify-step {
+    display: inline-block;
+    width: 10px;
+    height: 16px;
+    line-height: 16px;
+     -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+    margin: 0 0 4px;
+    vertical-align: middle;
+}

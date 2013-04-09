@@ -34,21 +34,22 @@
 			<i class="icon-white icon-upload"></i> Deploy
 	 	</button>
 	{{else}}
-		{{#if actions}}
-			<div class="btn-group unit-actions-btn-group">
-				<button class="btn btn-info unit-action" data-action-name="{{actions.[0]}}">{{actions.[0]}}</button>
-				<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu unit-actions-dropdown">
-					{{#each actions}}
-						<li>
-							<a href="action" class="unit-action" data-bypass="1" data-action-name="{{this}}">{{this}}</>
-						</li>
-					{{/each}}
-				</ul>
-			</div>
-		{{/if}}
+		<div class="btn-group unit-actions-btn-group">
+			<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+				<i class="icon-cog icon-white" />
+				Action <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu unit-actions-dropdown">
+				{{#each actions}}
+					<li>
+						<a href="action" class="unit-action" data-bypass="1" data-action-name="{{this}}">
+							<icon class="{{iconForUnitAction this}} icon-white" />
+							{{this}}
+						</a>
+					</li>
+				{{/each}}
+			</ul>
+		</div>
 	{{/if}}
 </td>
 <td>
