@@ -37,7 +37,7 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             "click .verify-log-link": "verifyLog",
             "click .select-version": "selectVersion",
             "click .deploy-log-link": "openDeployLog",
-            "click .unit-action": "unitAction"
+            "click .btn-unit-action": "unitAction"
         },
 
         initialize: function() {
@@ -85,8 +85,8 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
         unitAction: function(e) {
             e.preventDefault();
 
-            var actionName = $(e.target).data("action-name");
-            
+            var actionName = $(e.currentTarget).data("action-name");
+
             new AgentActionCommand({
                 agentName: this.model.get("agentName"),
                 unitName: this.model.get("unitName"),
