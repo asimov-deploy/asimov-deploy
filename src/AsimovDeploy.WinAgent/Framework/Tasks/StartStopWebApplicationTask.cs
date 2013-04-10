@@ -33,7 +33,7 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
 
 			var server = _unit.GetWebServer();
 			
-			if (_stop) server.StartAppPool();
+			if (_stop) server.StopAppPool();
 			else server.StartAppPool();
 
 			var unitInfo = _unit.GetUnitInfo();
