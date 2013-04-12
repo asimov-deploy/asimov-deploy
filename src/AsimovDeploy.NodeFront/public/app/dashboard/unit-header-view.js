@@ -15,20 +15,23 @@
 ******************************************************************************/
 
 define([
-    "jquery",
-    "marionette"
+	"jquery",
+	"marionette",
+	"./version-dialog-view"
 ],
-function($, Marionette) {
+function($, Marionette, VersionDialogView) {
 
 	return Marionette.ItemView.extend({
 		template: "dashboard/unit-header-view",
 		events: {
-			"click .btn-select": "toggleSelectAll"
+			"click .btn-select": "toggleSelectAll",
+			"click .btn-select-version": "selectVersion"
 		},
 
 		initialize: function(options) {
 			this.instances = options.instances;
 			this.instances.on("change:selected", this.selectionChanged, this);
+			this.instances.on("change:deployInfo", this.instanceDeployInfoChanged, this);
 			this.model.on("change", this.render, this);
 		},
 
@@ -39,7 +42,6 @@ function($, Marionette) {
 
 			this.model.set({showActions: anySelected, allSelected: allSelected});
 		},
-
 
 		toggleSelectAll: function() {
 			var selectedInstances = this.instances.where({selected: true});
@@ -55,6 +57,34 @@ function($, Marionette) {
 					instance.set({selected: true});
 				});
 			}
+		},
+
+		instanceDeployInfoChanged: function() {
+			var anyHasDeployInfo = this.instances.find(function(instance) { return instance.get('deployInfo') !== undefined; });
+			if (anyHasDeployInfo) {
+				this.model.set({ enableDeploy: true });
+			}
+		},
+
+		selectVersion: function () {
+			var instance = this.instances.first();
+			var versionView = new VersionDialogView({ agentName: instance.get('agentName'), unitName: instance.get('unitName') });
+			versionView.on("versionSelected", this.versionSelected, this);
+			versionView.show();
+		},
+
+		versionSelected: function(versionId, version, branch) {
+			this.instances.forEach(function(instance) {
+				if (instance.get('selected')) {
+					instance.set({
+						deployInfo: {
+							version: version,
+							versionId: versionId,
+							branch: branch
+						}
+					});
+				}
+			});
 		}
 
 	});
