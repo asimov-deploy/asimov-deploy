@@ -22,7 +22,6 @@ define([
 ],
 function($, Marionette, DeployUnitView, app) {
 
-	var DeployUnitInstanceCollection = Backbone.Collection.extend({});
 	var DeployUnitHeaderView = Marionette.ItemView.extend({
 		template: "deploy-unit-header"
 	});
@@ -38,8 +37,7 @@ function($, Marionette, DeployUnitView, app) {
 		},
 
 		initialize: function() {
-			var instances = this.model.get("instances");
-			this.collection = new DeployUnitInstanceCollection(instances);
+			this.collection =  this.model.get("instances");
 			this.on("composite:model:rendered", this.createControlsView, this);
 			//this.$el.toggleClass("deploy-unit-collapsed", this.getToggleState());
 		},
@@ -48,7 +46,10 @@ function($, Marionette, DeployUnitView, app) {
 			var element = this.$el.find(".deploy-unit-row");
 			var view = new DeployUnitHeaderView({
 					el: element,
-					model: new Backbone.Model( {name: this.model.get('name'), actions: this.model.get('actions') })
+					model: new Backbone.Model({
+						name: this.model.get('name'),
+						actions: this.model.get('actions')
+					})
 			});
 			view.render();
 
