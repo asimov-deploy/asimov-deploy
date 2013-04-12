@@ -16,10 +16,11 @@
 
 define([
 	"jquery",
+	"underscore",
 	"backbone",
 	"./deploy-unit"
 ],
-function($, Backbone, DeployUnit) {
+function($, _, Backbone, DeployUnit) {
 
 	return Backbone.Collection.extend({
 
@@ -38,9 +39,14 @@ function($, Backbone, DeployUnit) {
 			$.getJSON('units/list', function(agents) {
 				agents.forEach(function(agent) {
 					agent.units.forEach(function(unit) {
-						units.push(new DeployUnit({
+						unit = units[unit.name] ? units[unit.name] : {
+							name: unit.name,
+							actions: unit.actions,
+							instances: []
+						};
+
+						unit.instances.push(new DeployUnit({
 							agentName: agent.name,
-							unitName: unit.name,
 							url: unit.url,
 							status: unit.status,
 							deployStatus: unit.deployStatus,
@@ -52,10 +58,12 @@ function($, Backbone, DeployUnit) {
 							actions: unit.actions,
 							hasDeployParameters: unit.hasDeployParameters
 						}));
+
+						units[unit.name] = unit;
 					});
 				});
 
-				units.sort(function(a, b) {
+				/*units.sort(function(a, b) {
 					var a_unitName = a.get('unitName');
 					var b_unitName = b.get('unitName');
 
@@ -70,7 +78,8 @@ function($, Backbone, DeployUnit) {
 					if (b.get('agentName') > a.get('agentName')) return -1;
 
 					return 0;
-				});
+				});*/
+				console.log(units);
 
 				self.reset(units);
 				defered.resolve();
