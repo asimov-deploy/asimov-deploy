@@ -31,7 +31,7 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
 	return Backbone.Marionette.ItemView.extend({
         template: "deploy-unit-item",
         tagName: "tr",
-        className: "deploy-unit",
+        className: "deploy-unit-instance",
         events: {
             "click .btn-deploy": "deploy",
             "click .verify-log-link": "verifyLog",
