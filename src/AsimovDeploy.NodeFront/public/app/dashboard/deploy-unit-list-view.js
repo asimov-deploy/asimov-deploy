@@ -22,6 +22,17 @@ define([
 ],
 function($, Marionette, DeployUnitView, app) {
 
+	var ChildView = Marionette.CompositeView.extend({
+		itemView: DeployUnitView,
+		itemViewContainer: ".deploy-unit-instance",
+		template: "deploy-unit-instance",
+
+		initialize: function() {
+			this.collection = this.model.get("instances");
+		}
+	});
+
+
 	return Marionette.CompositeView.extend({
 		itemView: DeployUnitView,
 		itemViewContainer: "tbody",
