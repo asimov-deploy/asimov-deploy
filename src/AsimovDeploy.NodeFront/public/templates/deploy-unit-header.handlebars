@@ -1,0 +1,18 @@
+<td colspan="5">
+	<a href="deploy-unit" data-bypass="1" class="deploy-unit-link">{{name}}</a>
+</td>
+<td>
+	<button class="btn-hover btn-select">
+		<i class="icon-white icon-ok"></i>
+	</button>
+</td>
+<td colspan="3">
+	<span class="unit-mass-actions">
+		{{#each actions}}
+			<button class="btn-hover btn-unit-action" data-action-name="{{this}}">
+				<icon class="{{iconForUnitAction this}} icon-white" />
+				{{this}}
+			</button>
+		{{/each}}
+	</span>
+</td>

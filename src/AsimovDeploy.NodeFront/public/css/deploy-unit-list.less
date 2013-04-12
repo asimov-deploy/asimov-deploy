@@ -2,7 +2,7 @@
 // DeployUnit Table
 // --------------------------
 
-.table.deploy-unit-list {
+.deploy-unit-list {
 	td, th {
 		white-space: nowrap;
 		width: 1px;
@@ -36,23 +36,29 @@
   }
 }
 
+.table.deploy-unit-list td.deploy-unit-instance-agent-name {
+  padding-left: 40px;
+}
+
 .deploy-unit-collapsed {
   .deploy-unit-instance {
     display:none;
   }
 }
 
+.unit-actions-wrapper {
+  float: right;
+  height: 18px;
+
+  &:hover .unit-actions {
+    visibility: visible;
+  }
+}
+
 .unit-actions {
   list-style-type: none;
   margin: 0;
-  float: right;
-  height: 18px;
   //visibility: hidden;
-
-  &:hover {
-    background: red;
-    //visibility: visible;
-  }
 
   li {
     display: block;
@@ -60,6 +66,20 @@
     margin-right: 4px;
     list-style-type: none;
   }
+}
+
+.btn-select i {
+  opacity: 0.1;
+}
+
+.deploy-unit-instance-selected {
+  .btn-select i {
+    opacity: 1;
+  }
+}
+
+.deploy-unit-row td {
+  border-left: none;
 }
 
 .verify-step {

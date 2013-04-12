@@ -37,7 +37,8 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             "click .verify-log-link": "verifyLog",
             "click .select-version": "selectVersion",
             "click .deploy-log-link": "openDeployLog",
-            "click .btn-unit-action": "unitAction"
+            "click .btn-unit-action": "unitAction",
+            "click .btn-select": "selectInstance"
         },
 
         initialize: function() {
@@ -92,6 +93,11 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
                 unitName: this.model.get("unitName"),
                 actionName: actionName
             }).save();
+        },
+
+        selectInstance: function() {
+
+            this.$el.toggleClass("deploy-unit-instance-selected");
         }
 
     });

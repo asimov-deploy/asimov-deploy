@@ -1,4 +1,4 @@
-<td>{{agentName}}</td>
+<td class="deploy-unit-instance-agent-name">{{agentName}}</td>
 <td>
 	<a href="test" data-bypass="1" class="select-version">{{version}}</a>
 </td>
@@ -21,6 +21,25 @@
 		<button class="btn btn-info btn-loadbalancer"><i class="icon-share2" /></button>
 	{{/ifUndefined}}
 </td>
+<td>
+	<div class="unit-actions-wrapper">
+		<ul class="unit-actions">
+			<li>
+				<button class="btn-hover btn-select">
+					<i class="icon-white icon-ok"></i>
+				</button>
+			</li>
+			{{#if enableDeploy}}
+				<li>
+					<button class="btn-hover btn-deploy" data-loading-text="Deploying...">
+						<i class="icon-white icon-upload"></i> Deploy
+					</button>
+				</li>
+			{{/if}}
+
+		</ul>
+	</div>
+</td>
 <td style="width: 100%">
 	{{#if showSpinner}}
 		<img src='/img/loading.gif' />
@@ -40,27 +59,9 @@
 				{{/if}}
 			{{/if}}
 		{{/each}}
-	{{else}}
-		{{{info}}}
 	{{/if}}
-
-	<ul class="unit-actions">
-		{{#if enableDeploy}}
-			<li>
-				<button class="btn-hover btn-deploy" data-loading-text="Deploying...">
-					<i class="icon-white icon-upload"></i> Deploy
-				</button>
-			</li>
-		{{/if}}
-		{{#each actions}}
-		<li>
-			<button class="btn-hover btn-unit-action" data-action-name="{{this}}">
-				<icon class="{{iconForUnitAction this}} icon-white" />
-				{{this}}
-			</button>
-		</li>
-		{{/each}}
-	</ul>
-
+</td>
+<td>
+	{{{info}}}
 </td>
 
