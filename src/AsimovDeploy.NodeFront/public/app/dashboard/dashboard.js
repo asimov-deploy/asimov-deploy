@@ -27,17 +27,17 @@ function(_, app, DeployUnitListView, DeployUnitCollection) {
 
     // events
     app.vent.on("agent:event:deployStarted", function(data) {
-        var unit = deployUnitList.getDeployUnit(data.unitName, data.agentName);
+        var unit = deployUnitList.getUnitInstance(data.unitName, data.agentName);
         unit.deployStarted(data);
     });
 
     app.vent.on("agent:event:deployFailed", function(data) {
-       var unit = deployUnitList.getDeployUnit(data.unitName, data.agentName);
+       var unit = deployUnitList.getUnitInstance(data.unitName, data.agentName);
        unit.deployFailed(data);
     });
 
     app.vent.on("agent:event:deployCompleted", function(data) {
-        var unit = deployUnitList.getDeployUnit(data.unitName, data.agentName);
+        var unit = deployUnitList.getUnitInstance(data.unitName, data.agentName);
         unit.deployCompleted(data);
     });
 
@@ -50,12 +50,12 @@ function(_, app, DeployUnitListView, DeployUnitCollection) {
     });
 
     app.vent.on("agent:event:unitStatusChanged", function(data) {
-        var unit = deployUnitList.getDeployUnit(data.unitName, data.agentName);
+        var unit = deployUnitList.getUnitInstance(data.unitName, data.agentName);
         unit.changeStatus(data.status);
     });
 
     app.vent.on("agent:event:verify-progress", function(data) {
-        var unit = deployUnitList.getDeployUnit(data.unitName, data.agentName);
+        var unit = deployUnitList.getUnitInstance(data.unitName, data.agentName);
         var info = unit.get("info");
         var steps = info.steps ? info.steps.slice(0) : [];
 

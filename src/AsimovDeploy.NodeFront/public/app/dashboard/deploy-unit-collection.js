@@ -18,17 +18,51 @@ define([
 	"jquery",
 	"underscore",
 	"backbone",
-	"./deploy-unit"
+	"./deploy-unit-instance"
 ],
-function($, _, Backbone, DeployUnit) {
+function($, _, Backbone, DeployUnitInstance) {
 
 	return Backbone.Collection.extend({
 
-		getDeployUnit: function(unitName, agentName) {
-			return this.where({
-				unitName: unitName,
-				agentName: agentName
-			})[0];
+		getUnitInstance: function(unitName, agentName) {
+			return this.instanceIndex[agentName + unitName];
+		},
+
+		addOrGetUnit: function(name, actions, tempList) {
+			unit = _.find(tempList, function (item) { return item.name == name; });
+			if (!unit) {
+				unit = {
+					name: name,
+					actions: actions,
+					instances: new Backbone.Collection()
+				};
+				tempList.push(unit);
+			}
+
+			return unit;
+		},
+
+		createUnitInstance: function (agent, instance) {
+			return new DeployUnitInstance({
+				unitName: instance.name,
+				agentName: agent.name,
+				url: instance.url,
+				status: instance.status,
+				deployStatus: instance.deployStatus,
+				loadBalancerId: instance.loadBalancerId,
+				loadBalancerEnabled: instance.loadBalancerEnabled,
+				info: instance.info,
+				version: instance.version,
+				branch: instance.branch,
+				actions: instance.actions,
+				hasDeployParameters: instance.hasDeployParameters
+			});
+		},
+
+		addInstanceToIndex: function(unitInstance) {
+			this.instanceIndex = this.instanceIndex || {};
+			var key = unitInstance.get('agentName') + unitInstance.get('unitName');
+			this.instanceIndex[key] = unitInstance;
 		},
 
 		fetch: function() {
@@ -39,31 +73,11 @@ function($, _, Backbone, DeployUnit) {
 			$.getJSON('units/list', function(agents) {
 				agents.forEach(function(agent) {
 					agent.units.forEach(function(instance) {
-						unit = _.find(units, function (item) { return item.name == instance.name; });
-						if (!unit) {
-							unit = {
-								name: instance.name,
-								actions: instance.actions,
-								instances: []
-							};
-							units.push(unit);
-						}
+						var unit = self.addOrGetUnit(instance.name, instance.actions, units);
+						var unitInstance = self.createUnitInstance(agent, instance);
 
-						unit.instances.push(new DeployUnit({
-							unitName: instance.name,
-							agentName: agent.name,
-							url: instance.url,
-							status: instance.status,
-							deployStatus: instance.deployStatus,
-							loadBalancerId: instance.loadBalancerId,
-							loadBalancerEnabled: instance.loadBalancerEnabled,
-							info: instance.info,
-							version: instance.version,
-							branch: instance.branch,
-							actions: instance.actions,
-							hasDeployParameters: instance.hasDeployParameters
-						}));
-
+						unit.instances.push(unitInstance);
+						self.addInstanceToIndex(unitInstance);
 					});
 				});
 

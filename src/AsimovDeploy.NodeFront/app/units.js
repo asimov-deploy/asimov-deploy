@@ -1302,7 +1302,7 @@ module.exports = function(server) {
 			});
 		});
 
-		/*async.forEach(config.agents, function(agent, done) {
+		async.forEach(config.agents, function(agent, done) {
 			if (agent.dead) {
 				done();
 				return;
@@ -1329,9 +1329,9 @@ module.exports = function(server) {
 
 		}, function() {
 			res.json(agentsResp);
-		});*/
+		});
 
-		res.json(data);
+		//res.json(data);
 
 	});
 

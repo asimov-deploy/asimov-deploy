@@ -22,25 +22,17 @@
 	{{/ifUndefined}}
 </td>
 <td>
-	<div class="unit-actions-wrapper">
-		<ul class="unit-actions">
-			<li>
-				<button class="btn-hover btn-select">
-					<i class="icon-white icon-ok"></i>
-				</button>
-			</li>
-			{{#if enableDeploy}}
-				<li>
-					<button class="btn-hover btn-deploy" data-loading-text="Deploying...">
-						<i class="icon-white icon-upload"></i> Deploy
-					</button>
-				</li>
-			{{/if}}
-
-		</ul>
-	</div>
+	<button class="btn-hover btn-select">
+			<i class="icon-white icon-ok"></i>
+		</button>
+	</li>
 </td>
 <td style="width: 100%">
+	{{#if enableDeploy}}
+		<button class="btn btn-danger btn-small btn-deploy" data-loading-text="Deploying...">
+			<i class="icon-white icon-upload"></i> Deploy
+		</button>
+	{{/if}}
 	{{#if showSpinner}}
 		<img src='/img/loading.gif' />
 	{{/if}}
