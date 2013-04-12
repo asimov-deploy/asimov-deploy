@@ -15,9 +15,6 @@
   tr:hover .unit-actions {
     display: block;
   }
-  tr:hover td {
-    //background-color: @bodyBackground;
-  }
 }
 
 .btn-hover {
@@ -39,16 +36,23 @@
   }
 }
 
-.btn-deploy {
-
+.deploy-unit-collapsed {
+  .deploy-unit-instance {
+    display:none;
+  }
 }
-
 
 .unit-actions {
   list-style-type: none;
   margin: 0;
   float: right;
   height: 18px;
+  //visibility: hidden;
+
+  &:hover {
+    background: red;
+    //visibility: visible;
+  }
 
   li {
     display: block;

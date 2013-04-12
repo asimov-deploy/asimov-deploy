@@ -38,28 +38,32 @@ function($, _, Backbone, DeployUnit) {
 
 			$.getJSON('units/list', function(agents) {
 				agents.forEach(function(agent) {
-					agent.units.forEach(function(unit) {
-						unit = units[unit.name] ? units[unit.name] : {
-							name: unit.name,
-							actions: unit.actions,
-							instances: []
-						};
+					agent.units.forEach(function(instance) {
+						unit = _.find(units, function (item) { return item.name == instance.name; });
+						if (!unit) {
+							unit = {
+								name: instance.name,
+								actions: instance.actions,
+								instances: []
+							};
+							units.push(unit);
+						}
 
 						unit.instances.push(new DeployUnit({
+							unitName: instance.name,
 							agentName: agent.name,
-							url: unit.url,
-							status: unit.status,
-							deployStatus: unit.deployStatus,
-							loadBalancerId: agent.loadBalancerId,
-							loadBalancerEnabled: agent.loadBalancerEnabled,
-							info: unit.info,
-							version: unit.version,
-							branch: unit.branch,
-							actions: unit.actions,
-							hasDeployParameters: unit.hasDeployParameters
+							url: instance.url,
+							status: instance.status,
+							deployStatus: instance.deployStatus,
+							loadBalancerId: instance.loadBalancerId,
+							loadBalancerEnabled: instance.loadBalancerEnabled,
+							info: instance.info,
+							version: instance.version,
+							branch: instance.branch,
+							actions: instance.actions,
+							hasDeployParameters: instance.hasDeployParameters
 						}));
 
-						units[unit.name] = unit;
 					});
 				});
 

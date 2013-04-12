@@ -17,25 +17,14 @@
 define([
     "jquery",
     "marionette",
-    "./deploy-unit-view",
+    "./deploy-unit-instance-list-view",
     "app"
 ],
-function($, Marionette, DeployUnitView, app) {
-
-	var ChildView = Marionette.CompositeView.extend({
-		itemView: DeployUnitView,
-		itemViewContainer: ".deploy-unit-instance",
-		template: "deploy-unit-instance",
-
-		initialize: function() {
-			this.collection = this.model.get("instances");
-		}
-	});
-
+function($, Marionette, DeployUnitInstanceListView, app) {
 
 	return Marionette.CompositeView.extend({
-		itemView: DeployUnitView,
-		itemViewContainer: "tbody",
+		itemView: DeployUnitInstanceListView,
+		itemViewContainer: "table",
 
 		template: "deploy-unit-list",
 
@@ -69,7 +58,7 @@ function($, Marionette, DeployUnitView, app) {
 			var regEx = new RegExp(this.filterText, 'i');
 
 			this.collection.reset(this.unfiltered.filter(function(item) {
-				return regEx.exec(item.get('unitName')) !== null || regEx.exec(item.get('agentName')) !== null;
+				return regEx.exec(item.get('name')) !== null;
 			}));
 		},
 
