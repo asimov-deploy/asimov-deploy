@@ -26,7 +26,7 @@ function($, Backbone, app) {
     });
 
     return Backbone.Marionette.ItemView.extend({
-        template: "loadbalancer-settings",
+        template: "loadbalancer/loadbalancer-settings",
 
         events: {
             "click .btn-update" : "update"

@@ -17,18 +17,15 @@
 define([
     "jquery",
     "marionette",
-    "./deploy-unit-view",
-    "app"
+    "./unit-instance-view",
+    "./unit-header-view"
 ],
-function($, Marionette, DeployUnitView, app) {
+function($, Marionette, UnitInstanceView, UnitHeaderView) {
 
-	var DeployUnitHeaderView = Marionette.ItemView.extend({
-		template: "deploy-unit-header"
-	});
 
 	return Marionette.CompositeView.extend({
-		itemView: DeployUnitView,
-		template: "deploy-unit-instance-list",
+		itemView: UnitInstanceView,
+		template: "dashboard/unit-instance-list-view",
 		tagName: "tbody",
 		className: "deploy-unit",
 
@@ -38,22 +35,28 @@ function($, Marionette, DeployUnitView, app) {
 
 		initialize: function() {
 			this.collection =  this.model.get("instances");
-			this.on("composite:model:rendered", this.createControlsView, this);
+			this.on("composite:model:rendered", this.createUnitHeaderView, this);
 			//this.$el.toggleClass("deploy-unit-collapsed", this.getToggleState());
 		},
 
-		createControlsView: function() {
+		onClose: function() {
+			this.unitHeaderView.close();
+		},
+
+		createUnitHeaderView: function() {
 			var element = this.$el.find(".deploy-unit-row");
-			var view = new DeployUnitHeaderView({
+
+			var view = new UnitHeaderView({
 					el: element,
+					instances: this.collection,
 					model: new Backbone.Model({
 						name: this.model.get('name'),
 						actions: this.model.get('actions')
 					})
 			});
-			view.render();
 
-			this.controlsView = view;
+			view.render();
+			this.unitHeaderView = view;
 		},
 
 		getToggleState: function() {

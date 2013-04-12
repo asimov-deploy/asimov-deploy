@@ -27,7 +27,7 @@ function($, Backbone, HostItemView) {
 
     return Backbone.Marionette.CompositeView.extend({
         itemView: HostItemView,
-        template: "loadbalancer-host-list",
+        template: "loadbalancer/loadbalancer-host-list",
         itemViewContainer: "tbody",
 
         events: {

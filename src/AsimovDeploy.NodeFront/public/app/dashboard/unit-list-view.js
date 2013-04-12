@@ -17,16 +17,16 @@
 define([
     "jquery",
     "marionette",
-    "./deploy-unit-instance-list-view",
+    "./unit-instance-list-view",
     "app"
 ],
-function($, Marionette, DeployUnitInstanceListView, app) {
+function($, Marionette, UnitInstanceListView, app) {
 
 	return Marionette.CompositeView.extend({
-		itemView: DeployUnitInstanceListView,
+		itemView: UnitInstanceListView,
 		itemViewContainer: "table",
 
-		template: "deploy-unit-list",
+		template: "dashboard/unit-list-view",
 
 		events: {
 			"click .btn-refresh": "refresh",

@@ -28,7 +28,7 @@ function($, _, Marionette, AgentQueryCollection) {
 
 	return Marionette.ItemView.extend({
         el: $("#asimov-modal"),
-        template: "confirm-deploy",
+        template: "dashboard/confirm-deploy-view",
         events: {
             "click .btn-close": "close",
             "click .btn-deploy": "deploy"

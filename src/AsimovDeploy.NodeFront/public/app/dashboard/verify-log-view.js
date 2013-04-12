@@ -23,7 +23,7 @@ function($, _, Marionette) {
 
 	return Marionette.ItemView.extend({
         el: $("#asimov-modal"),
-        template: "verify-log",
+        template: "dashboard/verify-log-view",
         events: {
             "click .btn-close": "close"
         },
