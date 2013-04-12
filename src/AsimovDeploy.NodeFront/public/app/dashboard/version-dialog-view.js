@@ -25,7 +25,7 @@ define([
 function($, _, Marionette, Backbone, app, AgentQueryCollection) {
 
     var VersionItemView = Marionette.ItemView.extend({
-        template: "version-item-view",
+        template: "dashboard/version-item-view",
         tagName: "tr",
 
         events: {
@@ -40,7 +40,7 @@ function($, _, Marionette, Backbone, app, AgentQueryCollection) {
 
 	return Marionette.CompositeView.extend({
         itemView: VersionItemView,
-        template: "version-dialog",
+        template: "dashboard/version-dialog-view",
         itemViewContainer: "tbody",
 
         el: $("#asimov-modal"),

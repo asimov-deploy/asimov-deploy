@@ -18,9 +18,9 @@ define([
 	"jquery",
 	"underscore",
 	"backbone",
-	"./deploy-unit-instance"
+	"./unit-instance"
 ],
-function($, _, Backbone, DeployUnitInstance) {
+function($, _, Backbone, UnitInstance) {
 
 	return Backbone.Collection.extend({
 
@@ -43,7 +43,7 @@ function($, _, Backbone, DeployUnitInstance) {
 		},
 
 		createUnitInstance: function (agent, instance) {
-			return new DeployUnitInstance({
+			return new UnitInstance({
 				unitName: instance.name,
 				agentName: agent.name,
 				url: instance.url,
@@ -97,7 +97,6 @@ function($, _, Backbone, DeployUnitInstance) {
 
 					return 0;
 				});*/
-				console.log(units);
 
 				self.reset(units);
 				defered.resolve();

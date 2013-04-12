@@ -29,7 +29,7 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
     });
 
 	return Backbone.Marionette.ItemView.extend({
-        template: "deploy-unit-item",
+        template: "dashboard/unit-instance-view",
         tagName: "tr",
         className: "deploy-unit-instance",
         events: {
@@ -38,7 +38,7 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             "click .select-version": "selectVersion",
             "click .deploy-log-link": "openDeployLog",
             "click .btn-unit-action": "unitAction",
-            "click .btn-select": "selectInstance"
+            "click .btn-select": "toggleSelection"
         },
 
         initialize: function() {
@@ -66,12 +66,12 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
         },
 
         versionSelected: function(versionId, version, branch) {
-
             this.model.set({
-                    version: version,
-                    versionId: versionId,
-                    branch: branch,
-                    enableDeploy: true
+                    deployInfo: {
+                        version: version,
+                        versionId: versionId,
+                        branch: branch
+                    }
             });
         },
 
@@ -80,7 +80,6 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
 
             var deployLog = new DeployLogDialogView({ agentName: this.model.get('agentName'), unitName: this.model.get('unitName') });
             deployLog.show();
-
         },
 
         unitAction: function(e) {
@@ -95,9 +94,9 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             }).save();
         },
 
-        selectInstance: function() {
-
-            this.$el.toggleClass("deploy-unit-instance-selected");
+        toggleSelection: function(e) {
+            var selected = this.model.get('selected') || false;
+            this.model.set({ selected: !selected });
         }
 
     });

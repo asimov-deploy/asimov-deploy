@@ -25,7 +25,7 @@ define([
 function($, _, Backbone, Marionette, app, AgentQueryCollection) {
 
     var DeployLogItemView = Marionette.ItemView.extend({
-		template: "deploy-log-item",
+		template: "dashboard/deploy-log-item-view",
         tagName: "tr",
         events: {
             "click td": "openLog"
@@ -38,7 +38,7 @@ function($, _, Backbone, Marionette, app, AgentQueryCollection) {
 
 	return Marionette.CompositeView.extend({
         itemView: DeployLogItemView,
-        template: "deploy-log",
+        template: "dashboard/deploy-log-view",
         itemViewContainer: "tbody",
 
         el: $("#asimov-modal"),

@@ -68,13 +68,19 @@
   }
 }
 
-.btn-select i {
-  opacity: 0.1;
-}
+.btn-select {
+  padding: 1px 6px;
 
-.deploy-unit-instance-selected {
-  .btn-select i {
-    opacity: 1;
+  i {
+    opacity: 0.1;
+  }
+
+  &.selected {
+    i {
+      opacity: 1;
+    }
+
+    .buttonBackground(@btnDangerBackground, @btnDangerBackgroundHighlight);
   }
 }
 

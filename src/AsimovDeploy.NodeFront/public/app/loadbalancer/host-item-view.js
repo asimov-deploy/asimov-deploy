@@ -21,7 +21,7 @@ define([
 function($, Marionette) {
 
     return Marionette.ItemView.extend({
-        template: "loadbalancer-host-item",
+        template: "loadbalancer/loadbalancer-host-item",
         tagName: "tr",
         events: {
             "click .btn-enable": "enable",

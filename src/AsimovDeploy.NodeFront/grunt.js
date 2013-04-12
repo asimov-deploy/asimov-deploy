@@ -17,7 +17,7 @@ module.exports = function(grunt) {
       },
 
       ui_src: {
-        files: ["public/**/*.js", "public/templates/*.handlebars" ],
+        files: ["public/**/*.js", "public/templates/**/*" ],
         tasks: "default"
       },
 
