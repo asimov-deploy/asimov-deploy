@@ -32,19 +32,14 @@
 	</li>
 </td>
 <td style="width: 100%; border-left: none">
-	{{#if deployInfo2}}
-		<button class="btn-hover btn-deploy" data-loading-text="Deploying...">
-			<i class="icon-white icon-upload"></i> Deploy
-		</button>
-	{{/if}}
 	{{#if showSpinner}}
 		<img src='/img/loading.gif' />
 	{{/if}}
 
-	{{#if info.verifying}}
+	{{#if verifySteps}}
 		<a href="verify-log" data-bypass="1" class="verify-log-link">Verifying: </a>
 
-		{{#each info.steps}}
+		{{#each verifySteps}}
 			{{#if completed}}
 				<i class="icon-ok" />
 			{{else}}
@@ -57,7 +52,7 @@
 		{{/each}}
 	{{/if}}
 </td>
-<td>
-	{{{info}}}
+<td style="border-left: none;">
+	{{{lastDeployed}}}
 </td>
 
