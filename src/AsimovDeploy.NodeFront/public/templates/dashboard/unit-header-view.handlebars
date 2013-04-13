@@ -8,18 +8,25 @@
 </td>
 <td colspan="3" style="width: 100%">
 	{{#if showActions}}
-		<span class="unit-mass-actions">
-			<button class="btn-hover btn-select-version">
-				<icon class="icon-download-alt icon-white" />
-				deploy
-			</button>
+		<button class="btn btn-danger btn-small btn-select-version" style="margin-right: 30px">
+			<icon class="icon-download-alt icon-white" />
+			Deploy
+		</button>
 
-			{{#each actions}}
-				<button class="btn-hover btn-unit-action" data-action-name="{{this}}">
-					<icon class="{{iconForUnitAction this}} icon-white" />
-					{{this}}
+		{{#each actions}}
+			<button class="btn btn-primary btn-small btn-unit-action" data-action-name="{{this}}">
+				<icon class="{{iconForUnitAction this}} icon-white" />
+				{{this}}
+			</button>
+		{{/each}}
+
+		{{#if showLoadBalancerToggle}}
+			<span class="load-balancer-actions" style="margin-left: 30px">
+				<button class="btn btn-danger btn-small btn-toggle-loadbalancer">
+					<icon class="icon-share2" />
+					Toggle
 				</button>
-			{{/each}}
-		</span>
+			</span>
+		{{/if}}
 	{{/if}}
 </td>

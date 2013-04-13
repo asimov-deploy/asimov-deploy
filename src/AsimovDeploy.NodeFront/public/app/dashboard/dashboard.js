@@ -15,69 +15,71 @@
 ******************************************************************************/
 
 define([
-    "underscore",
-    "app",
-    "./unit-list-view",
-    "./unit-collection"
+	"underscore",
+	"app",
+	"./unit-list-view",
+	"./unit-collection"
 ],
 function(_, app, UnitListView, UnitCollection) {
 
-    var unitCollection = new UnitCollection();
-    var dashboard = {};
+	var unitCollection = new UnitCollection();
+	var dashboard = {};
 
-    // events
-    app.vent.on("agent:event:deployStarted", function(data) {
-        var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
-        unit.deployStarted(data);
-    });
+	// events
+	app.vent.on("agent:event:deployStarted", function(data) {
+		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
+		unit.deployStarted(data);
+	});
 
-    app.vent.on("agent:event:deployFailed", function(data) {
-       var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
-       unit.deployFailed(data);
-    });
+	app.vent.on("agent:event:deployFailed", function(data) {
+		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
+		unit.deployFailed(data);
+	});
 
-    app.vent.on("agent:event:deployCompleted", function(data) {
-        var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
-        unit.deployCompleted(data);
-    });
+	app.vent.on("agent:event:deployCompleted", function(data) {
+		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
+		unit.deployCompleted(data);
+	});
 
-    app.vent.on("agent:event:loadBalancerStateChanged", function(data) {
-        unitCollection.forEach(function(unit) {
-            if (unit.get('loadBalancerId') === data.id) {
-                unit.set({ loadBalancerEnabled: data.enabled });
-            }
-        });
-    });
+	app.vent.on("agent:event:loadBalancerStateChanged", function(data) {
+		unitCollection.forEach(function(unit) {
+			unit.get('instances').forEach(function(instance) {
+				if (instance.get('loadBalancerId') === data.id) {
+					instance.set({ loadBalancerEnabled: data.enabled });
+				}
+			});
+		});
+	});
 
-    app.vent.on("agent:event:unitStatusChanged", function(data) {
-        var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
-        unit.changeStatus(data.status);
-    });
+	app.vent.on("agent:event:unitStatusChanged", function(data) {
+		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
+		unit.changeStatus(data.status);
+	});
 
-    app.vent.on("agent:event:verify-progress", function(data) {
-        var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
-        var steps = unit.get("verifySteps") || [];
+	app.vent.on("agent:event:verify-progress", function(data) {
+		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
+		var steps = unit.get("verifySteps") || [];
 
-        steps = steps.slice(0);
-        steps.push({ pass: data.pass, completed: data.completed, message: data.message });
+		steps = steps.slice(0);
+		steps.push({ pass: data.pass, completed: data.completed, message: data.message });
 
-        if (data.started) { steps = []; }
+		if (data.started) { steps = []; }
 
-        unit.set({verifySteps: steps});
-    });
+		unit.set({verifySteps: steps});
+	});
 
-    app.vent.on("dashboard:show", function(filter) {
+	app.vent.on("dashboard:show", function(filter) {
 
-        var view = new UnitListView({ collection: unitCollection });
-        app.mainRegion.show(view);
+		var view = new UnitListView({ collection: unitCollection });
+		app.mainRegion.show(view);
 
-        if (unitCollection.length === 0) {
-            unitCollection.fetch();
-        }
+		if (unitCollection.length === 0) {
+			unitCollection.fetch();
+		}
 
-        app.router.showRoute("dashboard");
-    });
+		app.router.showRoute("dashboard");
+	});
 
-    return dashboard;
+	return dashboard;
 
 });
