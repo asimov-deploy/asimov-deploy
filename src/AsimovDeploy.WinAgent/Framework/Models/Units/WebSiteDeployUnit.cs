@@ -56,14 +56,12 @@ namespace AsimovDeploy.WinAgent.Framework.Models.Units
             if (siteData == null)
             {
                 siteInfo.Status = UnitStatus.NotFound;
-                siteInfo.Info = "";
                 siteInfo.Version = new DeployedVersion() { VersionNumber = "0.0.0.0" };
                 return siteInfo;
             }
 
             siteInfo.Url = SiteUrl.Replace("localhost", HostNameUtil.GetFullHostName());
             siteInfo.Status = (siteData.AppPoolStarted && siteData.SiteStarted) ? UnitStatus.Running : UnitStatus.Stopped;
-            siteInfo.Info = string.Format("Last deployed: {0}", siteInfo.Version.DeployTimestamp);
 
             return siteInfo;
         }

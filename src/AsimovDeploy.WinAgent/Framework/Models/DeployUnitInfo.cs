@@ -21,7 +21,7 @@ namespace AsimovDeploy.WinAgent.Framework.Models
     public class DeployUnitInfo
     {
         public string Name { get; set; }
-        public string Info { get; set; }
+        public string LastDeployed { get; set; }
         public string Url { get; set; }
 
         public UnitStatus Status { get; set; }

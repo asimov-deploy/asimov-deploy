@@ -28,7 +28,7 @@ function($, Backbone) {
                branch: data.branch,
                status: "Deploying",
                showSpinner: true,
-               info: ""
+               verifySteps: null
          });
       },
 
@@ -37,7 +37,6 @@ function($, Backbone) {
                version: data.version,
                branch: data.branch,
                status: "DeployFailed",
-               info: "Deploy failed!",
                showSpinner: false
          });
       },
@@ -47,14 +46,14 @@ function($, Backbone) {
                version: data.version,
                branch: data.branch,
                status: data.status,
+               lastDeployed: "Deployed",
                deployInfo: false,
-               info: "Deploy completed!",
                showSpinner: false
          });
       },
 
       changeStatus: function(status) {
-         var update = { status: status, info: "" };
+         var update = { status: status, verifySteps: false };
          update.showSpinner = status === 'Stopping' || status == "Starting";
          this.set(update);
       }

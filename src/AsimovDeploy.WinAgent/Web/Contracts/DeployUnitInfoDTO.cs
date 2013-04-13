@@ -23,7 +23,7 @@ namespace AsimovDeploy.WinAgent.Web.Contracts
         public string version { get; set; }
         public string branch { get; set; }
         public string status { get; set; }
-        public string info { get; set; }
+        public string lastDeployed { get; set; }
         public bool hasDeployParameters { get; set; }
         public string[] actions { get; set;}
     }

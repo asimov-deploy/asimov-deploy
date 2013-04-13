@@ -22,17 +22,23 @@ define([
 ],
 function($, Marionette, VersionDialogView, ConfirmDeployView) {
 
+	var AgentActionCommand = Backbone.Model.extend({
+		url: "/agent/action"
+	});
+
 	return Marionette.ItemView.extend({
 		template: "dashboard/unit-header-view",
 		events: {
 			"click .btn-select": "toggleSelectAll",
-			"click .btn-select-version": "selectVersion"
+			"click .btn-select-version": "selectVersion",
+			"click .btn-unit-action": "unitAction"
 		},
 
 		initialize: function(options) {
 			this.instances = options.instances;
 			this.instances.on("change:selected", this.selectionChanged, this);
 			this.model.on("change", this.render, this);
+			this.selectionChanged();
 		},
 
 		selectionChanged: function() {
@@ -79,7 +85,25 @@ function($, Marionette, VersionDialogView, ConfirmDeployView) {
 			});
 
 			this.deploy();
+		},
+
+		unitAction: function(e) {
+			e.preventDefault();
+
+			var selectedInstances = this.instances.where({selected: true});
+			var actionName = $(e.currentTarget).data("action-name");
+
+			this.instances.forEach(function(instance) {
+
+				new AgentActionCommand({
+					agentName: instance.get("agentName"),
+					unitName: instance.get("unitName"),
+					actionName: actionName
+				}).save();
+
+			});
 		}
+
 
 	});
 

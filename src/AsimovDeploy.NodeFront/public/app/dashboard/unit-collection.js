@@ -51,7 +51,7 @@ function($, _, Backbone, UnitInstance) {
 				deployStatus: instance.deployStatus,
 				loadBalancerId: instance.loadBalancerId,
 				loadBalancerEnabled: instance.loadBalancerEnabled,
-				info: instance.info,
+				lastDeployed: instance.lastDeployed,
 				version: instance.version,
 				branch: instance.branch,
 				actions: instance.actions,

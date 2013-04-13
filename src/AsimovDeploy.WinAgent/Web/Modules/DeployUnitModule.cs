@@ -37,12 +37,12 @@ namespace AsimovDeploy.WinAgent.Web.Modules
                     var unitInfo = deployUnit.GetUnitInfo();
                     var unitInfoDto = new DeployUnitInfoDTO();
                     unitInfoDto.name = unitInfo.Name;
-                    unitInfoDto.info = unitInfo.Info;
+                    unitInfoDto.lastDeployed = unitInfo.LastDeployed;
 
                     if (unitInfo.DeployStatus != DeployStatus.NA)
                     {
                         unitInfoDto.status = unitInfo.DeployStatus.ToString();
-                        unitInfoDto.info = "";
+                        unitInfoDto.lastDeployed = "";
                     }
                     else
                         unitInfoDto.status = unitInfo.Status.ToString();

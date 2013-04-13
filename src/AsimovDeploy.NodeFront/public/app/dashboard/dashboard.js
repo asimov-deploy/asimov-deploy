@@ -56,24 +56,14 @@ function(_, app, UnitListView, UnitCollection) {
 
     app.vent.on("agent:event:verify-progress", function(data) {
         var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
-        var info = unit.get("info");
-        var steps = info.steps ? info.steps.slice(0) : [];
+        var steps = unit.get("verifySteps") || [];
 
+        steps = steps.slice(0);
         steps.push({ pass: data.pass, completed: data.completed, message: data.message });
 
-        if (data.started) {
-            steps = [];
-        }
+        if (data.started) { steps = []; }
 
-        var update = {
-            info: {
-                verifying: true,
-                steps: steps
-            },
-            verified: data.completed && data.pass
-        };
-
-        unit.set(update);
+        unit.set({verifySteps: steps});
     });
 
     app.vent.on("dashboard:show", function(filter) {

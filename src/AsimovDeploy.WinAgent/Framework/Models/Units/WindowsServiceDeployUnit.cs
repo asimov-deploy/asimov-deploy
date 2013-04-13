@@ -56,12 +56,10 @@ namespace AsimovDeploy.WinAgent.Framework.Models.Units
             try
             {
                 unitInfo.Status = serviceManager.Status == ServiceControllerStatus.Running ? UnitStatus.Running : UnitStatus.Stopped;
-                unitInfo.Info = string.Format("Last deployed: {0}", unitInfo.Version.DeployTimestamp);
             }
             catch
             {
                 unitInfo.Status = UnitStatus.NotFound;
-                unitInfo.Info = "";
             }
 
             return unitInfo;

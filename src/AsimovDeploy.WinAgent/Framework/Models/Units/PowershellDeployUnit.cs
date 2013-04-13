@@ -38,7 +38,6 @@ namespace AsimovDeploy.WinAgent.Framework.Models.Units
 
             deployUnitInfo.Status = UnitStatus.NA;
             deployUnitInfo.Url = Url != null ? Url.Replace("localhost", HostNameUtil.GetFullHostName()) : null;
-            deployUnitInfo.Info = string.Format("Last deployed: {0}", deployUnitInfo.Version.DeployTimestamp);
 
             return deployUnitInfo;
         }
