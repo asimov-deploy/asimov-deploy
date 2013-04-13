@@ -16,14 +16,19 @@
 
 define([
 	"jquery",
+	"underscore",
 	"marionette",
 	"./version-dialog-view",
 	"./confirm-deploy-view"
 ],
-function($, Marionette, VersionDialogView, ConfirmDeployView) {
+function($, _, Marionette, VersionDialogView, ConfirmDeployView) {
 
 	var AgentActionCommand = Backbone.Model.extend({
 		url: "/agent/action"
+	});
+
+	var ChangeLoadBalancerStatusCommand = Backbone.Model.extend({
+		url: "/loadbalancer/change"
 	});
 
 	return Marionette.ItemView.extend({
@@ -31,7 +36,8 @@ function($, Marionette, VersionDialogView, ConfirmDeployView) {
 		events: {
 			"click .btn-select": "toggleSelectAll",
 			"click .btn-select-version": "selectVersion",
-			"click .btn-unit-action": "unitAction"
+			"click .btn-unit-action": "unitAction",
+			"click .btn-toggle-loadbalancer":  "toggleLoadBalancer"
 		},
 
 		initialize: function(options) {
@@ -45,8 +51,11 @@ function($, Marionette, VersionDialogView, ConfirmDeployView) {
 			var selectedInstances = this.instances.where({selected: true});
 			var anySelected = selectedInstances.length > 0;
 			var allSelected = selectedInstances.length === this.instances.length;
+			var showLoadBalancerToggle = this.instances.some(function(instance) {
+				return instance.get('loadBalancerEnabled') !== undefined;
+			});
 
-			this.model.set({showActions: anySelected, allSelected: allSelected});
+			this.model.set({showActions: anySelected, allSelected: allSelected, showLoadBalancerToggle: showLoadBalancerToggle});
 		},
 
 		toggleSelectAll: function() {
@@ -93,6 +102,9 @@ function($, Marionette, VersionDialogView, ConfirmDeployView) {
 			var selectedInstances = this.instances.where({selected: true});
 			var actionName = $(e.currentTarget).data("action-name");
 
+			if (actionName == "Stop" && !confirm("Are you sure you want to stop selected deploy units?"))
+				return;
+
 			this.instances.forEach(function(instance) {
 
 				new AgentActionCommand({
@@ -102,6 +114,22 @@ function($, Marionette, VersionDialogView, ConfirmDeployView) {
 				}).save();
 
 			});
+		},
+
+		toggleLoadBalancer: function() {
+			var selectedInstances = this.instances.where({selected: true});
+			var toggleHosts = _.map(selectedInstances, function(instance) {
+				var data = { };
+
+				data.id = instance.get('loadBalancerId');
+				data.enabled = instance.get('loadBalancerEnabled');
+				data.action = data.enabled ? "disable"  : "enable";
+
+				return data;
+			});
+
+			var command = new ChangeLoadBalancerStatusCommand({hosts: toggleHosts});
+			command.save();
 		}
 
 
