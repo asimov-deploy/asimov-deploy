@@ -1,45 +1,44 @@
-	<div id="deploy-modal">
+<div id="deploy-modal">
 	<div class="modal-header">
 	 <button type="button" class="close btn-close">×</button>
-	 <h3>Confirm</h3>
+	 <h3>Confirm deploy</h3>
 	</div>
 	<div class="modal-body">
-	  <div class="deploy-info-wrapper">
-	  	 <h5>Info</h5>
-	    <div class="deploy-info">
-	    	<label>Deploy unit:</label>
-	    	<span>{{unitName}}</span>
-	    </div>
-	    <div class="deploy-info">
-	    	<label>Version:</label>
-	    	<span>{{version}}</span>
-	    </div>
-	    <div class="deploy-info">
-	    	<label>Agent:</label>
-	    	<span>{{agentName}}</span>
-	    </div>
-	    {{#if parameters}}
-	    	<div class="deploy-parameters">
-	    		<h5>Parameters</h5>
-	    		{{#each parameters}}
-	    			{{#ifTypeText type}}
-	    				<div class="input-prepend">
+		<div class="deploy-info-wrapper">
+			<div class="input-prepend deploy-read-only-value">
+				<span class="add-on">Deploy unit</span>
+			<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{unitName}}" />
+			</div>
+			<div class="input-prepend deploy-read-only-value">
+				<span class="add-on">Version</span>
+			<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{version}} ({{branch}})" />
+			</div>
+			<div class="input-prepend deploy-read-only-value">
+				<span class="add-on">Agents</span>
+			<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{#each agents}}{{this}} {{/each}}" />
+			</div>
+			{{#if parameters}}
+				<div class="deploy-parameters">
+					<h5>Parameters</h5>
+					{{#each parameters}}
+						{{#ifTypeText type}}
+							<div class="input-prepend">
 						  <span class="add-on">{{name}}</span>
 						  <input type="text" class="input-xlarge" id="deploy-param-{{name}}" spellcheck="false" value="{{default}}" />
 						</div>
-	    			{{/ifTypeText}}
-	    			{{#ifTypePassword type}}
-	    				<div class="input-prepend">
+						{{/ifTypeText}}
+						{{#ifTypePassword type}}
+							<div class="input-prepend">
 						  <span class="add-on">{{name}}</span>
 						  <input type="password" class="input-xlarge" id="deploy-param-{{name}}" value="{{default}}" />
 						</div>
-	    			{{/ifTypePassword}}
-	    		{{/each}}
-	    	</div>
-	    {{/if}}
-	</div>
-	</div>
-	<div class="modal-footer" style="text-align: center">
-		<button class="btn btn-danger btn-mega btn-deploy">Deploy</button>
+						{{/ifTypePassword}}
+					{{/each}}
+				</div>
+			{{/if}}
+		</div>
+		<div class="deploy-button-wrapper">
+			<button class="btn btn-danger btn-mega btn-deploy pull-right">Deploy</button>
+		</div>
 	</div>
 </div>

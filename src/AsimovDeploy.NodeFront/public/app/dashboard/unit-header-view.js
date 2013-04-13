@@ -17,22 +17,21 @@
 define([
 	"jquery",
 	"marionette",
-	"./version-dialog-view"
+	"./version-dialog-view",
+	"./confirm-deploy-view"
 ],
-function($, Marionette, VersionDialogView) {
+function($, Marionette, VersionDialogView, ConfirmDeployView) {
 
 	return Marionette.ItemView.extend({
 		template: "dashboard/unit-header-view",
 		events: {
 			"click .btn-select": "toggleSelectAll",
-			"click .btn-select-version": "selectVersion",
-			"click .btn-deploy": "deploy"
+			"click .btn-select-version": "selectVersion"
 		},
 
 		initialize: function(options) {
 			this.instances = options.instances;
 			this.instances.on("change:selected", this.selectionChanged, this);
-			this.instances.on("change:deployInfo", this.instanceDeployInfoChanged, this);
 			this.model.on("change", this.render, this);
 		},
 
@@ -55,16 +54,8 @@ function($, Marionette, VersionDialogView) {
 
 		deploy: function() {
 			var selectedInstances = this.instances.where({selected: true});
-			if (confirm("hej")) {
-
-			}
-		},
-
-		instanceDeployInfoChanged: function() {
-			var anyHasDeployInfo = this.instances.find(function(instance) { return instance.get('deployInfo') !== undefined; });
-			if (anyHasDeployInfo) {
-				this.model.set({ enableDeploy: true });
-			}
+			var confirmView = new ConfirmDeployView({ unitInstances: selectedInstances });
+			confirmView.show();
 		},
 
 		selectVersion: function () {
@@ -86,6 +77,8 @@ function($, Marionette, VersionDialogView) {
 					});
 				}
 			});
+
+			this.deploy();
 		}
 
 	});

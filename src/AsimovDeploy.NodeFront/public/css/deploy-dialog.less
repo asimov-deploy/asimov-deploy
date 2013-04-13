@@ -2,38 +2,37 @@
 
 #deploy-modal .modal-body {
     padding: 3px 3px 20px 3px;
-    text-align: center;
 }
 
 .deploy-info-wrapper {
-    width: 400px;
-    margin: 10px auto 15px auto;
-    text-align: left;
+    margin: 10px 10px;
+    display: table-cell;
+    width: 100%;
 
-    h5 {
-        text-align: center;
+    .input-prepend .add-on {
+        width: 100px;
+        display: inline-block;
+        color: @blue;
+        font-weight: bold;
+        text-align: left;
+        background-color: transparent;
+        border: none;
     }
 
-    .input-append, .input-prepend {
-        text-align: center;
+    .deploy-read-only-value {
+        margin: 0px;
+        cursor: default;
+    }
+
+    input[disabled] {
+        background-color: transparent;
+        border: none;
     }
 }
 
-.deploy-info label {
-    float:left;
-    clear: both;
-    display: inline-block;
-    width: 200px;
-    text-align: right;
-    font-weight: bold;
-    color: @blue;
-    margin: 0;
-}
-
-.deploy-info span {
-    display: inline-block;
-    width: 190px;
-    text-align: left;
-    margin: 0;
-    padding-left: 10px;
+.deploy-button-wrapper {
+    padding: 0 20px;
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
 }
