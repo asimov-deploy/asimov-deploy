@@ -55,7 +55,9 @@ function($, Marionette, VersionDialogView) {
 
 		deploy: function() {
 			var selectedInstances = this.instances.where({selected: true});
-			$("body").toggleClass("action-banner-active");
+			if (confirm("hej")) {
+
+			}
 		},
 
 		instanceDeployInfoChanged: function() {
