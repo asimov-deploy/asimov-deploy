@@ -22,6 +22,12 @@ define([
 ],
 function($, _, Backbone, UnitInstance) {
 
+	var UnitInstanceCollection = Backbone.Collection.extend({
+		comparator: function(a) {
+			return a.get('loadBalancerId') || a.get('agentName');
+		}
+	});
+
 	return Backbone.Collection.extend({
 
 		getUnitInstance: function(unitName, agentName) {
@@ -34,7 +40,7 @@ function($, _, Backbone, UnitInstance) {
 				unit = {
 					name: name,
 					actions: actions,
-					instances: new Backbone.Collection()
+					instances: new UnitInstanceCollection()
 				};
 				tempList.push(unit);
 			}
@@ -49,8 +55,8 @@ function($, _, Backbone, UnitInstance) {
 				url: instance.url,
 				status: instance.status,
 				deployStatus: instance.deployStatus,
-				loadBalancerId: instance.loadBalancerId,
-				loadBalancerEnabled: instance.loadBalancerEnabled,
+				loadBalancerId: agent.loadBalancerId,
+				loadBalancerEnabled: agent.loadBalancerEnabled,
 				lastDeployed: instance.lastDeployed,
 				version: instance.version,
 				branch: instance.branch,
@@ -66,14 +72,14 @@ function($, _, Backbone, UnitInstance) {
 		},
 
 		fetch: function() {
-			var units = [];
+			var tempList = [];
 			var self = this;
 			var defered = $.Deferred();
 
 			$.getJSON('units/list', function(agents) {
 				agents.forEach(function(agent) {
 					agent.units.forEach(function(instance) {
-						var unit = self.addOrGetUnit(instance.name, instance.actions, units);
+						var unit = self.addOrGetUnit(instance.name, instance.actions, tempList);
 						var unitInstance = self.createUnitInstance(agent, instance);
 
 						unit.instances.push(unitInstance);
@@ -81,24 +87,13 @@ function($, _, Backbone, UnitInstance) {
 					});
 				});
 
-				/*units.sort(function(a, b) {
-					var a_unitName = a.get('unitName');
-					var b_unitName = b.get('unitName');
-
-					if (a.get('unitName') > b.get('unitName')) return 1;
-					if (b.get('unitName') > a.get('unitName')) return -1;
-
-					if (a.get('loadBalancerId') && b.get('loadBalancerId')) {
-						return a.get('loadBalancerId') - b.get('loadBalancerId');
-					}
-
-					if (a.get('agentName') > b.get('agentName')) return 1;
-					if (b.get('agentName') > a.get('agentName')) return -1;
-
+				tempList.sort(function(a, b) {
+					if (a.name > b.name) return 1;
+					if (b.name > a.name) return -1;
 					return 0;
-				});*/
+				});
 
-				self.reset(units);
+				self.reset(tempList);
 				defered.resolve();
 			});
 

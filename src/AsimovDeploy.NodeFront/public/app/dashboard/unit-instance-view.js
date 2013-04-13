@@ -24,10 +24,6 @@ define([
 ],
 function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, DeployLogDialogView) {
 
-	var AgentActionCommand = Backbone.Model.extend({
-        url: "/agent/action"
-    });
-
 	return Backbone.Marionette.ItemView.extend({
         template: "dashboard/unit-instance-view",
         tagName: "tr",
@@ -36,7 +32,6 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             "click .verify-log-link": "verifyLog",
             "click .select-version": "selectVersion",
             "click .deploy-log-link": "openDeployLog",
-            "click .btn-unit-action": "unitAction",
             "click .btn-select": "toggleSelection"
         },
 
@@ -53,6 +48,7 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
 
         selectVersion: function(e) {
             e.preventDefault();
+            console.log(this.model.get('loadBalancerEnabled'));
         },
 
         openDeployLog: function(e) {
@@ -60,18 +56,6 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
 
             var deployLog = new DeployLogDialogView({ agentName: this.model.get('agentName'), unitName: this.model.get('unitName') });
             deployLog.show();
-        },
-
-        unitAction: function(e) {
-            e.preventDefault();
-
-            var actionName = $(e.currentTarget).data("action-name");
-
-            new AgentActionCommand({
-                agentName: this.model.get("agentName"),
-                unitName: this.model.get("unitName"),
-                actionName: actionName
-            }).save();
         },
 
         toggleSelection: function(e) {
