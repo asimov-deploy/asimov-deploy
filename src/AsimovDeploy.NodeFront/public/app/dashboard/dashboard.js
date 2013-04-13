@@ -80,7 +80,6 @@ function(_, app, UnitListView, UnitCollection) {
 
         var view = new UnitListView({ collection: unitCollection });
         app.mainRegion.show(view);
-        console.log("asd");
 
         if (unitCollection.length === 0) {
             unitCollection.fetch();

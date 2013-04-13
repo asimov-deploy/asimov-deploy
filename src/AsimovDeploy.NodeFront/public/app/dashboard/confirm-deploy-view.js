@@ -15,83 +15,97 @@
 ******************************************************************************/
 
 define([
-    "jquery",
-    "underscore",
-    "marionette",
-    "../collections/agent-query-collection"
+	"jquery",
+	"underscore",
+	"marionette",
+	"../collections/agent-query-collection"
 ],
 function($, _, Marionette, AgentQueryCollection) {
 
-    var DeployCommand = Backbone.Model.extend({
-        url: "/deploy/deploy"
-    });
+	var DeployCommand = Backbone.Model.extend({
+		url: "/deploy/deploy"
+	});
 
 	return Marionette.ItemView.extend({
-        el: $("#asimov-modal"),
-        template: "dashboard/confirm-deploy-view",
-        events: {
-            "click .btn-close": "close",
-            "click .btn-deploy": "deploy"
-        },
+		el: $("#asimov-modal"),
+		template: "dashboard/confirm-deploy-view",
+		events: {
+			"click .btn-close": "close",
+			"click .btn-deploy": "deploy"
+		},
 
-        initialize: function(options) {
-            _.bindAll(this, "show");
+		initialize: function(options) {
+			_.bindAll(this, "show");
 
-            this.deployUnit = options.deployUnit;
+			this.createModel(options.unitInstances);
 
-            this.model = new Backbone.Model({
-                agentName: this.deployUnit.get("agentName"),
-                unitName: this.deployUnit.get("unitName"),
-                versionId: this.deployUnit.get("versionId"),
-                version: this.deployUnit.get("version")
-            });
+			this.parameters = new AgentQueryCollection({
+				agentUrl: "/units/deploy-parameters/:unitName",
+				agentName: this.anyAgentName,
+				unitName: this.unitName
+			});
 
-            this.parameters = new AgentQueryCollection({
-                agentUrl: "/units/deploy-parameters/:unitName",
-                agentName: this.deployUnit.get("agentName"),
-                unitName: this.deployUnit.get("unitName")
-            });
+			this.parameters.on("reset", this.parametersLoaded, this);
+			this.model.on("change", this.render, this);
+		},
 
-            this.parameters.on("reset", this.parametersLoaded, this);
-            this.model.on("change", this.render, this);
-        },
+		createModel: function(unitInstances) {
+			this.unitName = unitInstances[0].get("unitName");
+			this.anyAgentName = unitInstances[0].get("agentName");
+			this.hasDeployParameters = unitInstances[0].get("hasDeployParameters");
+			this.deployInfo = unitInstances[0].get('deployInfo');
+			this.agentNames = _.map(unitInstances, function(instance) { return instance.get('agentName'); });
 
-        show: function() {
-            if (this.deployUnit.get("hasDeployParameters")) {
-                this.parameters.fetch();
-            }
+			this.model = new Backbone.Model({
+				unitName: this.unitName,
+				version: this.deployInfo.version,
+				branch: this.deployInfo.branch,
+				agents: this.agentNames
+			});
+		},
 
-            this.render();
-            $(".modal").modal("show");
-        },
+		show: function() {
+			if (this.hasDeployParameters) {
+				this.parameters.fetch();
+			}
 
-        parametersLoaded: function() {
-            this.model.set({parameters: this.parameters.toJSON()});
-        },
+			this.render();
+			$(".modal").modal("show");
+		},
 
-        close: function() {
-            $(".modal").modal("hide");
-            this.undelegateEvents();
-        },
+		parametersLoaded: function() {
+			this.model.set({parameters: this.parameters.toJSON()});
+		},
 
-        deploy: function() {
+		close: function() {
+			$(".modal").modal("hide");
+			this.undelegateEvents();
+		},
 
-            var parameterValues = {};
-            this.parameters.forEach(function(param) {
-                var paramName = param.get('name');
-                parameterValues[paramName] = $("#deploy-param-" + paramName).val();
-            });
+		deploy: function() {
 
-            new DeployCommand({
-                agentName: this.model.get("agentName"),
-                unitName: this.model.get("unitName"),
-                versionId: this.model.get("versionId"),
-                parameters: parameterValues
-            }).save();
+			var parameterValues = {};
+			this.parameters.forEach(function(param) {
+				var paramName = param.get('name');
+				parameterValues[paramName] = $("#deploy-param-" + paramName).val();
+			});
 
-            this.close();
-        }
+			_.forEach(this.agentNames, function(agentName) {
+				this.deployUnitInstance(agentName, parameterValues);
+			}, this);
 
-    });
+			this.close();
+		},
+
+		deployUnitInstance: function(agentName, parameterValues) {
+			new DeployCommand({
+					agentName: agentName,
+					unitName: this.unitName,
+					versionId: this.deployInfo.versionId,
+					parameters: parameterValues
+			}).save();
+		}
+
+	});
 
 });

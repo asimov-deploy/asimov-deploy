@@ -27,7 +27,6 @@ function($, Backbone) {
                version: data.version,
                branch: data.branch,
                status: "Deploying",
-               enableDeploy: false,
                showSpinner: true,
                info: ""
          });
@@ -48,6 +47,7 @@ function($, Backbone) {
                version: data.version,
                branch: data.branch,
                status: data.status,
+               deployInfo: false,
                info: "Deploy completed!",
                showSpinner: false
          });

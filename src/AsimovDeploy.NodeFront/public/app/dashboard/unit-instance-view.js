@@ -33,7 +33,6 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
         tagName: "tr",
         className: "deploy-unit-instance",
         events: {
-            "click .btn-deploy": "deploy",
             "click .verify-log-link": "verifyLog",
             "click .select-version": "selectVersion",
             "click .deploy-log-link": "openDeployLog",
@@ -47,11 +46,6 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             this.model.on("change", this.render, this);
         },
 
-        deploy: function (e) {
-            var confirmView = new ConfirmDeployView({ deployUnit: this.model });
-            confirmView.show();
-        },
-
         verifyLog: function(e) {
             e.preventDefault();
             new VerifyLogView({model: this.model}).show();
@@ -59,20 +53,6 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
 
         selectVersion: function(e) {
             e.preventDefault();
-
-            var versionView = new VersionDialogView({ agentName: this.model.get('agentName'), unitName: this.model.get('unitName') });
-            versionView.on("versionSelected", this.versionSelected, this);
-            versionView.show();
-        },
-
-        versionSelected: function(versionId, version, branch) {
-            this.model.set({
-                    deployInfo: {
-                        version: version,
-                        versionId: versionId,
-                        branch: branch
-                    }
-            });
         },
 
         openDeployLog: function(e) {
