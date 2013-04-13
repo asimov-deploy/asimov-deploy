@@ -1,65 +1,77 @@
 doctype 5
 html(lang="en")
-  head
-    title Asimov Deploy
+	head
+		title Asimov Deploy
 
-    link(rel='icon', href='/img/logo.png', type='image/png')
+		link(rel='icon', href='/img/logo.png', type='image/png')
 
-    link(type='text/css', href='/css/bootstrap.css', rel='stylesheet')
-    link(type='text/css', href='/css/asimov.css', rel='stylesheet')
+		link(type='text/css', href='/css/bootstrap.css', rel='stylesheet')
+		link(type='text/css', href='/css/asimov.css', rel='stylesheet')
 
-    script(src='http://#{hostName}:#{port}/socket.io/socket.io.js')
-    script(data-main='/app/config', src='/libs/require.js')
+		script(src='http://#{hostName}:#{port}/socket.io/socket.io.js')
+		script(data-main='/app/config', src='/libs/require.js')
 
-  body
-    .navbar.navbar-inverse.navbar-fixed-top
-      .navbar-inner
-        .container-fluid
-          a.brand(href='#')
-            img(src='/img/full_logo.png')
-          .nav-collapse
-            ul.nav
-              li
-                a(href='dashboard') Dashboard
-              li
-                a(href='loadbalancer') Load Balancer
-              li
-                a(href='loadbalancer/settings') Settings
+	body
+		.navbar.navbar-inverse.navbar-fixed-top
+			.navbar-inner
+				.container-fluid
+					a.brand(href='#')
+						img(src='/img/full_logo.png')
+					.nav-collapse
+						ul.nav
+							li
+								a(href='dashboard') Dashboard
+							li
+								a(href='loadbalancer') Load Balancer
+							li
+								a(href='loadbalancer/settings') Settings
 
-              li
-                a(href='agents') Agents
+							li
+								a(href='agents') Agents
 
-            ul.nav.pull-right#instance-selection
-              li.divider-vertical
-              li.dropdown
-                a.dropdown-toggle(href='#', data-toggle='dropdown') #{instanceName}
-                  b.caret(style='margin-left: 5px')
-                ul.dropdown-menu
-                  each item in instances
-                    li
-                      a(href='http://#{hostName}:#{item.port}') #{item.name}
-    #main-region
+						ul.nav.pull-right#instance-selection
+							li.divider-vertical
+							li.dropdown
+								a.dropdown-toggle(href='#', data-toggle='dropdown') #{instanceName}
+									b.caret(style='margin-left: 5px')
+								ul.dropdown-menu
+									each item in instances
+										li
+											a(href='http://#{hostName}:#{item.port}') #{item.name}
+		#main-region
 
-    .live-log-wrapper
-      .live-log-header
-        span.pull-left Live Log
-        a.pull-left.btn-live-log-filter(href="#", title="show/hide filters", data-bypass=1)
-          i.icon-filter.icon-white
-        ul.live-log-filter-selection.pull-left(style='display: none')
-        #asimov-version.pull-right
-          | v#{version}
-        .clearfix
-      .live-log
+		.live-log-wrapper
+			.live-log-header
+				span.pull-left Live Log
+				a.pull-left.btn-live-log-filter(href="#", title="show/hide filters", data-bypass=1)
+					i.icon-filter.icon-white
+				ul.live-log-filter-selection.pull-left(style='display: none')
+				#asimov-version.pull-right
+					| v#{version}
+				.clearfix
+			.live-log
 
+		.action-banner
+			.action-banner-header Deploying in 3 seconds
+			.action-banner-content-wrapper
+				.action-banner-content
+					p
+						a Version:
+						| 13.50.11.2 (production)
+					p
+						a Agents:
+						| DUFFMAN, SNAKE, MILHOUSE, ITCHY
+				.action-banner-footer
+						button.btn-hover.btn-success
+							i.icon-ok.icon-white
+						button.btn-hover.btn-danger
+							i.icon-remove.icon-white
 
+		.modal.hide#asimov-modal
 
+		script(type='text/javascript')
 
-
-    .modal.hide#asimov-modal
-
-    script(type='text/javascript')
-
-      require(['livelog/livelog'], function(livelog) {
-          livelog.bootstrap(!{JSON.stringify(agents)})
-      });
+			require(['livelog/livelog'], function(livelog) {
+					livelog.bootstrap(!{JSON.stringify(agents)})
+			});
 

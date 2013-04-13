@@ -25,7 +25,8 @@ function($, Marionette, VersionDialogView) {
 		template: "dashboard/unit-header-view",
 		events: {
 			"click .btn-select": "toggleSelectAll",
-			"click .btn-select-version": "selectVersion"
+			"click .btn-select-version": "selectVersion",
+			"click .btn-deploy": "deploy"
 		},
 
 		initialize: function(options) {
@@ -47,16 +48,14 @@ function($, Marionette, VersionDialogView) {
 			var selectedInstances = this.instances.where({selected: true});
 			var allSelected = selectedInstances.length === this.instances.length;
 
-			if (allSelected) {
-				this.instances.forEach(function(instance) {
-					instance.set({selected: false});
-				});
-			}
-			else {
-				this.instances.forEach(function(instance) {
-					instance.set({selected: true});
-				});
-			}
+			this.instances.forEach(function(instance) {
+				instance.set({selected: !allSelected});
+			});
+		},
+
+		deploy: function() {
+			var selectedInstances = this.instances.where({selected: true});
+			$("body").toggleClass("action-banner-active");
 		},
 
 		instanceDeployInfoChanged: function() {

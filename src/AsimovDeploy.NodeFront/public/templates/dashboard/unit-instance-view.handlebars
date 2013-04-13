@@ -1,11 +1,12 @@
 <td class="deploy-unit-instance-agent-name">{{agentName}}</td>
 <td>
-	<a href="test" data-bypass="1" class="select-version">{{version}}</a>
-	({{branch}})
 	{{#if deployInfo}}
 		<i class="icon-arrow-right icon-white"	/>
 		<a href="test" data-bypass="1" class="select-version">{{deployInfo.version}}</a>
-		({{deployInfo.branch}})
+		<span>({{deployInfo.branch}})</span>
+	{{else}}
+		<a href="test" data-bypass="1" class="select-version">{{version}}</a>
+		<span>({{branch}})</span>
 	{{/if}}
 </td>
 <td style="text-align: center">
@@ -30,8 +31,8 @@
 		</button>
 	</li>
 </td>
-<td style="width: 100%">
-	{{#if deployInfo}}
+<td style="width: 100%; border-left: none">
+	{{#if deployInfo2}}
 		<button class="btn-hover btn-deploy" data-loading-text="Deploying...">
 			<i class="icon-white icon-upload"></i> Deploy
 		</button>
