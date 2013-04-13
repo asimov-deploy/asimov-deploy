@@ -36,7 +36,7 @@ function($, Marionette, UnitInstanceView, UnitHeaderView) {
 		initialize: function() {
 			this.collection =  this.model.get("instances");
 			this.on("composite:model:rendered", this.createUnitHeaderView, this);
-			//this.$el.toggleClass("deploy-unit-collapsed", this.getToggleState());
+			this.$el.toggleClass("deploy-unit-collapsed", this.getToggleState());
 		},
 
 		onClose: function() {
