@@ -1,4 +1,9 @@
-<td class="deploy-unit-instance-agent-name">{{agentName}}</td>
+<td class="deploy-unit-instance-agent-name">
+	{{#if url}}
+		<a href="{{url}}" target="_blank"><i class="icon-share icon-white"/></a>
+	{{/if}}
+	{{agentName}}
+</td>
 <td>
 	{{#if deployInfo}}
 		<i class="icon-arrow-right icon-white"	/>
