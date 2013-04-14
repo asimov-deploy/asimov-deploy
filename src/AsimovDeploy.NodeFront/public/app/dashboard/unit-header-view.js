@@ -105,14 +105,12 @@ function($, _, Marionette, VersionDialogView, ConfirmDeployView) {
 			if (actionName == "Stop" && !confirm("Are you sure you want to stop selected deploy units?"))
 				return;
 
-			this.instances.forEach(function(instance) {
-
+			_.forEach(selectedInstances, function(instance) {
 				new AgentActionCommand({
 					agentName: instance.get("agentName"),
 					unitName: instance.get("unitName"),
 					actionName: actionName
 				}).save();
-
 			});
 		},
 
