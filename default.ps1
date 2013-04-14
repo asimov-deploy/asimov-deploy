@@ -3,7 +3,7 @@ properties {
 	$lib_dir = "$base_dir\libs"
 	$build_dir = "$base_dir\build_artifacts"
 	$buildartifacts_dir = "$build_dir\"
-	$sln_file = "$base_dir\AsimovDeploy.sln"	
+	$sln_file = "$base_dir\AsimovDeploy.sln"
 	$tools_dir = "$base_dir\tools"
 	$configuration = "Debug"
 	$drop_folder = "$base_dir\build_artifacts\drop"
@@ -113,9 +113,9 @@ task CreateOutputDirectories {
 task CopyToDropFolder {
 	Write-Host "Copying to drop folder $drop_folder"
 
-	New-Item "$drop_folder\$build" -Type directory | Out-Null
+	New-Item "$drop_folder\$script:version" -Type directory | Out-Null
 
-	Copy-Item "$build_dir\packages\*.zip" "$drop_folder\$build" -Force -ErrorAction SilentlyContinue
+	Copy-Item "$build_dir\packages\*.zip" "$drop_folder\$script:version" -Force -ErrorAction SilentlyContinue
 }
 
 task DoRelease -depends Compile, `
