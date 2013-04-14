@@ -23,6 +23,8 @@ task Init -depends Clean {
 	$script:version = "$version.$build"
 	$script:commit = $commit.substring(0,7)
 
+	Write-Host "##teamcity[buildNumber '$script:version']"
+
 	exec { git update-index --assume-unchanged "$base_dir\src\SharedAssemblyInfo.cs" }
 	(Get-Content "$base_dir\src\SharedAssemblyInfo.cs") |
 		Foreach-Object { $_ -replace "{version}", $script:version } |
