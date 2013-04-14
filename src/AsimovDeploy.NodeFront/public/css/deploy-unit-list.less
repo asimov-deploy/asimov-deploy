@@ -68,13 +68,17 @@
       opacity: 1;
     }
 
-    .buttonBackground(@btnDangerBackground, @btnDangerBackgroundHighlight);
+    .buttonBackground(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
   }
 }
 
 .deploy-unit-row td {
   border-left: none;
   border-top: 4px solid black;
+
+  .btn-small {
+    padding: 3px 14px;
+  }
 }
 
 .verify-step {
