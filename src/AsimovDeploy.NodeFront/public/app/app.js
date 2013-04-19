@@ -15,9 +15,9 @@
 ******************************************************************************/
 
 define([
-  "jquery",
-  "backbone",
-  "marionette"
+	"jquery",
+	"backbone",
+	"marionette"
 ],
 function($, Backbone, Marionette) {
 

@@ -22,10 +22,10 @@ var nconf = require('nconf');
 nconf.file({ file: 'config.json' });
 
 nconf.defaults({
-   "username": "deploy",
-   "password": "secret",
-   "name": "Deploy UI",
-   "port": 3333
+	"username": "deploy",
+	"password": "secret",
+	"name": "Deploy UI",
+	"port": 3333
 });
 
 var getAgent = function(param) {

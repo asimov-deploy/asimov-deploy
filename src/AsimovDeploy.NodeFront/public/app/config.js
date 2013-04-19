@@ -16,35 +16,35 @@
 
 require.config({
 
-  deps: ["main"],
+	deps: ["main"],
 
-  paths: {
-    // JavaScript folders
-    libs: "../libs",
+	paths: {
+		// JavaScript folders
+		libs: "../libs",
 
-    // Libraries
-    jquery: "../libs/jquery",
-    underscore: "../libs/lodash",
-    bootstrap: "../libs/bootstrap",
-    backbone: "../libs/backbone",
-    marionette: "../libs/backbone.marionette",
-    "backbone.babysitter": "../libs/backbone.babysitter",
-    "backbone.wreqr": "../libs/backbone.wreqr",
+		// Libraries
+		jquery: "../libs/jquery",
+		underscore: "../libs/lodash",
+		bootstrap: "../libs/bootstrap",
+		backbone: "../libs/backbone",
+		marionette: "../libs/backbone.marionette",
+		"backbone.babysitter": "../libs/backbone.babysitter",
+		"backbone.wreqr": "../libs/backbone.wreqr",
 
-    'socket.io': '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
-  },
+		'socket.io': '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
+	},
 
-  shim: {
-    backbone: {
-      deps: ["underscore", "jquery"],
-      exports: "Backbone"
-    },
+	shim: {
+		backbone: {
+			deps: ["underscore", "jquery"],
+			exports: "Backbone"
+		},
 
-    bootstrap: {
-       deps:["jquery"]
-    }
+		bootstrap: {
+			deps:["jquery"]
+		}
 
-  }
+	}
 
 });
 

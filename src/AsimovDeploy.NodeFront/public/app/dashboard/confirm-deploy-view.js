@@ -100,10 +100,10 @@ function($, _, Backbone, Marionette, AgentQueryCollection) {
 
 		deployUnitInstance: function(agentName, parameterValues) {
 			new DeployCommand({
-					agentName: agentName,
-					unitName: this.unitName,
-					versionId: this.deployInfo.versionId,
-					parameters: parameterValues
+				agentName: agentName,
+				unitName: this.unitName,
+				versionId: this.deployInfo.versionId,
+				parameters: parameterValues
 			}).save();
 		}
 

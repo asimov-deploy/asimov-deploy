@@ -91,13 +91,13 @@ module.exports = function(server, secure) {
 		var agentQueryUrl = req.query.url;
 
 		client.get(agentQueryUrl, function(err, req, _, data) {
-				if (err) {
-					res.json([]);
-					console.log(err);
-					return;
-				}
+			if (err) {
+				res.json([]);
+				console.log(err);
+				return;
+			}
 
-				res.json(data);
+			res.json(data);
 		});
 
 	});

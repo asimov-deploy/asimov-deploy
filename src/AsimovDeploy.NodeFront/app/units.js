@@ -41,10 +41,10 @@ module.exports = function(server) {
 				}
 
 				agentsResp.push({
-						name: agent.name,
-						loadBalancerEnabled: agent.loadBalancerEnabled,
-						loadBalancerId: agent.loadBalancerId,
-						units: units
+					name: agent.name,
+					loadBalancerEnabled: agent.loadBalancerEnabled,
+					loadBalancerId: agent.loadBalancerId,
+					units: units
 				});
 
 				done();
