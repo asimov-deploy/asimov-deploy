@@ -62,7 +62,7 @@ task CopyAsimovDeployWinAgentUpdater {
 task CopyAsimovDeployNodeFront {
 	cd "src\AsimovDeploy.NodeFront"
 	& npm install
-	& .\node_modules\.bin\bbb release
+	& node .\node_modules\grunt-cli\bin\grunt
 
 	Copy-Item "$base_dir\src\AsimovDeploy.NodeFront" "$build_dir\packages" -Recurse -Force -include $include
 
