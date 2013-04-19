@@ -3,9 +3,9 @@
   "description": "gui for asimov deploy",
   "author": "Ebay Sweden",
   "version": "1.0.0",
-
   "dependencies": {
     "async": ">= 0.1.22",
+    "grunt": "0.4.1",
     "express": "3.1.1",
     "restify": "2.3.5",
     "socket.io": "0.9.14",
@@ -13,12 +13,19 @@
     "jade": "0.28.2",
     "nconf": "~0.6.7"
   },
-
   "devDependencies": {
-    "bbb": "0.1.4",
-    "handlebars": "1.0.5beta"
+    "handlebars": "1.0.5beta",
+    "grunt": "~0.4.1",
+    "grunt-contrib-less": "~0.5.0",
+    "grunt-contrib-handlebars": "~0.5.8",
+    "grunt-contrib-requirejs": "~0.4.0",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-concat": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-cssmin": "~0.6.0",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-jshint": "~0.4.3"
   },
-
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"

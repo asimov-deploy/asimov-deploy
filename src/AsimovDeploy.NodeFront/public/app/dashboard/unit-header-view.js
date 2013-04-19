@@ -104,8 +104,10 @@ function($, _, Marionette, VersionDialogView, ConfirmDeployView) {
 			var selectedInstances = this.instances.where({selected: true});
 			var actionName = $(e.currentTarget).data("action-name");
 
-			if (actionName == "Stop" && !confirm("Are you sure you want to stop selected deploy units?"))
+			if (actionName === "Stop" && !confirm("Are you sure you want to stop selected deploy units?")) {
 				return;
+			}
+
 
 			_.forEach(selectedInstances, function(instance) {
 				new AgentActionCommand({

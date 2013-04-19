@@ -27,8 +27,9 @@ module.exports = function(server, secure) {
 		var client = restify.createJsonClient({ url: config.agents[0].url });
 
 		client.get('/loadbalancer/listHosts', function(err, req, agentResp, hostList) {
-			if (!hostList)
+			if (!hostList) {
 				return res.json({});
+			}
 
 			hostList.forEach(function(host) {
 				config.loadBalancerStatusChanged(host.id, host.enabled);

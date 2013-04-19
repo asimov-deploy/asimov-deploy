@@ -17,10 +17,11 @@
 define([
 	"jquery",
 	"underscore",
+	"backbone",
 	"marionette",
 	"../collections/agent-query-collection"
 ],
-function($, _, Marionette, AgentQueryCollection) {
+function($, _, Backbone, Marionette, AgentQueryCollection) {
 
 	var DeployCommand = Backbone.Model.extend({
 		url: "/deploy/deploy"

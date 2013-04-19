@@ -35,7 +35,7 @@ function($, _, Backbone, UnitInstance) {
 		},
 
 		addOrGetUnit: function(name, actions, tempList) {
-			unit = _.find(tempList, function (item) { return item.name == name; });
+			var unit = _.find(tempList, function (item) { return item.name === name; });
 			if (!unit) {
 				unit = {
 					name: name,
@@ -88,8 +88,8 @@ function($, _, Backbone, UnitInstance) {
 				});
 
 				tempList.sort(function(a, b) {
-					if (a.name > b.name) return 1;
-					if (b.name > a.name) return -1;
+					if (a.name > b.name) { return 1; }
+					if (b.name > a.name) { return -1; }
 					return 0;
 				});
 

@@ -21,7 +21,7 @@ function(Marionette) {
 
 	Marionette.Renderer = {
 		render: function (template, data) {
-			return Handlebars.templates[template](data);
+			return window.JST['public/templates/' + template + ".handlebars"](data);
 		}
 	};
 

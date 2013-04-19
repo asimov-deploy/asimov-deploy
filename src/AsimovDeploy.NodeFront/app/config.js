@@ -30,10 +30,10 @@ nconf.defaults({
 
 var getAgent = function(param) {
 	if (param.name) {
-		return _.find(agents, function(agent) { return agent.name == param.name; });
+		return _.find(agents, function(agent) { return agent.name === param.name; });
 	}
 	if (param.loadBalancerId) {
-		return _.find(agents, function(agent) { return agent.loadBalancerId == param.loadBalancerId; });
+		return _.find(agents, function(agent) { return agent.loadBalancerId === param.loadBalancerId; });
 	}
 };
 
