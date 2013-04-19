@@ -77,10 +77,6 @@ module.exports = function(grunt) {
       out: "dist/debug/require.js",
       name: "config",
       wrap: false
-    },
-
-    qunit: {
-      all: ["test/qunit/*.html"]
     }
 
   });
