@@ -50,6 +50,8 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
 
             using (var p = new Process())
             {
+				NodeFront.Notify(new VerifyProgressEvent() { started = true, unitName = _deployUnit.Name });
+
                 // Redirect the output stream of the child process.
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
