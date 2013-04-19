@@ -55,7 +55,7 @@ function($, Backbone, app) {
 			Backbone.history.navigate(route, false);
 
 			$(".nav li.active").removeClass("active");
-         $(".nav a[href='" + path + "']").parent().addClass("active");
+			$(".nav a[href='" + path + "']").parent().addClass("active");
 		},
 
 		getRoutePath: function(routeParts) {
@@ -63,13 +63,13 @@ function($, Backbone, app) {
 			var length = routeParts.length;
 			var route = base;
 
-			if (length > 1){
-			for(var i = 1; i < length; i++) {
-				var arg = routeParts[i];
-				if (arg){
-					route = route + "/" + arg;
+			if (length > 1) {
+				for(var i = 1; i < length; i++) {
+					var arg = routeParts[i];
+					if (arg) {
+						route = route + "/" + arg;
+					}
 				}
-			}
 			}
 
 			return route;

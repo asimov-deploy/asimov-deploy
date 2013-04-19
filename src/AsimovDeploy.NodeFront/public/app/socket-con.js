@@ -22,7 +22,7 @@ define([
 	app.addInitializer(function (){
 
 		var socket = io.connect();
-			socket.on('connect', function() {
+		socket.on('connect', function() {
 		});
 
 		socket.on('agent:log', function(data) {

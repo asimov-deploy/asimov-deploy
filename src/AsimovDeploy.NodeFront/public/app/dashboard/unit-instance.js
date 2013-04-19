@@ -15,49 +15,49 @@
 ******************************************************************************/
 
 define([
-   "jquery",
-   "backbone"
+	"jquery",
+	"backbone"
 ],
 function($, Backbone) {
 
-   return Backbone.Model.extend({
+	return Backbone.Model.extend({
 
-      deployStarted: function(data) {
-         this.set( {
-               version: data.version,
-               branch: data.branch,
-               status: "Deploying",
-               showSpinner: true,
-               verifySteps: null
-         });
-      },
+		deployStarted: function(data) {
+			this.set({
+				version: data.version,
+				branch: data.branch,
+				status: "Deploying",
+				showSpinner: true,
+				verifySteps: null
+			});
+		},
 
-      deployFailed: function(data) {
-         this.set( {
-               version: data.version,
-               branch: data.branch,
-               status: "DeployFailed",
-               showSpinner: false
-         });
-      },
+		deployFailed: function(data) {
+			this.set( {
+				version: data.version,
+				branch: data.branch,
+				status: "DeployFailed",
+				showSpinner: false
+			});
+		},
 
-      deployCompleted: function(data) {
-         this.set( {
-               version: data.version,
-               branch: data.branch,
-               status: data.status,
-               lastDeployed: "Deployed",
-               deployInfo: false,
-               showSpinner: false
-         });
-      },
+		deployCompleted: function(data) {
+			this.set( {
+				version: data.version,
+				branch: data.branch,
+				status: data.status,
+				lastDeployed: "Deployed",
+				deployInfo: false,
+				showSpinner: false
+			});
+		},
 
-      changeStatus: function(status) {
-         var update = { status: status, verifySteps: false };
-         update.showSpinner = status === 'Stopping' || status === "Starting";
-         this.set(update);
-      }
+		changeStatus: function(status) {
+			var update = { status: status, verifySteps: false };
+			update.showSpinner = status === 'Stopping' || status === "Starting";
+			this.set(update);
+		}
 
-   });
+	});
 
 });

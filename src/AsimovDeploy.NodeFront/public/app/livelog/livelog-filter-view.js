@@ -15,50 +15,50 @@
 ******************************************************************************/
 
 define([
-   "jquery",
-   "underscore",
-   "backbone",
-   "marionette",
-   "app"
+	"jquery",
+	"underscore",
+	"backbone",
+	"marionette",
+	"app"
 ],
 function($, _, Backbone, Marionette, app) {
 
-  var LiveLogFilterSelectionViewItem = Marionette.ItemView.extend({
-      template: "live-log-filter-item",
-      tagName: "li",
-      events: {
-         "click": "filterToggle"
-      },
+	var LiveLogFilterSelectionViewItem = Marionette.ItemView.extend({
+		template: "live-log-filter-item",
+		tagName: "li",
+		events: {
+			"click": "filterToggle"
+		},
 
-      initialize: function(){
-         this.model.on('change', this.render, this);
-      },
+		initialize: function(){
+			this.model.on('change', this.render, this);
+		},
 
-      filterToggle: function() {
-         var show = this.model.get('show') ? false : true;
-         this.model.set({show: show});
+		filterToggle: function() {
+			var show = this.model.get('show') ? false : true;
+			this.model.set({show: show});
 
-         $(this.el).toggleClass('show-filter-enabled', show);
+			$(this.el).toggleClass('show-filter-enabled', show);
 
-         this.trigger("filterToggle");
-      }
+			this.trigger("filterToggle");
+		}
 
-   });
+	});
 
-   return Marionette.CollectionView.extend({
-      itemView: LiveLogFilterSelectionViewItem,
+	return Marionette.CollectionView.extend({
+		itemView: LiveLogFilterSelectionViewItem,
 
-      initialize: function() {
-         this.on("itemview:filterToggle", this.filterToggle, this);
-      },
+		initialize: function() {
+			this.on("itemview:filterToggle", this.filterToggle, this);
+		},
 
-      filterToggle: function() {
-         var agents = this.collection.where({show: true});
-         var names = agents.length > 0 ? _.pluck(agents, ["id"]) : null;
+		filterToggle: function() {
+			var agents = this.collection.where({show: true});
+			var names = agents.length > 0 ? _.pluck(agents, ["id"]) : null;
 
-         app.vent.trigger("livelog:filterUpdated", names);
-      }
+			app.vent.trigger("livelog:filterUpdated", names);
+		}
 
-   });
+	});
 
 });

@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 		watch: {
 			node_src: {
 				files: ["*.js", "app/*.js"],
-				tasks: ["lint"]
+				tasks: ["jshint"]
 			},
 
 			ui_src: {
@@ -83,6 +83,11 @@ module.exports = function(grunt) {
 				curly: true,
 				eqeqeq: true,
 				eqnull: true,
+				bitwise: true,
+				camelcase: false,
+				forin: true,
+				immed: true,
+				indent: 4
 			},
 			uses_defaults: ['app/**/*.js'],
 			with_overrides: {

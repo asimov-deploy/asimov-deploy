@@ -15,73 +15,73 @@
 ******************************************************************************/
 
 define([
-   "jquery",
-   "underscore",
-   "backbone",
-   "marionette",
-   "app"
+	"jquery",
+	"underscore",
+	"backbone",
+	"marionette",
+	"app"
 ],
 function($, _, Backbone, Marionette, app) {
 
-   var LogItemView = Marionette.ItemView.extend({
-      template: "agent-log-item"
-   });
+	var LogItemView = Marionette.ItemView.extend({
+		template: "agent-log-item"
+	});
 
-   return Backbone.View.extend({
+	return Backbone.View.extend({
 
-      events: {
-         "dblclick": "toggleExpand"
-      },
+		events: {
+			"dblclick": "toggleExpand"
+		},
 
-      initialize: function() {
-         app.vent.on("agent:log", this.addLogItems, this);
-         app.vent.on("livelog:filterUpdated", this.filterUpdated, this);
-         this.views = [];
-      },
+		initialize: function() {
+			app.vent.on("agent:log", this.addLogItems, this);
+			app.vent.on("livelog:filterUpdated", this.filterUpdated, this);
+			this.views = [];
+		},
 
-      toggleExpand: function(){
-         var current = Math.round($(this.el).height()) + "px";
-         var min = $(this.el).css("min-height");
-         var max = $(this.el).css("max-height");
+		toggleExpand: function(){
+			var current = Math.round($(this.el).height()) + "px";
+			var min = $(this.el).css("min-height");
+			var max = $(this.el).css("max-height");
 
-         if (current === min) {
-            $(this.el).animate({ height: max}, 500);
-         } else {
-            $(this.el).animate({ height: min}, 500);
-         }
-      },
+			if (current === min) {
+				$(this.el).animate({ height: max}, 500);
+			} else {
+				$(this.el).animate({ height: min}, 500);
+			}
+		},
 
-      addLogItems: function(logItems) {
-         var models = _.map(logItems, function(item) { return new Backbone.Model(item); });
-         var newViews = _.map(models, function(m) { return new LogItemView({model: m}); });
+		addLogItems: function(logItems) {
+			var models = _.map(logItems, function(item) { return new Backbone.Model(item); });
+			var newViews = _.map(models, function(m) { return new LogItemView({model: m}); });
 
-         var fragment = document.createDocumentFragment();
-         _.each(newViews, function(view) {
-            this.views.push(view);
-            view.render();
-            fragment.appendChild(view.el);
-            this.showOrHideLogItemView(view);
-         }, this);
+			var fragment = document.createDocumentFragment();
+			_.each(newViews, function(view) {
+				this.views.push(view);
+				view.render();
+				fragment.appendChild(view.el);
+				this.showOrHideLogItemView(view);
+			}, this);
 
-         this.$el.append(fragment);
-         this.$el.scrollTop(this.$el[0].scrollHeight);
-      },
+			this.$el.append(fragment);
+			this.$el.scrollTop(this.$el[0].scrollHeight);
+		},
 
-      showOrHideLogItemView: function(view) {
-         if (!this.agentFilters) {
-            $(view.el).show(show);
-            return;
-         }
+		showOrHideLogItemView: function(view) {
+			if (!this.agentFilters) {
+				$(view.el).show(show);
+				return;
+			}
 
-         var show = _.contains(this.agentFilters, view.model.get('agentName'));
-         $(view.el).toggle(show);
-      },
+			var show = _.contains(this.agentFilters, view.model.get('agentName'));
+			$(view.el).toggle(show);
+		},
 
-      filterUpdated: function(agentFilters) {
-         this.agentFilters = agentFilters;
-         this.views.forEach(this.showOrHideLogItemView, this);
-      }
+		filterUpdated: function(agentFilters) {
+			this.agentFilters = agentFilters;
+			this.views.forEach(this.showOrHideLogItemView, this);
+		}
 
-   });
+	});
 
 });

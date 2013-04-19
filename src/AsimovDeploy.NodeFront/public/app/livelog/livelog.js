@@ -44,7 +44,7 @@ function($, _, Backbone, Marionette, app, LiveLogListView, LiveLogFilterView) {
 	// PUBLIC API
 	liveLog.bootstrap = function(agents) {
 		_.each(agents, function(item) {
-				agentsCollection.add(new Backbone.Model({ id: item }));
+			agentsCollection.add(new Backbone.Model({ id: item }));
 		});
 	};
 

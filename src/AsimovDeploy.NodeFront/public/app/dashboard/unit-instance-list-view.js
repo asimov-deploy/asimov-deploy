@@ -48,12 +48,12 @@ function($, Backbone, Marionette, UnitInstanceView, UnitHeaderView) {
 			var element = this.$el.find(".deploy-unit-row");
 
 			var view = new UnitHeaderView({
-					el: element,
-					instances: this.collection,
-					model: new Backbone.Model({
-						name: this.model.get('name'),
-						actions: this.model.get('actions')
-					})
+				el: element,
+				instances: this.collection,
+				model: new Backbone.Model({
+					name: this.model.get('name'),
+					actions: this.model.get('actions')
+				})
 			});
 
 			view.render();
