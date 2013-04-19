@@ -27,7 +27,9 @@ require.config({
     underscore: "../libs/lodash",
     bootstrap: "../libs/bootstrap",
     backbone: "../libs/backbone",
-    marionette: "../libs/backbone.marionette"
+    marionette: "../libs/backbone.marionette",
+    "backbone.babysitter": "../libs/backbone.babysitter",
+    "backbone.wreqr": "../libs/backbone.wreqr"
   },
 
   shim: {

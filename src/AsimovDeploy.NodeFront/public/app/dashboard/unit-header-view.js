@@ -42,8 +42,10 @@ function($, _, Marionette, VersionDialogView, ConfirmDeployView) {
 
 		initialize: function(options) {
 			this.instances = options.instances;
-			this.instances.on("change:selected", this.selectionChanged, this);
-			this.model.on("change", this.render, this);
+
+			this.listenTo(this.instances, "change:selected", this.selectionChanged, this);
+			this.listenTo(this.model, "change", this.render, this);
+
 			this.selectionChanged();
 		},
 
