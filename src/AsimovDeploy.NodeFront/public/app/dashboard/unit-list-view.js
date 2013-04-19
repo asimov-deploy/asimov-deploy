@@ -36,7 +36,7 @@ function($, Marionette, UnitInstanceListView, app) {
 		initialize: function(options) {
 			this.unfiltered = options.collection;
 			this.collection = new this.collection.constructor(this.collection.models, this.collection.options);
-			this.bindTo(this.unfiltered, "reset", this.applyFilter, this);
+			this.listenTo(this.unfiltered, "reset", this.applyFilter, this);
 			this.loadFilterText();
 
 			if (this.collection.length > 0) {

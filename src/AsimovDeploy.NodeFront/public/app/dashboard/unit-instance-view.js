@@ -38,7 +38,7 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
         initialize: function() {
             _.bindAll(this);
 
-            this.model.on("change", this.render, this);
+            this.listenTo(this.model, "change", this.render, this);
         },
 
         verifyLog: function(e) {
