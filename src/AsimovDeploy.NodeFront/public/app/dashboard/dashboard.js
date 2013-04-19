@@ -68,7 +68,7 @@ function(_, app, UnitListView, UnitCollection) {
 		unit.set({verifySteps: steps});
 	});
 
-	app.vent.on("dashboard:show", function(filter) {
+	app.vent.on("dashboard:show", function() {
 
 		var view = new UnitListView({ collection: unitCollection });
 		app.mainRegion.show(view);

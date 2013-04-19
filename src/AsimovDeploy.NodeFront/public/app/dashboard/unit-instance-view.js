@@ -56,7 +56,7 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
             deployLog.show();
         },
 
-        toggleSelection: function(e) {
+        toggleSelection: function() {
             var selected = this.model.get('selected') || false;
             this.model.set({ selected: !selected });
         }

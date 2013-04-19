@@ -17,7 +17,6 @@
 var config = require('./config.js');
 var async = require('async');
 var restify = require("restify");
-var _ = require('underscore');
 
 module.exports = function(server) {
 

@@ -15,12 +15,11 @@
 ******************************************************************************/
 
 define([
-    "jquery",
-    "marionette",
-    "./unit-instance-list-view",
-    "app"
+	"jquery",
+	"marionette",
+	"./unit-instance-list-view"
 ],
-function($, Marionette, UnitInstanceListView, app) {
+function($, Marionette, UnitInstanceListView) {
 
 	return Marionette.CompositeView.extend({
 		itemView: UnitInstanceListView,
