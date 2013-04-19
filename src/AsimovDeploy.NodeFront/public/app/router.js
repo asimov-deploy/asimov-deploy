@@ -15,6 +15,7 @@
 ******************************************************************************/
 
 define([
+	"jquery",
 	"backbone",
 	"app",
 	"dashboard/dashboard",
@@ -22,7 +23,7 @@ define([
 	"agentlist"
 ],
 
-function(Backbone, app) {
+function($, Backbone, app) {
 
 	var AppRouter = Backbone.Router.extend({
 		routes: {
