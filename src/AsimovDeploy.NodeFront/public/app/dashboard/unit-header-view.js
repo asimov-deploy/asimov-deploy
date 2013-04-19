@@ -17,11 +17,12 @@
 define([
 	"jquery",
 	"underscore",
+	"backbone",
 	"marionette",
 	"./version-dialog-view",
 	"./confirm-deploy-view"
 ],
-function($, _, Marionette, VersionDialogView, ConfirmDeployView) {
+function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 
 	var AgentActionCommand = Backbone.Model.extend({
 		url: "/agent/action"

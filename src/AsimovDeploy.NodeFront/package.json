@@ -14,7 +14,6 @@
     "nconf": "~0.6.7"
   },
   "devDependencies": {
-    "handlebars": "1.0.5beta",
     "grunt": "~0.4.1",
     "grunt-contrib-less": "~0.5.0",
     "grunt-contrib-handlebars": "~0.5.8",

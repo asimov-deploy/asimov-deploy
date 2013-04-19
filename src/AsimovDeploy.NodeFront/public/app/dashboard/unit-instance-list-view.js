@@ -16,11 +16,12 @@
 
 define([
     "jquery",
+    "backbone",
     "marionette",
     "./unit-instance-view",
     "./unit-header-view"
 ],
-function($, Marionette, UnitInstanceView, UnitHeaderView) {
+function($, Backbone, Marionette, UnitInstanceView, UnitHeaderView) {
 
 
 	return Marionette.CompositeView.extend({
@@ -60,11 +61,12 @@ function($, Marionette, UnitInstanceView, UnitHeaderView) {
 		},
 
 		getToggleState: function() {
-			if (!localStorage)
+			if (!localStorage) {
 				return true;
+			}
 
 			var value = localStorage.getItem('deploy-unit-collapsed-state-' + this.model.get('name'));
-			return value ? value == "true" : true;
+			return value ? value === "true" : true;
 		},
 
 		toggleExpand: function(e) {

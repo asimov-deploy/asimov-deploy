@@ -15,8 +15,9 @@
 ******************************************************************************/
 
 define([
-	"app"
-], function(app) {
+	"app",
+	"socket.io"
+], function(app, io) {
 
 	app.addInitializer(function (){
 

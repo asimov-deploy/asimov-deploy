@@ -54,7 +54,7 @@ function($, Backbone) {
 
       changeStatus: function(status) {
          var update = { status: status, verifySteps: false };
-         update.showSpinner = status === 'Stopping' || status == "Starting";
+         update.showSpinner = status === 'Stopping' || status === "Starting";
          this.set(update);
       }
 

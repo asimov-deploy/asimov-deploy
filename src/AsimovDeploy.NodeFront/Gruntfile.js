@@ -94,7 +94,10 @@ module.exports = function(grunt) {
 						define: true,
 						require: true,
 						window: true,
-						document: true
+						document: true,
+						confirm: true,
+						console: true,
+						Handlebars: true
 					},
 				},
 				files: {
@@ -117,7 +120,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
 	// Default task(s).
-	grunt.registerTask('default', ['clean', 'requirejs', 'handlebars', 'concat']);
+	grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'less', 'handlebars', 'concat']);
 
 	grunt.registerTask("release", ['default', 'less', 'cssmin', 'uglify']);
 

@@ -29,7 +29,9 @@ require.config({
     backbone: "../libs/backbone",
     marionette: "../libs/backbone.marionette",
     "backbone.babysitter": "../libs/backbone.babysitter",
-    "backbone.wreqr": "../libs/backbone.wreqr"
+    "backbone.wreqr": "../libs/backbone.wreqr",
+
+    'socket.io': '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
   },
 
   shim: {
