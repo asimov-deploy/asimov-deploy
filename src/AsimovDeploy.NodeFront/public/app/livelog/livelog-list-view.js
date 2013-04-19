@@ -69,7 +69,7 @@ function($, _, Backbone, Marionette, app) {
 
 		showOrHideLogItemView: function(view) {
 			if (!this.agentFilters) {
-				$(view.el).show(show);
+				$(view.el).show();
 				return;
 			}
 

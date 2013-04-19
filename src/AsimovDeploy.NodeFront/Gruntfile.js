@@ -87,7 +87,28 @@ module.exports = function(grunt) {
 				camelcase: false,
 				forin: true,
 				immed: true,
-				indent: 4
+				indent: 4,
+				latedef: true,
+				newcap: true,
+				noarg: true,
+				noempty: true,
+				nonew: false,
+				plusplus: false,
+				regexp: true,
+				undef: true,
+				unused: true,
+				trailing: true,
+				maxparams: 10,
+				maxdepth: 3,
+				maxstatements: 50,
+				maxcomplexity: 5,
+				smarttabs: true,
+				globals: {
+					require: true,
+					console: true,
+					module: true,
+					clientSockets: true
+				}
 			},
 			uses_defaults: ['app/**/*.js'],
 			with_overrides: {

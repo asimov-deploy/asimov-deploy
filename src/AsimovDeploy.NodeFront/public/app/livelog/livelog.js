@@ -31,7 +31,8 @@ function($, _, Backbone, Marionette, app, LiveLogListView, LiveLogFilterView) {
 
 	app.addInitializer(function() {
 
-		var agentLogView = new LiveLogListView({ el: $(".live-log") });
+		new LiveLogListView({ el: $(".live-log") });
+
 		var filterView = new LiveLogFilterView({ collection: agentsCollection, el: $(".live-log-filter-selection") });
 
 		$(".btn-live-log-filter").click(function(event) {
