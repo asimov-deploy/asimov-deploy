@@ -37,8 +37,8 @@ app.configure(function(){
 
 app.use("/app", express["static"]( __dirname + '/public/app' ));
 
-app.use("/css", express["static"]( __dirname + '/dist/debug' ));
 app.use("/css", express["static"]( __dirname + '/dist/release' ));
+app.use("/css", express["static"]( __dirname + '/dist/debug' ));
 
 app.use("/img", express["static"]( __dirname + '/public/img' ));
 
