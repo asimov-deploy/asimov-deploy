@@ -78,7 +78,6 @@ namespace AsimovDeploy.WinAgent.Framework.WebSiteManagement
                 var site = serverManager.Sites.SingleOrDefault(x => x.Name == _siteName);
                 if (site == null)
                 {
-                    _log.ErrorFormat("Website not found: {0}", _siteName);
                     return null;
                 }
 
