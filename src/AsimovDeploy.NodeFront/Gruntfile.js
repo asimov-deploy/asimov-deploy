@@ -148,6 +148,6 @@ module.exports = function(grunt) {
 	// Default task(s).
 	grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'less', 'handlebars', 'concat']);
 
-	grunt.registerTask("release", ['default', 'less', 'cssmin', 'uglify']);
+	grunt.registerTask("release", ['default', 'cssmin', 'uglify']);
 
 };
