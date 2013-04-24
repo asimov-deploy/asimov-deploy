@@ -46,7 +46,7 @@ function($, _, Backbone, Marionette, AgentQueryCollection) {
 				unitName: this.unitName
 			});
 
-			this.parameters.on("reset", this.parametersLoaded, this);
+			this.parameters.on("add", this.parametersLoaded, this);
 			this.model.on("change", this.render, this);
 		},
 
