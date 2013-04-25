@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using AsimovDeploy.WinAgent.Framework.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
