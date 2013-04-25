@@ -14,10 +14,12 @@
 * limitations under the License.
 ******************************************************************************/
 
-using AsimovDeploy.WinAgent.Framework.Configuration;
+using System.IO;
 using AsimovDeploy.WinAgent.Framework.Models;
 using Nancy.Bootstrappers.StructureMap;
+using Nancy.Conventions;
 using Nancy.Diagnostics;
+using Nancy.Responses;
 using StructureMap;
 
 namespace AsimovDeploy.WinAgent.Web.Setup
@@ -29,6 +31,13 @@ namespace AsimovDeploy.WinAgent.Web.Setup
             base.ApplicationStartup(container, pipelines);
 
             var config = container.GetInstance<IAsimovConfig>();
+	        var tempReportsFolder = Path.Combine(config.TempFolder, "AsimovTempReports");
+
+			GenericFileResponse.SafePaths.Add(tempReportsFolder);
+
+			Conventions.StaticContentsConventions.Add(
+				StaticContentConventionBuilder.AddDirectory("temp-reports", tempReportsFolder)
+			);
 
             pipelines.BeforeRequest.AddItemToEndOfPipeline(ctx =>
             {
@@ -55,3 +64,4 @@ namespace AsimovDeploy.WinAgent.Web.Setup
         }
     }
 }
+
