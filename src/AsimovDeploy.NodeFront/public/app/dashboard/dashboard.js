@@ -57,7 +57,6 @@ function(_, app, UnitListView, UnitCollection) {
 	});
 
 	app.vent.on("agent:event:verify-progress", function(data) {
-		console.log(data);
 		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
 		var steps = unit.get("verifySteps") || [];
 
