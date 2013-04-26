@@ -41,19 +41,25 @@
 	{{/if}}
 
 	{{#if verifySteps}}
-		<a href="verify-log" data-bypass="1" class="verify-log-link">Verifying: </a>
+		<div class="unit-instance-verify-glimps">
+			<a href="verify-log" data-bypass="1" class="verify-log-link">Verifying: </a>
 
-		{{#each verifySteps}}
-			{{#if completed}}
-				<i class="icon-ok" />
-			{{else}}
-				{{#if pass}}
-					<div class="verify-step btn-success" title="{{message}}" />
-				{{else}}
-					<div class="verify-step btn-danger" title="{{message}}" />
+			{{#each verifySteps}}
+				{{#if test}}
+					{{#if test.pass}}
+						<div class="verify-step btn-success" title="{{test.message}}" />
+					{{else}}
+						<div class="verify-step btn-danger" title="{{test.message}}" />
+					{{/if}}
 				{{/if}}
-			{{/if}}
-		{{/each}}
+				{{#if completed}}
+					<i class="icon-ok icon-white" />
+				{{/if}}
+				{{#if report}}
+					<span class="verify-report"><a href="{{report.url}}" target="_blank">{{report.title}}</a></span>
+				{{/if}}
+			{{/each}}
+		</div>
 	{{/if}}
 </td>
 <td style="border-left: none;">
