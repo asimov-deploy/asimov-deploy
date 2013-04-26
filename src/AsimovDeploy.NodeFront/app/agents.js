@@ -19,6 +19,7 @@ module.exports = function(server, secure) {
 	var config = require('./config.js');
 	var agentCommand = require('./agent-command.js');
 	var restify = require("restify");
+	var async = require("async");
 
 	server.get("/agents/list", function(req, res) {
 
@@ -75,9 +76,42 @@ module.exports = function(server, secure) {
 		res.json("ok");
 	});
 
-	server.post("/deploy/deploy", secure, function(req, res) {
-		agentCommand.send(req.body.agentName, '/deploy/deploy', req.body);
-		res.json('ok');
+	server.post("/deploy/deploy", secure, function (req, res) {
+	    if (req.body.agentName == null || req.body.agentName == "" || req.body.agentName == "*") {
+		var requestBody = req.body;
+
+	        async.forEach(config.agents, function (agent, done) {
+	            if (agent.dead) {
+	                done();
+	                return;
+	            }
+
+	            var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
+
+	            client.get('/units/list', function (err, req, _, units) {
+	                if (err) {
+	                    agent.dead = true;
+	                    done();
+	                    return;
+	                }
+
+	                for (i = 0; i < units.length; i++) {
+	                    var item = units[i];
+	                    if (item.name == requestBody.unitName) {
+	                        agentCommand.send(agent.name, '/deploy/deploy', requestBody);
+	                    }
+	                }
+
+	                done();
+	            });
+
+	        }, function () {
+	            res.json('ok');
+	        });
+	    } else {
+	        agentCommand.send(req.body.agentName, '/deploy/deploy', req.body);
+                res.json('ok');
+	    }
 	});
 
 	server.post("/agent/action", secure, function(req, res) {
