@@ -62,7 +62,9 @@ namespace AsimovDeploy.WinAgent.Framework.Common
                 {
                     using (var writer = new StreamWriter(requestStream))
                     {
-                        new JsonSerializer().Serialize(writer, message.Data);
+	                    var serializer = new JsonSerializer();
+						serializer.NullValueHandling = NullValueHandling.Ignore;
+	                    serializer.Serialize(writer, message.Data);
                     }
                 }
 

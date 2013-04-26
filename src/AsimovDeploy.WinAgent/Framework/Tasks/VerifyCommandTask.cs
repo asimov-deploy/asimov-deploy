@@ -15,14 +15,15 @@
 ******************************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using AsimovDeploy.WinAgent.Framework.Common;
-using AsimovDeploy.WinAgent.Framework.Configuration;
 using AsimovDeploy.WinAgent.Framework.Events;
-using AsimovDeploy.WinAgent.Framework.Models;
 using AsimovDeploy.WinAgent.Framework.Models.Units;
 using Ionic.Zip;
 
@@ -30,27 +31,25 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
 {
     public class VerifyCommandTask : AsimovTask
     {
-        private WebSiteDeployUnit _deployUnit;
-        private bool allPassed;
-        private string _zipPath;
-        private string _command;
-
-        public VerifyCommandTask(WebSiteDeployUnit webSiteDeployUnit, string zipPath, string command)
+        private readonly WebSiteDeployUnit deployUnit;
+	    private readonly string zipPath;
+	    private readonly string command;
+	    private dynamic report;
+	    
+	    public VerifyCommandTask(WebSiteDeployUnit webSiteDeployUnit, string zipPath, string command)
         {
-            _deployUnit = webSiteDeployUnit;
-            _zipPath = zipPath;
-            _command = command;
+            deployUnit = webSiteDeployUnit;
+            this.zipPath = zipPath;
+            this.command = command;
         }
 
         protected override void Execute()
         {
             CleanTempFolderAndExtractVerifyPackage();
 
-            allPassed = true;
-
             using (var p = new Process())
             {
-				NodeFront.Notify(new VerifyProgressEvent() { started = true, unitName = _deployUnit.Name });
+				NodeFront.Notify(new VerifyProgressEvent(deployUnit.Name) { started = true });
 
                 // Redirect the output stream of the child process.
                 p.StartInfo.UseShellExecute = false;
@@ -67,42 +66,36 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
 
                 p.Start();
 
-                ListenToStream(p.StandardOutput, CommandStandardOutput,  () => Log.Debug("Verify command output ended"));
+                ListenToStream(p.StandardOutput, ParseVerifyCommandOutput,  () => Log.Debug("Verify command output ended"));
                 ListenToStream(p.StandardError, line => Log.Error(line), () => Log.Debug("Verify command error output ended"));
 
                 p.WaitForExit((int)TimeSpan.FromMinutes(10).TotalMilliseconds);
-
-                if (p.ExitCode != 0)
-                {
-                    NodeFront.Notify(new VerifyProgressEvent() { pass = false, unitName = _deployUnit.Name, message = "Verify command failed" });
-                }
-
+				
                 if (!p.HasExited)
                     p.Kill();
 
-                NodeFront.Notify(new VerifyProgressEvent() { completed = true, unitName = _deployUnit.Name, pass = allPassed });
+				NodeFront.Notify(new VerifyProgressEvent(deployUnit.Name) { completed = true, report = report });
             }
         }
 
-
         private void CleanTempFolderAndExtractVerifyPackage()
         {
-            DirectoryUtil.Clean(Config.TempFolder);
+			DirectoryUtil.Clean(Config.TempFolder);
 
-            var webAppInfo = _deployUnit.GetWebServer().GetInfo();
+			var webAppInfo = deployUnit.GetWebServer().GetInfo();
 
-            var zipPath = Path.Combine(webAppInfo.PhysicalPath, _zipPath);
+			var zipPath = Path.Combine(webAppInfo.PhysicalPath, this.zipPath);
 
-            using (var zipFile = ZipFile.Read(zipPath))
-            {
-                zipFile.ExtractAll(Config.TempFolder);
-            }
+			using (var zipFile = ZipFile.Read(zipPath))
+			{
+				zipFile.ExtractAll(Config.TempFolder);
+			}
         }
 
         private string[] GetCommandParts()
         {
-            var siteUrl = _deployUnit.SiteUrl.Replace("localhost", HostNameUtil.GetFullHostName());
-            var verifyCommand = _command.Replace("%SITE_URL%", siteUrl);
+            var siteUrl = deployUnit.SiteUrl.Replace("localhost", HostNameUtil.GetFullHostName());
+            var verifyCommand = command.Replace("%SITE_URL%", siteUrl);
             var commandParts = verifyCommand.Split(new[] {' '});
             return commandParts;
         }
@@ -129,23 +122,54 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
         }
 
 
-        private void CommandStandardOutput(string line)
+        private void ParseVerifyCommandOutput(string line)
         {
+			//TODO: PASS / FAIL should also use ##asimov-deploy syntax
             if (line.Contains("PASS") || line.Contains("FAIL"))
             {
-                var evt = new VerifyProgressEvent()
-                              {
-                                  pass = line.Contains("PASS"),
-                                  message = line,
-                                  completed = false,
-                                  unitName = _deployUnit.Name
-                              };
-
-                allPassed = evt.pass && allPassed;
-                NodeFront.Notify(evt);
+                NodeFront.Notify(new VerifyProgressEvent(deployUnit.Name)
+                {
+					test = new { pass = line.Contains("PASS"), message = line }
+                });
             }
 
-            Log.Debug(line);
+			if (line.StartsWith("##asimov-deploy"))
+			{
+				HandleAssimovMessage(line);
+			}
+
+	        Log.Debug(line);
         }
+
+		private void HandleAssimovMessage(string line)
+	    {
+		    var keys = ConsoleOutputParseUtil.ParseKeyValueString(line);
+
+			if (keys.ContainsKey("image"))
+			{
+				NodeFront.Notify(new VerifyProgressEvent(deployUnit.Name)
+				{
+					image = new
+					{
+						title = keys["title"],
+						url = GetUrlForFileInTempReportsFolder(keys["image"])
+					}
+				});
+			}
+
+			if (keys.ContainsKey("report"))
+			{
+				report = new
+				{
+					title = keys["title"],
+					url = GetUrlForFileInTempReportsFolder(keys["report"])
+				};
+			}
+	    }
+
+	    private string GetUrlForFileInTempReportsFolder(string file)
+	    {
+		    return new Uri(Config.WebControlUrl, "temp-reports/" + file).ToString();
+	    }
     }
 }

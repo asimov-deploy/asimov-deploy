@@ -47,8 +47,8 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
                 Log.Warn("No verify urls configured for site");
                 return;
             }
-            
-            NodeFront.Notify(new VerifyProgressEvent() { started = true, unitName = _deployUnit.Name });
+
+			NodeFront.Notify(new VerifyProgressEvent(_deployUnit.Name) { started = true });
 
             foreach (string url in _urls)
             {
@@ -58,18 +58,20 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
                 }
                 catch (Exception ex)
                 {
-                    NodeFront.Notify(new VerifyProgressEvent()
+					NodeFront.Notify(new VerifyProgressEvent(_deployUnit.Name)
                     {
-                        pass = false,
-                        message = string.Format("Could not load url: {0} - {1}", url, ex.Message),
-                        completed = false,
-                        unitName = _deployUnit.Name
+                        test = new 
+                        {
+	                        pass = false, 
+							message = string.Format("Could not load url: {0} - {1}", url, ex.Message)
+                        }
                     });
+
                     return;
                 }
             }
 
-            NodeFront.Notify(new VerifyProgressEvent() { completed = true, unitName = _deployUnit.Name, pass = true });
+			NodeFront.Notify(new VerifyProgressEvent(_deployUnit.Name) { completed = true });
         }
 
         private bool DoWebRequest(string url, string siteUrl)
@@ -81,12 +83,13 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
 
             using (var resp = (HttpWebResponse) request.GetResponse())
             {
-                NodeFront.Notify(new VerifyProgressEvent()
+				NodeFront.Notify(new VerifyProgressEvent(_deployUnit.Name)
                 {
-                    pass = resp.StatusCode == HttpStatusCode.OK,
-                    message = string.Format("{0} - {1}", url, resp.StatusCode),
-                    completed = false,
-                    unitName = _deployUnit.Name
+					test = new 
+                    {
+	                    pass = resp.StatusCode == HttpStatusCode.OK, 
+						message = string.Format("{0} - {1}", url, resp.StatusCode)
+                    }
                 });
             }
 

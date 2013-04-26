@@ -57,11 +57,12 @@ function(_, app, UnitListView, UnitCollection) {
 	});
 
 	app.vent.on("agent:event:verify-progress", function(data) {
+		console.log(data);
 		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
 		var steps = unit.get("verifySteps") || [];
 
 		steps = steps.slice(0);
-		steps.push({ pass: data.pass, completed: data.completed, message: data.message });
+		steps.push(data);
 
 		if (data.started) { steps = []; }
 
