@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
 using System.ServiceProcess;
-using System.Text.RegularExpressions;
 using System.Threading;
-using Ionic.Zip;
-using Newtonsoft.Json;
+using AsimovDeploy.WinAgentUpdater.InfoCollector;
+using AsimovDeploy.WinAgentUpdater.Update;
 using log4net;
 
 namespace AsimovDeploy.WinAgentUpdater
@@ -22,6 +17,10 @@ namespace AsimovDeploy.WinAgentUpdater
         private string _watchFolder;
         private int _port;
         private string _installDir;
+        private string _nodeFrontUrl;
+
+        private InfoCollector.InfoCollector _collector;
+
         private const int interval = 30000;
         
         public void Start()
@@ -29,6 +28,12 @@ namespace AsimovDeploy.WinAgentUpdater
             _watchFolder = ConfigurationManager.AppSettings["Asimov.WatchFolder"];
             _port = Int32.Parse(ConfigurationManager.AppSettings["Asimov.WebPort"]);
             _installDir = ConfigurationManager.AppSettings["Asimov.InstallDir"];
+
+            _nodeFrontUrl = ConfigurationManager.AppSettings["Asimov.NodeFrontUrl"];
+
+            _collector = string.IsNullOrWhiteSpace(_nodeFrontUrl) ?
+                    (InfoCollector.InfoCollector) new FileSystemInfoCollector(_watchFolder, _port) :
+                   (InfoCollector.InfoCollector) new AsimovInfoCollector(_nodeFrontUrl, _port);
 
             _timer = new Timer(TimerTick, null, 0, interval);
         }
@@ -46,34 +51,29 @@ namespace AsimovDeploy.WinAgentUpdater
 
             try
             {
-                var updateInfo = new UpdateInfoCollector(_watchFolder, _port).Collect();
+                var updateInfo = _collector.Collect();
 
                 _log.InfoFormat(updateInfo.ToString());
 
+                if (!updateInfo.NeedsAnyUpdate())
+                    return;
+
                 using (var service = new ServiceController("AsimovDeploy.WinAgent"))
                 {
-                    if (!updateInfo.NeedsAnyUpdate())
-                        return;
-
                     StopService(service);
                     
                     if (updateInfo.NewBuildFound())
                     {
                         UpdateWinAgentWithNewBuild(updateInfo.LastBuild);
-                        if (updateInfo.HasLastConfig)
-                        {
-                            UpdateWinAgentConfig(updateInfo.LastConfig);
-                        }
                     }
 
-                    if (updateInfo.NewConfigFound())
+                    if (updateInfo.NewBuildFound() || updateInfo.NewConfigFound())
                     {
                         UpdateWinAgentConfig(updateInfo.LastConfig);
                     }
 
                     StartService(service);
                 }
-
             }
             catch(Exception ex)
             {
@@ -85,23 +85,24 @@ namespace AsimovDeploy.WinAgentUpdater
             }
         }
 
-        private void UpdateWinAgentConfig(AsimovConfigUpdate lastConfig)
+        private void UpdateWinAgentConfig(IConfigUpdate lastConfig)
         {
             _log.Info("Updating config to version " + lastConfig.Version);
 
             var configDir = Path.Combine(_installDir, "ConfigFiles");
 
             CleanFolder(configDir);
-            CopyNewBuildToInstallDir(configDir, lastConfig.FilePath);
+
+            lastConfig.CopyNewBuildToInstallDir(configDir);
         }
 
-        private void UpdateWinAgentWithNewBuild(AsimovVersion lastBuild)
+        private void UpdateWinAgentWithNewBuild(IAgentUpdate lastBuild)
         {
             _log.InfoFormat("Installing new build {0}", lastBuild.Version);
             
             CleanFolder(_installDir);
 
-            CopyNewBuildToInstallDir(_installDir, lastBuild.FilePath);
+            lastBuild.CopyNewBuildToInstallDir(_installDir);
         }
 
         private static void StopService(ServiceController serviceController)
@@ -128,14 +129,6 @@ namespace AsimovDeploy.WinAgentUpdater
             _log.Info("Service  started");
         }
 
-        private void CopyNewBuildToInstallDir(string installDir, string filePath)
-        {
-            using (var zipFile = ZipFile.Read(filePath))
-            {
-               zipFile.ExtractAll(installDir);
-            }
-        }
-
         private void CleanFolder(string destinationFolder)
         {
             if (destinationFolder.Contains("Asimov") == false)
@@ -152,9 +145,5 @@ namespace AsimovDeploy.WinAgentUpdater
 
             foreach (DirectoryInfo subDirectory in dir.GetDirectories()) subDirectory.Delete(true);
         }
-
-       
     }
-
-   
 }

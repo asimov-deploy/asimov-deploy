@@ -1,9 +1,11 @@
-﻿namespace AsimovDeploy.WinAgentUpdater
+﻿using AsimovDeploy.WinAgentUpdater.Update;
+
+namespace AsimovDeploy.WinAgentUpdater
 {
     public class UpdateInfo
     {
-        public AsimovVersion LastBuild { get; set; }
-        public AsimovConfigUpdate LastConfig { get; set; }
+        public IAgentUpdate LastBuild { get; set; }
+        public IConfigUpdate LastConfig { get; set; }
         public AgentVersionInfo Current { get; set; }
 
         public bool HasLastBuild { get { return LastBuild != null; }}
@@ -31,7 +33,5 @@
 
 
         }
-
-
     }
 }
