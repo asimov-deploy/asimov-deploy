@@ -33,7 +33,5 @@ namespace AsimovDeploy.WinAgentUpdater
 
 
         }
-
-
     }
 }

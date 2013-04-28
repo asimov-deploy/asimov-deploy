@@ -2,10 +2,11 @@ using System;
 using System.Net;
 using AsimovDeploy.WinAgentUpdater.Update;
 using Newtonsoft.Json.Linq;
-using log4net;
 
-namespace AsimovDeploy.WinAgentUpdater.InfoCollector {
-    public class AsimovInfoCollector : InfoCollector {
+namespace AsimovDeploy.WinAgentUpdater.InfoCollector
+{
+    public class AsimovInfoCollector : InfoCollector
+    {
         private readonly Uri _nodeFrontUrl;
         private readonly WebClient _webClient;
 
@@ -15,7 +16,8 @@ namespace AsimovDeploy.WinAgentUpdater.InfoCollector {
             _webClient = new WebClient();
         }
 
-        protected override IConfigUpdate GetLatestBuild() {
+        protected override IConfigUpdate GetLatestBuild()
+        {
             try
             {
                 var path = "/update/config/";
@@ -28,7 +30,8 @@ namespace AsimovDeploy.WinAgentUpdater.InfoCollector {
             }
         }
 
-        protected override IAgentUpdate GetLatestVersion() {
+        protected override IAgentUpdate GetLatestVersion()
+        {
             try
             {
                 var path = "/update/agent/";
@@ -41,7 +44,8 @@ namespace AsimovDeploy.WinAgentUpdater.InfoCollector {
             }
         }
 
-        private dynamic DownloadJson(string uri) {
+        private dynamic DownloadJson(string uri)
+        {
             var latestBuildUri = new Uri(_nodeFrontUrl, uri);
             var data = _webClient.DownloadString(latestBuildUri);
             return JObject.Parse(data);

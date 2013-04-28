@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
 using System.ServiceProcess;
-using System.Text.RegularExpressions;
 using System.Threading;
 using AsimovDeploy.WinAgentUpdater.InfoCollector;
 using AsimovDeploy.WinAgentUpdater.Update;
-using Ionic.Zip;
-using Newtonsoft.Json;
 using log4net;
 
 namespace AsimovDeploy.WinAgentUpdater

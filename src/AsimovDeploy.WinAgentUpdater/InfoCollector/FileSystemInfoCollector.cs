@@ -7,7 +7,8 @@ using AsimovDeploy.WinAgentUpdater.Update;
 
 namespace AsimovDeploy.WinAgentUpdater.InfoCollector
 {
-    public class FileSystemInfoCollector : InfoCollector {
+    public class FileSystemInfoCollector : InfoCollector
+    {
         private readonly string _watchFolder;
 
         public FileSystemInfoCollector(string watchFolder, int agentPort) : base(agentPort)

@@ -7,12 +7,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using log4net;
 
-namespace AsimovDeploy.WinAgentUpdater.InfoCollector {
-    public abstract class InfoCollector {
+namespace AsimovDeploy.WinAgentUpdater.InfoCollector
+{
+    public abstract class InfoCollector
+    {
         protected static ILog _log = LogManager.GetLogger(typeof (FileSystemInfoCollector));
         private readonly int _agentPort;
 
-        protected InfoCollector(int agentPort) {
+        protected InfoCollector(int agentPort)
+        {
             _agentPort = agentPort;
         }
 
