@@ -103,10 +103,27 @@ module.exports = function(server) {
 	}
 
 	function compareVersions(current, candidate) {
-		var currentVersion = (current.major << 16) + (current.minor << 8) + (current.Build << 0);
-		var candidateVersion = (candidate.major << 16) + (candidate.minor << 8) + (candidate.Build << 0);
+		var part = compareVersionPart(current.major, candidate.major);
+		if(part != null) {
+			return part;
+		}
 
-		return currentVersion < candidateVersion ? candidate : current;
+		part = compareVersionPart(current.minor, candidate.minor);
+		if(part != null) {
+			return part;
+		}
+
+		return compareVersionPart(current.minor, candidate.minor);
+	}
+
+	function compareVersionPart(current, candidate) {
+		if(current.minor > candidate.minor) {
+			return current;
+		} else if(current.minor < candidate.minor) {
+			return candidate;
+		}
+
+		return null;
 	}
 };
 
