@@ -54,6 +54,7 @@ require("./app/agents")(app, secure);
 require("./app/loadbalancer")(app, secure);
 require("./app/units")(app, secure);
 require("./app/versions")(app, secure);
+require("./app/update")(app);
 
 
 app.get('/', secure, function(req, res) {
