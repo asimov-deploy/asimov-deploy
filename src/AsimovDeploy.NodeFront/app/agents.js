@@ -81,7 +81,7 @@ module.exports = function(server, secure) {
 	});
 
 	server.post("/deploy/all", secure, function (req, res) {
-		var requestBody = req;
+		var requestBody = req.body;
 		async.forEach(config.agents, function (agent, done) {
 			if (agent.dead) {
 				done();
