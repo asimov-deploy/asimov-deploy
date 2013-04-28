@@ -53,7 +53,7 @@ task CopyAsimovDeployWinAgent {
 
 task CopyAsimovDeployWinAgentUpdater {
 
-	$include = @('AsimovDeploy.WinAgentUpdater*', "log4net*", "topshelf*", "Ionic.Zip*")
+	$include = @('AsimovDeploy.WinAgentUpdater*', "log4net*", "topshelf*", "Ionic.Zip*", "newtonsoft*")
 	Copy-Item "$build_dir\*" "$build_dir\packages\AsimovDeploy.WinAgentUpdater" -Recurse -Force -include $include
 
 	CreateZipFile("AsimovDeploy.WinAgentUpdater")
