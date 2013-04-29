@@ -82,7 +82,7 @@ function($, _, Backbone, UnitInstance) {
 						var unit = self.addOrGetUnit(instance.name, instance.actions, tempList);
 						var unitInstance = self.createUnitInstance(agent, instance);
 
-						unit.instances.push(unitInstance);
+						unit.instances.add(unitInstance);
 						self.addInstanceToIndex(unitInstance);
 					});
 				});
