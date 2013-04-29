@@ -124,15 +124,6 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
 
         private void ParseVerifyCommandOutput(string line)
         {
-			//TODO: PASS / FAIL should also use ##asimov-deploy syntax
-            if (line.Contains("PASS") || line.Contains("FAIL"))
-            {
-                NodeFront.Notify(new VerifyProgressEvent(deployUnit.Name)
-                {
-					test = new { pass = line.Contains("PASS"), message = line }
-                });
-            }
-
 			if (line.StartsWith("##asimov-deploy"))
 			{
 				HandleAssimovMessage(line);
@@ -154,6 +145,14 @@ namespace AsimovDeploy.WinAgent.Framework.Tasks
 						title = keys["title"],
 						url = GetUrlForFileInTempReportsFolder(keys["image"])
 					}
+				});
+			}
+
+			if (keys.ContainsKey("test"))
+			{
+				NodeFront.Notify(new VerifyProgressEvent(deployUnit.Name)
+				{
+					test = new { pass = keys["pass"] == "true", message = keys["test"] }
 				});
 			}
 
