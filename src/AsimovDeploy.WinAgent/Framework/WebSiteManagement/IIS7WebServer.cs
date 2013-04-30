@@ -77,23 +77,15 @@ namespace AsimovDeploy.WinAgent.Framework.WebSiteManagement
             {
                 var site = serverManager.Sites.SingleOrDefault(x => x.Name == _siteName);
                 if (site == null)
-                {
                     return null;
-                }
-
-                var webApp = site.Applications.SingleOrDefault(x => x.Path == _appPath);
+                
+				var webApp = site.Applications.SingleOrDefault(x => x.Path == _appPath);
                 if (webApp == null)
-                {
-                    _log.ErrorFormat("Application {0} under site {1} not found", _appPath, _siteName);
                     return null;
-                }
 
                 var vdir = webApp.VirtualDirectories.SingleOrDefault(x => x.Path == "/");
                 if (vdir == null)
-                {
-                    _log.ErrorFormat("Application {0} does not have default '/' virtual directory", _appPath);
-                    return null;
-                }
+					return null;
 
                 var state = ObjectState.Started;
 
