@@ -14,40 +14,37 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('./config.js');
+var _ = require('underscore');
 var agentApiClient = require('./services/agent-api-client').create();
-var _  = require("underscore");
-
 
 module.exports = function(server, secure) {
 
-	server.get("/loadbalancer/listHosts", function(req, res) {
+	// { unitName: "<unitName>", versionId: "<versionId>" }
+	server.post("/deploy/to-all-agents", secure, function (req, res) {
 
-		agentApiClient.get(config.agents[0].name, '/loadbalancer/listHosts', function(hostList) {
-			if (!hostList) {
-				return res.json({});
-			}
+		agentApiClient.getUnitListForAllAgents(function(results) {
 
-			hostList.forEach(function(host) {
-				config.loadBalancerStatusChanged(host.id, host.enabled);
+			var filterUnitsByUnitName = function(unit) {
+				return unit.name === req.body.unitName;
+			};
+
+			results.forEach(function(item) {
+
+				if (_.find(item.units, filterUnitsByUnitName)) {
+					agentApiClient.sendCommand(item.agent.name, '/deploy/deploy', req.body);
+				}
+
 			});
 
-			var filtered = _.filter(hostList, function(host) {
-				return config.getAgent({loadBalancerId: host.id});
-			});
-
-			res.json(filtered);
+			res.json('ok');
 		});
 
 	});
 
-	server.post("/loadbalancer/change", secure,  function(req, res) {
-		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/change', req.body);
-		res.json('ok');
-	});
-
-	server.post("/loadbalancer/settings", secure, function(req, res) {
-		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/settings', req.body);
+	// request json body
+	// { agentName: "<agentName>", unitName: "<unitName>" }
+	server.post("/deploy/deploy", secure, function(req, res) {
+		agentApiClient.sendCommand(req.body.agentName, '/deploy/deploy', req.body);
 		res.json('ok');
 	});
 

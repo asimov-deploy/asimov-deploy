@@ -51,10 +51,10 @@ var config = require('./app/config');
 var secure = express.basicAuth(config.username, config.password);
 
 require("./app/agents")(app, secure);
+require("./app/deploy")(app, secure);
 require("./app/loadbalancer")(app, secure);
 require("./app/units")(app, secure);
 require("./app/versions")(app, secure);
-
 
 app.get('/', secure, function(req, res) {
 

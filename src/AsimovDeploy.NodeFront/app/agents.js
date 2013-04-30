@@ -14,18 +14,15 @@
 * limitations under the License.
 ******************************************************************************/
 
+var config = require('./config.js');
+var agentApiClient = require('./services/agent-api-client').create();
+
 module.exports = function(server, secure) {
-	var config = require('./config.js');
-	var agentCommand = require('./agent-command.js');
-	var restify = require("restify");
-	var async = require("async");
 
 	server.get("/agents/list", function(req, res) {
-
 		var agentsResp = [];
 
 		config.agents.forEach(function(agent) {
-
 			agentsResp.push({
 				name: agent.name,
 				dead: agent.dead,
@@ -33,11 +30,9 @@ module.exports = function(server, secure) {
 				configVersion: agent.configVersion,
 				loadBalancerId: agent.loadBalancerId
 			});
-
 		});
 
 		res.json(agentsResp);
-
 	});
 
 	server.post("/agent/heartbeat", function(req, res) {
@@ -71,66 +66,18 @@ module.exports = function(server, secure) {
 
 	server.post("/agent/log", function(req, res) {
 		clientSockets.sockets.volatile.emit('agent:log', req.body);
-
 		res.json("ok");
 	});
 
-	server.post("/deploy/deploy", secure, function(req, res) {
-		agentCommand.send(req.body.agentName, '/deploy/deploy', req.body);
-		res.json('ok');
-	});
-
-	server.post("/deploy/all", secure, function (req, res) {
-		var requestBody = req.body;
-		async.forEach(config.agents, function (agent, done) {
-			if (agent.dead) {
-				done();
-				return;
-			}
-
-			var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
-
-			client.get('/units/list', function (err, req, _, units) {
-				if (err) {
-					agent.dead = true;
-					done();
-					return;
-				}
-
-				for (var i = 0; i < units.length; i++) {
-					var item = units[i];
-					if (item.name === requestBody.unitName) {
-						agentCommand.send(agent.name, '/deploy/deploy', requestBody);
-					}
-				}
-
-				done();
-			});
-
-		}, function () {
-			res.json('ok');
-		});
-	});
-
 	server.post("/agent/action", secure, function(req, res) {
-		agentCommand.send(req.body.agentName, '/action', req.body);
+		agentApiClient.sendCommand(req.body.agentName, '/action', req.body);
 		res.json('ok');
 	});
 
+	// query params: agentName, url
 	server.get("/agent/query", function(req, res) {
-		var agent =  config.getAgent({ name: req.query.agentName });
-		var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
-		var agentQueryUrl = req.query.url;
-
-		client.get(agentQueryUrl, function(err, req, _, data) {
-			if (err) {
-				res.json([]);
-				console.log(err);
-				return;
-			}
-
+		agentApiClient.get(req.query.agentName, req.query.url, function(data) {
 			res.json(data);
 		});
-
 	});
 };

@@ -14,9 +14,8 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('./config.js');
-var async = require('async');
-var restify = require("restify");
+var agentApiClient = require('./services/agent-api-client').create();
+
 
 module.exports = function(server) {
 
@@ -24,32 +23,17 @@ module.exports = function(server) {
 
 		var agentsResp = [];
 
-		async.forEach(config.agents, function(agent, done) {
-			if (agent.dead) {
-				done();
-				return;
-			}
+		agentApiClient.getUnitListForAllAgents(function(results) {
 
-			var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
-
-			client.get('/units/list', function(err, req, _, units) {
-				if (err) {
-					agent.dead = true;
-					done();
-					return;
-				}
-
+			results.forEach(function(item) {
 				agentsResp.push({
-					name: agent.name,
-					loadBalancerEnabled: agent.loadBalancerEnabled,
-					loadBalancerId: agent.loadBalancerId,
-					units: units
+					name: item.agent.name,
+					loadBalancerEnabled: item.agent.loadBalancerEnabled,
+					loadBalancerId: item.agent.loadBalancerId,
+					units: item.units
 				});
-
-				done();
 			});
 
-		}, function() {
 			res.json(agentsResp);
 		});
 
