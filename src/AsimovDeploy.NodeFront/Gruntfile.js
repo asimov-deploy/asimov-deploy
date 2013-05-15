@@ -79,56 +79,13 @@ module.exports = function(grunt) {
 		},
 
 		jshint: {
-			options: {
-				curly: true,
-				eqeqeq: true,
-				eqnull: true,
-				bitwise: true,
-				camelcase: false,
-				forin: true,
-				immed: true,
-				indent: 4,
-				latedef: true,
-				newcap: true,
-				noarg: true,
-				noempty: true,
-				nonew: false,
-				plusplus: false,
-				regexp: true,
-				undef: true,
-				unused: true,
-				trailing: true,
-				maxparams: 10,
-				maxdepth: 3,
-				maxstatements: 50,
-				maxcomplexity: 5,
-				smarttabs: true,
-				globals: {
-					require: true,
-					console: true,
-					module: true,
-					clientSockets: true
-				}
+			nodecode: {
+				src: ['app/**/*.js'],
+				options: { jshintrc: 'jshint-rules-nodejs.jshintrc' }
 			},
-			uses_defaults: ['app/**/*.js'],
-			with_overrides: {
-				options: {
-					undef: true,
-					browser: true,
-					globals: {
-						jQuery: true,
-						define: true,
-						require: true,
-						window: true,
-						document: true,
-						confirm: true,
-						console: true,
-						Handlebars: true
-					},
-				},
-				files: {
-					src: ['public/app/**/*.js']
-				},
+			frontend: {
+				src: ['public/app/**/*.js'],
+				options: { jshintrc: 'jshint-rules-frontend.jshintrc' }
 			}
 		}
 
@@ -144,6 +101,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-notify');
 
 	// Default task(s).
 	grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'less', 'handlebars', 'concat']);
