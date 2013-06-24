@@ -109,7 +109,6 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 				return;
 			}
 
-
 			_.forEach(selectedInstances, function(instance) {
 				new AgentActionCommand({
 					agentName: instance.get("agentName"),
