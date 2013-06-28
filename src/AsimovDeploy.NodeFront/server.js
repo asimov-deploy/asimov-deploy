@@ -15,15 +15,20 @@
 ******************************************************************************/
 
 var express = require('express');
-var socketio = require( 'socket.io' );
 var restify = require("restify");
+var io = require('socket.io');
 var path = require('path');
 var http = require('http');
 var _ = require('underscore');
+
+var config = require('./app/config');
+
 var app = express();
+var server = http.createServer(app);
+var secure = express.basicAuth(config.username, config.password);
 
 app.configure(function(){
-  app.set('port', 3333);
+  app.set('port', config.port);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon(__dirname + '/public/img/logo.png'));
@@ -45,10 +50,6 @@ app.use("/img", express["static"]( __dirname + '/public/img' ));
 app.use("/libs", express["static"]( __dirname + '/dist/release' ));
 app.use("/libs", express["static"]( __dirname + '/dist/debug' ));
 app.use("/libs", express["static"]( __dirname + '/public/libs' ));
-
-
-var config = require('./app/config');
-var secure = express.basicAuth(config.username, config.password);
 
 require("./app/agents")(app, secure);
 require("./app/deploy")(app, secure);
@@ -83,10 +84,8 @@ var startServer = function() {
 startServer();
 
 server.on("error", function(err) {
-	if (err.code == 'EADDRINUSE')
-	{
-		if (config.nextInstance())
-		{
+	if (err.code == 'EADDRINUSE')	{
+		if (config.nextInstance())	{
 			startServer();
 		}
 	}
@@ -95,12 +94,19 @@ server.on("error", function(err) {
 server.on("listening", function() {
 	console.log("Instance name: " + config.name + " Port: " + config.port);
 
-	GLOBAL.clientSockets = socketio.listen(server);
-	GLOBAL.clientSockets.sockets.on('connection', function(socket) { });
-	GLOBAL.clientSockets.sockets.on('error', function (exc) {
-    console.log("socket io exception: " + exc);
+	io = io.listen(server);
+
+	io.configure(function () {
+		io.set('transports', ['xhr-polling']);
+		io.set("polling duration", 10);
 	});
 
+	io.sockets.on('connection', function(socket) { });
+	io.sockets.on('error', function (exc) {
+		console.log("socket io exception: " + exc);
+	});
+
+	GLOBAL.clientSockets = io;
 });
 
 process.on('uncaughtException', function (err) {
