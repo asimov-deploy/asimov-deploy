@@ -100,10 +100,12 @@ server.on("listening", function() {
 
 	io = io.listen(server);
 
-	io.configure(function () {
-		io.set('transports', ['xhr-polling']);
-		io.set("polling duration", 10);
-	});
+	if (config.demo) {
+		io.configure(function () {
+			io.set('transports', ['xhr-polling']);
+			io.set("polling duration", 10);
+		});
+	}
 
 	io.sockets.on('connection', function(socket) { });
 	io.sockets.on('error', function (exc) {
