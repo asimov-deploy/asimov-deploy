@@ -25,7 +25,7 @@ nconf.defaults({
 	"username": "deploy",
 	"password": "secret",
 	"name": "Deploy UI",
-	"port": 3333
+	"port": process.env.PORT || 3333
 });
 
 var getAgent = function(param) {
