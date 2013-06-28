@@ -51,6 +51,10 @@ app.use("/libs", express["static"]( __dirname + '/dist/release' ));
 app.use("/libs", express["static"]( __dirname + '/dist/debug' ));
 app.use("/libs", express["static"]( __dirname + '/public/libs' ));
 
+if (config.demo) {
+	var demo = require('./app/demo')(app);
+}
+
 require("./app/agents")(app, secure);
 require("./app/deploy")(app, secure);
 require("./app/loadbalancer")(app, secure);
@@ -112,3 +116,5 @@ server.on("listening", function() {
 process.on('uncaughtException', function (err) {
   console.log('Caught process exception: ' + err);
 });
+
+
