@@ -103,7 +103,10 @@ server.on("listening", function() {
 	if (config.demo) {
 		io.configure(function () {
 			io.set('transports', ['xhr-polling']);
-			io.set("polling duration", 10);
+			io.set('close timeout', 40);
+			io.set('heartbeat timeout', 30);
+			io.set('heartbeat interval', 35);
+			io.set("polling duration", 40);
 		});
 	}
 

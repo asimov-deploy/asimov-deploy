@@ -38,7 +38,9 @@ function($, Backbone, app, HostListView, SettingsView) {
 
     app.vent.on("agent:event:loadBalancerStateChanged", function(data) {
         var host = hosts.get(data.id);
-        host.set({enabled: data.enabled});
+        if (host) {
+            host.set({enabled: data.enabled});
+        }
     });
 
     app.vent.on("loadbalancer:show", function() {

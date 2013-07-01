@@ -23,6 +23,8 @@
 	"maxcomplexity": 5,
 	"smarttabs": true,
 	"globals": {
+		"process": true,
+		"setTimeout": true,
 		"require": true,
 		"console": true,
 		"module": true,
