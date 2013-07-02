@@ -15,44 +15,49 @@
 ******************************************************************************/
 
 define([
-    "jquery",
-    "backbone",
-    "./host-item-view"
+	"jquery",
+	"backbone",
+	"./host-item-view"
 ],
 function($, Backbone, HostItemView) {
 
-    var ChangeLoadBalancerStatusCommand = Backbone.Model.extend({
-        url: "/loadbalancer/change"
-    });
+	var ChangeLoadBalancerStatusCommand = Backbone.Model.extend({
+		url: "/loadbalancer/change"
+	});
 
-    return Backbone.Marionette.CompositeView.extend({
-        itemView: HostItemView,
-        template: "loadbalancer/loadbalancer-host-list",
-        itemViewContainer: "tbody",
+	return Backbone.Marionette.CompositeView.extend({
+		itemView: HostItemView,
+		template: "loadbalancer/loadbalancer-host-list",
+		itemViewContainer: "tbody",
 
-        events: {
-            "click .btn-change": "executeChange",
-            "click .btn-refresh": "refresh"
-        },
+		events: {
+			"click .btn-change": "executeChange",
+			"click .btn-refresh": "refresh"
+		},
 
-        executeChange: function() {
-            var command = new ChangeLoadBalancerStatusCommand();
-            command.set({hosts: this.collection});
-            command.save();
+		executeChange: function() {
+			var hosts = this.collection.filter(function(host) { return host.get('action'); });
 
-            this.collection.forEach(function(host) {
-                host.set({ action: null });
-            });
-        },
+			if (hosts.length > 0) {
+				var command = new ChangeLoadBalancerStatusCommand({
+					hosts: hosts
+				});
+				command.save();
+			}
 
-        refresh: function(e) {
-            $(e.target).button("loading");
-            this.collection.fetch()
-                .always(function() {
-                    $(e.target).button("reset");
-                });
-        }
-    });
+			this.collection.forEach(function(host) {
+				host.set({ action: null });
+			});
+		},
+
+		refresh: function(e) {
+			$(e.target).button("loading");
+			this.collection.fetch()
+				.always(function() {
+					$(e.target).button("reset");
+				});
+		}
+	});
 
 });
 
