@@ -25,7 +25,8 @@ for(var i = 1; i <= 5; i++) {
 		dead: false,
 		version: "0.6.12",
 		configVersion: 43,
-		loadBalancerId: i
+		loadBalancerId: i,
+		loadBalancerEnabled: true
 	});
 }
 
@@ -35,7 +36,8 @@ for(var i = 1; i <= 3; i++) {
 		dead: false,
 		version: "0.6.12",
 		configVersion: 43,
-		loadBalancerId: i+5
+		loadBalancerId: i+5,
+		loadBalancerEnabled: true
 	});
 }
 
@@ -45,7 +47,7 @@ agents.forEach(function(agent) {
 		units.push({
 			name: agent.name,
 			loadBalancerId: agent.loadBalancerId,
-			loadBalancerEnabled: true,
+			loadBalancerEnabled: agent.loadBalancerEnabled,
 			units: [
 				{
 					name: 'MyCoolWebApp.com',
@@ -83,7 +85,7 @@ agents.forEach(function(agent) {
 		units.push({
 			name: agent.name,
 			loadBalancerId: agent.loadBalancerId,
-			loadBalancerEnabled: true,
+			loadBalancerEnabled: agent.loadBalancerEnabled,
 			units: [
 				{
 					name: 'Backend.QueueHandler',

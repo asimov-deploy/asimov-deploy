@@ -32,11 +32,11 @@ module.exports = function(server) {
 			}
 		];
 
-		clientSockets.sockets.volatile.emit('agent:log', logs);
+		clientSockets.sockets.emit('agent:log', logs);
 	}
 
 	function emitAgentEvent(data) {
-		clientSockets.sockets.volatile.emit('agent:event', data);
+		clientSockets.sockets.emit('agent:event', data);
 	}
 
 	server.get('/agents/list', function(req, res) {
@@ -52,11 +52,9 @@ module.exports = function(server) {
 			return res.json(demodata.versions["MyCoolWebApp.com"]);
 		}
 		if (req.query.url.indexOf('WebAPI') !== -1) {
-			console.log("WebApi!" + req.query.url);
 			return res.json(demodata.versions["MyCoolWebApp.com WebAPI"]);
 		}
 		if (req.query.url.indexOf('Backend') !== -1) {
-			console.log("Backend!");
 			return res.json(demodata.versions["Backend.QueueHandler"]);
 		}
 	});
@@ -65,12 +63,14 @@ module.exports = function(server) {
 		res.json("ok");
 
 		req.body.hosts.forEach(function(host) {
-			console.log("Hosts!" + host.id);
+
 			var agent = _.find(demodata.agents, function(agent) {
 				return agent.loadBalancerId === host.id;
 			});
 
 			agent.loadBalancerEnabled = !agent.loadBalancerEnabled;
+
+			emitLog(agent.name, agent.loadBalancerEnabled ? "Load balancer state enabled (accessible)" : "Load balancer state disabled (inaccessible)");
 
 			emitAgentEvent({
 				eventName: "loadBalancerStateChanged",
@@ -78,10 +78,48 @@ module.exports = function(server) {
 				enabled: agent.loadBalancerEnabled
 			});
 
-			//setTimeout(function() {
-			//	emitLog(agent.name, agent.loadBalancerEnabled ? "Load balancer state enabled (accessible)" : "Load balancer state disabled (inaccessible)");
-			//	}, 500);
 		});
+	});
+
+	server.get("/loadbalancer/listHosts", function(req, res) {
+		var hosts = _.map(demodata.agents, function(agent) {
+			return {
+				id: agent.loadBalancerId,
+				name: agent.name,
+				enabled: agent.loadBalancerEnabled
+			};
+		});
+
+		res.json(hosts);
+	});
+
+	server.post("/deploy/deploy", function(req, res) {
+
+		var versions = demodata.versions[req.body.unitName];
+		var version = _.find(versions, function(version) { return version.id === req.body.versionId; });
+
+		emitAgentEvent({
+			eventName: "deployStarted",
+			agentName: req.body.agentName,
+			unitName: req.body.unitName,
+			version: version.version,
+			branch: version.branch
+		});
+
+		emitLog(req.body.agentName, "Starting deploy... (just demo text, the actual deploy agent will output meaningfull deploy info)");
+
+		setTimeout(function() {
+			emitAgentEvent({
+				eventName: "deployCompleted",
+				agentName: req.body.agentName,
+				unitName: req.body.unitName,
+				version: version.version,
+				branch: version.branch,
+				status: "Running"
+			});
+		}, 3000);
+
+		res.json('ok');
 	});
 
 };

@@ -8,7 +8,7 @@
     "grunt": "0.4.1",
     "express": "3.1.1",
     "restify": "2.3.5",
-    "socket.io": "0.9.14",
+    "socket.io": "0.9.16",
     "underscore": "1.4.4",
     "jade": "0.28.2",
     "nconf": "~0.6.7"
