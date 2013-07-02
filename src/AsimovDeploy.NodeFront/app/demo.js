@@ -48,11 +48,11 @@ module.exports = function(server) {
 	});
 
 	server.get("/agent/query", function(req, res) {
-		if (req.query.url.indexOf('MyCoolWebApp') !== -1) {
-			return res.json(demodata.versions["MyCoolWebApp.com"]);
-		}
 		if (req.query.url.indexOf('WebAPI') !== -1) {
 			return res.json(demodata.versions["MyCoolWebApp.com WebAPI"]);
+		}
+		if (req.query.url.indexOf('MyCoolWebApp') !== -1) {
+			return res.json(demodata.versions["MyCoolWebApp.com"]);
 		}
 		if (req.query.url.indexOf('Backend') !== -1) {
 			return res.json(demodata.versions["Backend.QueueHandler"]);
@@ -96,6 +96,7 @@ module.exports = function(server) {
 	server.post("/deploy/deploy", function(req, res) {
 
 		var versions = demodata.versions[req.body.unitName];
+		console.log(versions);
 		var version = _.find(versions, function(version) { return version.id === req.body.versionId; });
 
 		emitAgentEvent({
@@ -120,6 +121,87 @@ module.exports = function(server) {
 		}, 3000);
 
 		res.json('ok');
+	});
+
+	function playVerifyDemo(req) {
+		emitAgentEvent({
+			eventName: "verify-progress",
+			agentName: req.body.agentName,
+			unitName: req.body.unitName,
+			started: true
+		});
+
+		var stepCount = 0;
+
+		function emitVerifyTest() {
+			stepCount++;
+
+			emitAgentEvent({
+				eventName: "verify-progress",
+				agentName: req.body.agentName,
+				unitName: req.body.unitName,
+				test: { message: "Loading page " + stepCount + " ok!" , pass: true }
+			});
+
+			if (stepCount < 10) {
+				setTimeout(emitVerifyTest, 800);
+			}
+			else {
+				emitAgentEvent({
+					eventName: "verify-progress",
+					agentName: req.body.agentName,
+					unitName: req.body.unitName,
+					completed: true
+				});
+			}
+		}
+
+		emitVerifyTest();
+	}
+
+	server.post("/agent/action", function(req, res) {
+		res.json('ok');
+
+		if (req.body.actionName === "Verify") {
+			playVerifyDemo(req);
+		}
+
+		if (req.body.actionName === "Stop") {
+			emitAgentEvent({
+				eventName: "unitStatusChanged",
+				agentName: req.body.agentName,
+				unitName: req.body.unitName,
+				status: "Stopping"
+			});
+
+			setTimeout(function() {
+				emitAgentEvent({
+					eventName: "unitStatusChanged",
+					agentName: req.body.agentName,
+					unitName: req.body.unitName,
+					status: "Stopped"
+				});
+			}, 3000);
+		}
+
+		if (req.body.actionName === "Start") {
+			emitAgentEvent({
+				eventName: "unitStatusChanged",
+				agentName: req.body.agentName,
+				unitName: req.body.unitName,
+				status: "Starting"
+			});
+
+			setTimeout(function() {
+				emitAgentEvent({
+					eventName: "unitStatusChanged",
+					agentName: req.body.agentName,
+					unitName: req.body.unitName,
+					status: "Running"
+				});
+			}, 3000);
+		}
+
 	});
 
 };
