@@ -17,16 +17,17 @@
 
 module.exports = function(server) {
 
-	var demodata = require('./demodata/demo-data-generator.js');
+	var demodata = require('./demo-data-generator.js');
+	var demoUtils = require('./demo-utils.js');
+
 	var _ = require('underscore');
 
 	function emitLog(agentName, message) {
-		var currentTime = new Date();
 
 		var logs = [
 			{
 				agentName: agentName,
-				time: "" + currentTime.getHours() + ":" + currentTime.getMinutes() + ":" + currentTime.getSeconds(),
+				time: demoUtils.getCurrentTimeString(),
 				level: "info",
 				message: message
 			}

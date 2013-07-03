@@ -51,8 +51,8 @@ app.use("/libs", express["static"]( __dirname + '/dist/release' ));
 app.use("/libs", express["static"]( __dirname + '/dist/debug' ));
 app.use("/libs", express["static"]( __dirname + '/public/libs' ));
 
-if (config.demo) {
-	var demo = require('./app/demo')(app);
+if (config.enableDemo) {
+	require('./app/demo-mode/demo-mode')(app);
 }
 
 require("./app/agents")(app, secure);
@@ -100,7 +100,7 @@ server.on("listening", function() {
 
 	io = io.listen(server);
 
-	if (config.demo) {
+	if (config.enableDemo) {
 		io.configure(function () {
 			io.set('transports', ['xhr-polling']);
 			io.set('close timeout', 40);
