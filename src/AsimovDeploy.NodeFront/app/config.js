@@ -25,7 +25,7 @@ nconf.defaults({
 	"username": "deploy",
 	"password": "secret",
 	"name": "Deploy UI",
-	"demo": true,
+	"enableDemo": true,
 	"port": process.env.PORT || 3333
 });
 
@@ -73,7 +73,7 @@ module.exports = {
 
 module.exports.username = nconf.get('username');
 module.exports.password = nconf.get('password');
-module.exports.demo = nconf.get('demo');
+module.exports.enableDemo = nconf.get('enableDemo');
 
 if (nconf.get('instances')) {
 	var instances = nconf.get('instances');
