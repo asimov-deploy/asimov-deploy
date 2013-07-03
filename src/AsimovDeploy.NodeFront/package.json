@@ -1,8 +1,9 @@
 {
-  "name": "asimov.deploy.gui",
-  "description": "gui for asimov deploy",
-  "author": "Ebay Sweden",
-  "version": "1.0.0",
+  "name": "asimov-deploy-ui",
+  "description": "Web UI For Assimov Deploy (distributed deploy system)",
+  "author": "Ebay Inc",
+  "version": "0.6.10",
+  "homepage": "https://github.com/asimov-deploy/asimov-deploy",
   "dependencies": {
     "async": ">= 0.1.22",
     "grunt": "0.4.1",
@@ -12,6 +13,10 @@
     "underscore": "1.4.4",
     "jade": "0.28.2",
     "nconf": "~0.6.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/asimov-deploy/asimov-deploy.git"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
