@@ -2,7 +2,8 @@
 
 describe('config', function(){
 
-	var config = require("../app/config");
+	var config = require("../../app/config");
+	require('should');
 
 	before(function() {
 		config.agents.push({ name: "Hello", loadBalancerId: 2 });
@@ -28,12 +29,12 @@ describe('config', function(){
 	});
 
 	describe("loadBalancerStatusChanged", function() {
-		
+
 		it("should update loadbalancer status", function() {
 			config.loadBalancerStatusChanged(5, true);
 			config.getAgent({loadBalancerId: 5}).loadBalancerEnabled.should.equal(true);
 		});
-		
+
 	});
 
 

@@ -87,6 +87,13 @@ module.exports = function(grunt) {
 				src: ['public/app/**/*.js'],
 				options: { jshintrc: 'jshint-rules-frontend.jshintrc' }
 			}
+		},
+
+		mochaTest: {
+			test: {
+				options: { reporter: 'spec' },
+				src: ['test/backend/**/*.js']
+			}
 		}
 
 	});
@@ -101,11 +108,12 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-notify');
 
 	// Default task(s).
 	grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'less', 'handlebars', 'concat']);
 
-	grunt.registerTask("release", ['default', 'cssmin', 'uglify']);
+	grunt.registerTask("release", ['default', 'cssmin', 'uglify', 'mochaTest']);
 
 };
