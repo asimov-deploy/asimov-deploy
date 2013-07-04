@@ -28,7 +28,7 @@ nconf.defaults({
 	"username": "deploy",
 	"password": "secret",
 	"name": "Deploy UI",
-	"enableDemo": true,
+	"enableDemo": false,
 	"port": process.env.PORT || 3333
 });
 
