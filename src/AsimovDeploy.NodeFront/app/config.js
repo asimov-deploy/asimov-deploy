@@ -19,7 +19,10 @@ var agents = [];
 var _ = require("underscore");
 var nconf = require('nconf');
 
-nconf.file({ file: 'config.json' });
+var path = require('path');
+var appPath = path.dirname(process.mainModule.filename);
+
+nconf.file({ file: path.join(appPath, 'config.json') });
 
 nconf.defaults({
 	"username": "deploy",
