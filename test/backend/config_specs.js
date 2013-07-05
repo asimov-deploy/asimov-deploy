@@ -37,5 +37,7 @@ describe('config', function(){
 
 	});
 
-
+	it('Enable demo should be false by default', function() {
+		config.enableDemo.should.equal(false);
+	});
 });
