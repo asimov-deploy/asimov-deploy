@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var path = require('path');
+
+fs.createReadStream(__dirname + '/../config.example.json')
+	.pipe(fs.createWriteStream(path.join(process.cwd(), 'config.json')));
+
+fs.writeFileSync(path.join(process.cwd(), 'app.js'),
+	"require('asimov-deploy-ui')");
