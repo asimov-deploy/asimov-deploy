@@ -38,7 +38,7 @@ function($, _, Backbone, Marionette, AgentQueryCollection) {
 		initialize: function(options) {
 			_.bindAll(this, "show");
 
-			this.createModel(options.unitInstances);
+			this.createModel(options);
 
 			this.parameters = new AgentQueryCollection({
 				agentUrl: "/units/deploy-parameters/:unitName",
@@ -50,12 +50,12 @@ function($, _, Backbone, Marionette, AgentQueryCollection) {
 			this.model.on("change", this.render, this);
 		},
 
-		createModel: function(unitInstances) {
-			this.unitName = unitInstances[0].get("unitName");
-			this.anyAgentName = unitInstances[0].get("agentName");
-			this.hasDeployParameters = unitInstances[0].get("hasDeployParameters");
-			this.deployInfo = unitInstances[0].get('deployInfo');
-			this.agentNames = _.map(unitInstances, function(instance) { return instance.get('agentName'); });
+		createModel: function(options) {
+			this.unitName = options.unitName;
+			this.anyAgentName = options.agentNames[0];
+			this.hasDeployParameters = options.hasDeployParameters;
+			this.deployInfo = options.deployInfo;
+			this.agentNames = options.agentNames;
 
 			this.model = new Backbone.Model({
 				unitName: this.unitName,

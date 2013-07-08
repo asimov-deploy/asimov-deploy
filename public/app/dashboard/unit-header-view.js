@@ -70,12 +70,6 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 			});
 		},
 
-		deploy: function() {
-			var selectedInstances = this.instances.where({selected: true});
-			var confirmView = new ConfirmDeployView({ unitInstances: selectedInstances });
-			confirmView.show();
-		},
-
 		selectVersion: function () {
 			var instance = this.instances.first();
 			var versionView = new VersionDialogView({ agentName: instance.get('agentName'), unitName: instance.get('unitName') });
@@ -84,19 +78,20 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 		},
 
 		versionSelected: function(versionId, version, branch) {
-			this.instances.forEach(function(instance) {
-				if (instance.get('selected')) {
-					instance.set({
-						deployInfo: {
-							version: version,
-							versionId: versionId,
-							branch: branch
-						}
-					});
+			var selectedInstances = this.instances.where({selected: true});
+			var agentNames = _.map(selectedInstances, function(unit) { return unit.get('agentName'); });
+
+			var confirmView = new ConfirmDeployView({
+				unitName: this.model.get('name'),
+				agentNames: agentNames,
+				deployInfo: {
+					version: version,
+					versionId: versionId,
+					branch: branch
 				}
 			});
 
-			this.deploy();
+			confirmView.show();
 		},
 
 		unitAction: function(e) {
