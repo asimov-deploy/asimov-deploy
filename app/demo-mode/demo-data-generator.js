@@ -50,8 +50,8 @@ agents.forEach(function(agent) {
 			loadBalancerEnabled: agent.loadBalancerEnabled,
 			units: [
 				{
-					name: 'MyCoolWebApp.com',
-					url: 'http://' + agent.name + '.prod.mykillerapp.com',
+					name: 'asimov-demo.com',
+					url: 'http://' + agent.name + '.prod.asimov-demo.com',
 					version: '7.1.0',
 					branch: 'master',
 					status: 'Running',
@@ -64,8 +64,8 @@ agents.forEach(function(agent) {
 					]
 				},
 				{
-					name: 'MyCoolWebApp.com WebAPI',
-					url: 'http://' + agent.name + '.prod.api.mykillerapp.com',
+					name: 'api.asimov-demo.com',
+					url: 'http://' + agent.name + '.prod.api.asimov-demo.com',
 					version: '3.0.0',
 					branch: 'master',
 					status: 'Running',
@@ -88,7 +88,7 @@ agents.forEach(function(agent) {
 			loadBalancerEnabled: agent.loadBalancerEnabled,
 			units: [
 				{
-					name: 'Backend.QueueHandler',
+					name: 'backend.queue-handler',
 					version: '2.1.0',
 					branch: 'master',
 					status: 'Running',
@@ -100,7 +100,7 @@ agents.forEach(function(agent) {
 					]
 				},
 				{
-					name: 'Backend.MemberNotification',
+					name: 'backend.member-notification',
 					version: '2.1.0',
 					branch: 'master',
 					status: 'Running',
@@ -117,7 +117,7 @@ agents.forEach(function(agent) {
 
 });
 
-versions["MyCoolWebApp.com"] = [
+versions["asimov-demo.com"] = [
 	{ "version": "7.1.0", "timestamp": "2013-06-28 16:26:11", "branch": "master", "commit": "14cbf27", "id": "mykillerapp-v7.1.0-[master]-[14cbf27].prod.zip" },
 	{ "version": "6.9.0", "timestamp": "2013-06-25 16:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v6.9.0-[master]-[14cbf25].prod.zip" },
 	{ "version": "6.8.0", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v6.8.0-[master]-[14cbf25].prod.zip" },
@@ -125,7 +125,7 @@ versions["MyCoolWebApp.com"] = [
 	{ "version": "5.0.0", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v5.0.0-[master]-[14cbf25].prod.zip" }
 ];
 
-versions["MyCoolWebApp.com WebAPI"] = [
+versions["api.asimov-demo.com"] = [
 	{ "version": "3.0.0",  "timestamp": "2013-06-28 16:26:11", "branch": "master", "commit": "14cbf27", "id": "mykillerapp-v3.0.0-[master]-[14cbf27].prod.zip" },
 	{ "version": "2.9.0", "timestamp": "2013-06-25 16:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v2.9.0-[master]-[14cbf25].prod.zip" },
 	{ "version": "2.8.0", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25",	"id": "mykillerapp-v2.8.0-[master]-[14cbf25].prod.zip" },
@@ -133,7 +133,7 @@ versions["MyCoolWebApp.com WebAPI"] = [
 	{ "version": "1.5.0", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.5.0-[master]-[14cbf25].prod.zip" }
 ];
 
-versions["Backend.QueueHandler"] = versions["Backend.MemberNotification"] = [
+versions["backend.queue-handler"] = versions["backend.member-notification"] = [
 	{ "version": "2.1.0",  "timestamp": "2013-06-28 16:26:11", "branch": "master", "commit": "14cbf27", "id": "mykillerapp-v3.0.0-[master]-[14cbf27].prod.zip" },
 	{ "version": "2.0.0", "timestamp": "2013-06-25 16:26:11", "branch": "develop", "commit": "14cbf25", "id": "mykillerapp-v2.9.0-[master]-[14cbf25].prod.zip" },
 	{ "version": "1.8.0", "timestamp": "2013-06-23 15:26:11", "branch": "master", "commit": "14cbf25",	"id": "mykillerapp-v2.8.0-[master]-[14cbf25].prod.zip" },

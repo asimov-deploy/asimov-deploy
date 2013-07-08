@@ -49,14 +49,14 @@ module.exports = function(server) {
 	});
 
 	server.get("/agent/query", function(req, res) {
-		if (req.query.url.indexOf('WebAPI') !== -1) {
-			return res.json(demodata.versions["MyCoolWebApp.com WebAPI"]);
+		if (req.query.url.indexOf('api.asimov-demo.com') !== -1) {
+			return res.json(demodata.versions["api.asimov-demo.com"]);
 		}
-		if (req.query.url.indexOf('MyCoolWebApp') !== -1) {
-			return res.json(demodata.versions["MyCoolWebApp.com"]);
+		if (req.query.url.indexOf('asimov-demo.com') !== -1) {
+			return res.json(demodata.versions["asimov-demo.com"]);
 		}
-		if (req.query.url.indexOf('Backend') !== -1) {
-			return res.json(demodata.versions["Backend.QueueHandler"]);
+		if (req.query.url.indexOf('backend') !== -1) {
+			return res.json(demodata.versions["backend.queue-handler"]);
 		}
 	});
 

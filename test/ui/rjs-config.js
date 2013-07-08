@@ -16,7 +16,7 @@ require.config({
 
 		'socket.io': '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io',
 
-		specs: '../../tests/ui/specs'
+		specs: '../../test/ui/specs'
 	},
 
 	shim: {
