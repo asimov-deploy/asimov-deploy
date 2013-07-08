@@ -15,51 +15,46 @@
 ******************************************************************************/
 
 define([
-    "jquery",
-    "backbone",
-    "./confirm-deploy-view",
-    "./verify-log-view",
-    "./version-dialog-view",
-    "./deploy-log-dialog-view"
+	"jquery",
+	"backbone",
+	"./confirm-deploy-view",
+	"./verify-log-view",
+	"./version-dialog-view",
+	"./deploy-log-dialog-view"
 ],
 function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, DeployLogDialogView) {
 
 	return Backbone.Marionette.ItemView.extend({
-        template: "dashboard/unit-instance-view",
-        tagName: "tr",
-        className: "deploy-unit-instance",
-        events: {
-            "click .verify-log-link": "verifyLog",
-            "click .select-version": "selectVersion",
-            "click .deploy-log-link": "openDeployLog",
-            "click .btn-select": "toggleSelection"
-        },
+		template: "dashboard/unit-instance-view",
+		tagName: "tr",
+		className: "deploy-unit-instance",
+		events: {
+			"click .verify-log-link": "verifyLog",
+			"click .select-version": "openDeployLog",
+			"click .deploy-log-link": "openDeployLog",
+			"click .btn-select": "toggleSelection"
+		},
 
-        initialize: function() {
-            this.listenTo(this.model, "change", this.render, this);
-        },
+		initialize: function() {
+			this.listenTo(this.model, "change", this.render, this);
+		},
 
-        verifyLog: function(e) {
-            e.preventDefault();
-            new VerifyLogView({model: this.model}).show();
-        },
+		verifyLog: function(e) {
+			e.preventDefault();
+			new VerifyLogView({model: this.model}).show();
+		},
 
-        selectVersion: function(e) {
-            e.preventDefault();
-            console.log(this.model.get('loadBalancerEnabled'));
-        },
+		openDeployLog: function(e) {
+			e.preventDefault();
 
-        openDeployLog: function(e) {
-            e.preventDefault();
+			var deployLog = new DeployLogDialogView({ agentName: this.model.get('agentName'), unitName: this.model.get('unitName') });
+			deployLog.show();
+		},
 
-            var deployLog = new DeployLogDialogView({ agentName: this.model.get('agentName'), unitName: this.model.get('unitName') });
-            deployLog.show();
-        },
+		toggleSelection: function() {
+			var selected = this.model.get('selected') || false;
+			this.model.set({ selected: !selected });
+		}
 
-        toggleSelection: function() {
-            var selected = this.model.get('selected') || false;
-            this.model.set({ selected: !selected });
-        }
-
-    });
+	});
 });
