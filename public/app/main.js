@@ -21,7 +21,8 @@ require([
 	"socket-con",
 	"livelog/livelog",
 	"bootstrap",
-	"handlebarsHelpers"
+	"handlebarsHelpers",
+	'login/login'
 ],
 function($, app, Router) {
 

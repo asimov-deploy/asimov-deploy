@@ -17,32 +17,20 @@
 define([
 	"jquery",
 	"backbone",
-	"marionette"
+	"marionette",
+	"app"
 ],
-function($, Backbone, Marionette) {
+function($, Backbone, Marionette, app) {
 
-	var app = new Marionette.Application();
-
-	app.addRegions({
-		mainRegion: "#main-region"
+	var LoginView = Marionette.ItemView.extend({
+		template: "login-view"
 	});
 
-	app.addInitializer(function() {
-		Backbone.history.start();
+	app.vent.on("login:show", function() {
+		app.mainRegion.show(new LoginView());
+		app.router.showRoute("login");
 	});
 
-	$(document).ajaxError(function(event, jqxhr) {
-		if (jqxhr.status === 401) {
-			app.vent.trigger('login:show');
-		}
-	});
-
-
-	$(function() {
-		var windowHeight = $(window).height() - 181 - 60 - 41 - 20;
-		$("head").append("<style type='text/css'>.page-content { max-height: " + windowHeight + "px; overflow-y: auto; } </style>");
-	});
-
-	return app;
+	return {};
 
 });

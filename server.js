@@ -22,10 +22,12 @@ var http = require('http');
 var _ = require('underscore');
 
 var config = require('./app/config');
+var authentication = require('./app/authentication');
+var passport = authentication.passport;
+var ensureAuth = authentication.ensureAuth;
 
 var app = express();
 var server = http.createServer(app);
-var secure = express.basicAuth(config.username, config.password);
 
 app.configure(function(){
   app.set('port', config.port);
@@ -33,20 +35,21 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.favicon(__dirname + '/public/img/logo.png'));
   app.use(express.logger('dev'));
+  app.use(express.cookieParser());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use(app.router);
   app.use(express.errorHandler());
   app.locals.pretty = true;
 });
 
 app.use("/app", express["static"]( __dirname + '/public/app' ));
-
 app.use("/css", express["static"]( __dirname + '/dist/release' ));
 app.use("/css", express["static"]( __dirname + '/dist/debug' ));
-
 app.use("/img", express["static"]( __dirname + '/public/img' ));
-
 app.use("/libs", express["static"]( __dirname + '/dist/release' ));
 app.use("/libs", express["static"]( __dirname + '/dist/debug' ));
 app.use("/libs", express["static"]( __dirname + '/public/libs' ));
@@ -55,13 +58,13 @@ if (config.enableDemo) {
 	require('./app/demo-mode/demo-mode')(app);
 }
 
-require("./app/agents")(app, secure);
-require("./app/deploy")(app, secure);
-require("./app/loadbalancer")(app, secure);
-require("./app/units")(app, secure);
-require("./app/versions")(app, secure);
+require("./app/agents")(app, ensureAuth);
+require("./app/deploy")(app, ensureAuth);
+require("./app/loadbalancer")(app, ensureAuth);
+require("./app/units")(app, ensureAuth);
+require("./app/versions")(app, ensureAuth);
 
-app.get('/', secure, function(req, res) {
+app.get('/', function(req, res) {
 
    var agents = _.where(config.agents, {dead: false});
    agents = _.pluck(agents, ["name"]);

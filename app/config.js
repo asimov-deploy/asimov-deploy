@@ -29,7 +29,8 @@ nconf.defaults({
 	"password": "secret",
 	"name": "Deploy UI",
 	"enableDemo": false,
-	"port": process.env.PORT || 3333
+	"port": process.env.PORT || 3333,
+	"authentication": false
 });
 
 var getAgent = function(param) {
@@ -77,6 +78,7 @@ module.exports = {
 module.exports.username = nconf.get('username');
 module.exports.password = nconf.get('password');
 module.exports.enableDemo = nconf.get('enableDemo');
+module.exports.authentication = nconf.get('authentication');
 
 if (nconf.get('instances')) {
 	var instances = nconf.get('instances');
