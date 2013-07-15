@@ -17,10 +17,10 @@
 var _ = require('underscore');
 var agentApiClient = require('./services/agent-api-client').create();
 
-module.exports = function(server, secure) {
+module.exports = function(app) {
 
 	// { unitName: "<unitName>", versionId: "<versionId>" }
-	server.post("/deploy/to-all-agents", secure, function (req, res) {
+	app.post("/deploy/to-all-agents", app.ensureLoggedIn, function (req, res) {
 
 		agentApiClient.getUnitListForAllAgents(function(results) {
 
@@ -43,7 +43,7 @@ module.exports = function(server, secure) {
 
 	// request json body
 	// { agentName: "<agentName>", unitName: "<unitName>" }
-	server.post("/deploy/deploy", secure, function(req, res) {
+	app.post("/deploy/deploy", app.ensureLoggedIn, function(req, res) {
 		agentApiClient.sendCommand(req.body.agentName, '/deploy/deploy', req.body);
 		res.json('ok');
 	});

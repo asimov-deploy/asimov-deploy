@@ -17,9 +17,9 @@
 var config = require('./config.js');
 var querystring = require("querystring");
 
-module.exports = function(server) {
+module.exports = function(app) {
 
-	server.get('/deploylog/file', function(req, res) {
+	app.get('/deploylog/file', app.ensureLoggedIn, function(req, res) {
 
 		var agent =  config.getAgent({ name: req.query.agentName });
 		var unitName = querystring.escape(req.query.unitName);

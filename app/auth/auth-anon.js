@@ -14,29 +14,12 @@
 * limitations under the License.
 ******************************************************************************/
 
-//var config = require('./config.js');
-var auth = require('./auth/auth');
+module.exports = {
 
-module.exports = function(app) {
-
-	app.post('/login', function(req, res, next) {
-		auth.authenticate(function(err, user, info) {
-			if (!user) {
-				return res.send({ status:'err', message: info.message });
-			}
-
-			req.login(user, function(err) {
-				if (err) { return res.send({ status: 'err', message: err.message }); }
-
-				return res.send({ status: 'ok', username: user.username });
-			});
-
-		})(req, res, next);
-	});
-
-	app.get('/logout', function(req, res) {
-		req.logout();
-		res.redirect('/');
-	});
+	addAuthMiddleware: function(app) {
+		app.ensureLoggedIn = function(req, res, next) {
+			next();
+		};
+	}
 
 };

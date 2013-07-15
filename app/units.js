@@ -17,9 +17,9 @@
 var agentApiClient = require('./services/agent-api-client').create();
 
 
-module.exports = function(server, ensureAuth) {
+module.exports = function(app) {
 
-	server.get("/units/list", ensureAuth, function(req, res) {
+	app.get("/units/list", app.ensureLoggedIn, function(req, res) {
 
 		var agentsResp = [];
 

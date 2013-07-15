@@ -17,9 +17,9 @@
 var config = require('./config.js');
 var agentApiClient = require('./services/agent-api-client').create();
 
-module.exports = function(server, secure) {
+module.exports = function(app) {
 
-	server.get("/agents/list", secure, function(req, res) {
+	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
 		var agentsResp = [];
 
 		config.agents.forEach(function(agent) {
@@ -35,7 +35,7 @@ module.exports = function(server, secure) {
 		res.json(agentsResp);
 	});
 
-	server.post("/agent/heartbeat", function(req, res) {
+	app.post("/agent/heartbeat", function(req, res) {
 
 		var agent = config.getAgent({ name: req.body.name });
 		if (!agent) {
@@ -54,7 +54,7 @@ module.exports = function(server, secure) {
 		res.json('ok');
 	});
 
-	server.post("/agent/event", function(req, res) {
+	app.post("/agent/event", function(req, res) {
 		clientSockets.sockets.volatile.emit('agent:event', req.body);
 
 		if (req.body.eventName === "loadBalancerStateChanged") {
@@ -64,18 +64,18 @@ module.exports = function(server, secure) {
 		res.json("ok");
 	});
 
-	server.post("/agent/log", function(req, res) {
+	app.post("/agent/log", function(req, res) {
 		clientSockets.sockets.volatile.emit('agent:log', req.body);
 		res.json("ok");
 	});
 
-	server.post("/agent/action", secure, function(req, res) {
+	app.post("/agent/action", app.ensureLoggedIn, function(req, res) {
 		agentApiClient.sendCommand(req.body.agentName, '/action', req.body);
 		res.json('ok');
 	});
 
 	// query params: agentName, url
-	server.get("/agent/query", function(req, res) {
+	app.get("/agent/query", function(req, res) {
 		agentApiClient.get(req.query.agentName, req.query.url, function(data) {
 			res.json(data);
 		});

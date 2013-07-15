@@ -22,9 +22,7 @@ var http = require('http');
 var _ = require('underscore');
 
 var config = require('./app/config');
-var authentication = require('./app/authentication');
-var passport = authentication.passport;
-var ensureAuth = authentication.ensureAuth;
+var auth = require('./app/auth/auth');
 
 var app = express();
 var server = http.createServer(app);
@@ -39,8 +37,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.session({ secret: 'keyboard cat' }));
-  app.use(passport.initialize());
-  app.use(passport.session());
+  auth.addAuthMiddleware(app);
   app.use(app.router);
   app.use(express.errorHandler());
   app.locals.pretty = true;
@@ -58,12 +55,12 @@ if (config.enableDemo) {
 	require('./app/demo-mode/demo-mode')(app);
 }
 
-require("./app/agents")(app, ensureAuth);
-require("./app/deploy")(app, ensureAuth);
-require("./app/loadbalancer")(app, ensureAuth);
-require("./app/units")(app, ensureAuth);
-require("./app/versions")(app, ensureAuth);
-require("./app/login")(app, ensureAuth);
+require("./app/agents")(app);
+require("./app/deploy")(app);
+require("./app/loadbalancer")(app);
+require("./app/units")(app);
+require("./app/versions")(app);
+require("./app/login")(app);
 
 app.get('/', function(req, res) {
 

@@ -19,9 +19,9 @@ var agentApiClient = require('./services/agent-api-client').create();
 var _  = require("underscore");
 
 
-module.exports = function(server, secure) {
+module.exports = function(app) {
 
-	server.get("/loadbalancer/listHosts", secure, function(req, res) {
+	app.get("/loadbalancer/listHosts", app.ensureLoggedIn, function(req, res) {
 		if (config.agents.length === 0) {
 			return res.json([]);
 		}
@@ -44,12 +44,12 @@ module.exports = function(server, secure) {
 
 	});
 
-	server.post("/loadbalancer/change", secure,  function(req, res) {
+	app.post("/loadbalancer/change", app.ensureLoggedIn,  function(req, res) {
 		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/change', req.body);
 		res.json('ok');
 	});
 
-	server.post("/loadbalancer/settings", secure, function(req, res) {
+	app.post("/loadbalancer/settings", app.ensureLoggedIn, function(req, res) {
 		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/settings', req.body);
 		res.json('ok');
 	});
