@@ -67,9 +67,11 @@ var nextInstance = function() {
 	return true;
 };
 
+var packageInfo = require('../package.json');
+
 module.exports = {
 	agents: agents,
-	version: "{version}",
+	version: packageInfo.version,
 	getAgent: getAgent,
 	loadBalancerStatusChanged: loadBalancerStatusChanged,
 	nextInstance: nextInstance
