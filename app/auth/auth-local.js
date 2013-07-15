@@ -2,6 +2,7 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('../config');
+var _ = require('underscore');
 
 var users = config.users;
 
@@ -9,34 +10,22 @@ if (!users) {
 	throw new Error("Missing users config section, needed by local authentication mode!");
 }
 
-function findByUsername(username, fn) {
-	for (var i = 0, len = users.length; i < len; i++) {
-		var user = users[i];
-		if (user.username === username) {
-			return fn(null, user);
-		}
-	}
-	return fn(null, null);
-}
-
 passport.serializeUser(function(user, done) {
 	done(null, user.username);
 });
 
 passport.deserializeUser(function(username, done) {
-	findByUsername(username, function (err, user) {
-		done(err, user);
-	});
+	var user = _.find(users, function(user) { return user.username === username; });
+	done(null, user);
 });
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		findByUsername(username, function(err, user) {
-			if (err) { return done(err); }
-			if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-			if (user.password !== password) { return done(null, false, { message: 'Invalid password' }); }
-			return done(null, user);
-		});
+		var user = _.find(users, function(user) { return user.username === username; });
+		if (!user || user.password !== password) {
+			return done(null, false, { message: ' Unkown username or password' });
+		}
+		return done(null, user);
 	})
 );
 
