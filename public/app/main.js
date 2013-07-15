@@ -18,19 +18,25 @@ require([
 	"jquery",
 	"app",
 	"router",
+	"backbone",
 	"socket-con",
 	"livelog/livelog",
 	"bootstrap",
-	"handlebarsHelpers",
-	'login/login'
+	"handlebarsHelpers"
 ],
-function($, app, Router) {
+function($, app, Router, Backbone) {
 
 	$(function() {
 
-		app.router = new Router();
-		app.start();
+		app.initData = JSON.parse($('#init-data').val());
 
+		app.on('initialize:after', function() {
+			app.router = new Router();
+			Backbone.history.start();
+		});
+
+
+		app.start();
 	});
 
 });

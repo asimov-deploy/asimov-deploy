@@ -27,10 +27,6 @@ function($, Backbone, Marionette) {
 		mainRegion: "#main-region"
 	});
 
-	app.addInitializer(function() {
-		Backbone.history.start();
-	});
-
 	$(document).ajaxError(function(event, jqxhr) {
 		if (jqxhr.status === 401) {
 			app.vent.trigger('login:show');

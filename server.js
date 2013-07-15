@@ -37,7 +37,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.session({ secret: config.sessionSecret }));
-  auth.addAuthMiddleware(app);
+  auth(app);
   app.use(app.router);
   app.use(express.errorHandler());
   app.locals.pretty = true;
@@ -60,12 +60,11 @@ require("./app/deploy")(app);
 require("./app/loadbalancer")(app);
 require("./app/units")(app);
 require("./app/versions")(app);
-require("./app/login")(app);
 
 app.get('/', function(req, res) {
 
-   var agents = _.where(config.agents, {dead: false});
-   agents = _.pluck(agents, ["name"]);
+	var agents = _.where(config.agents, {dead: false});
+	agents = _.pluck(agents, ["name"]);
 
 	var viewModel = {
 		hostName: req.headers.host.replace(/:\d+/, ''),
@@ -73,10 +72,15 @@ app.get('/', function(req, res) {
 		port: config.port,
 		instances: config.instances,
 		instanceName: config.name,
-      agents: agents
+		initData: {
+			agents: agents,
+			authUsingLocal: config.authLocal != undefined,
+			authUsingGoogle: config.authGoogle != undefined,
+			user: req.user
+		},
 	};
 
-  res.render('index', viewModel);
+	res.render('index', viewModel);
 });
 
 

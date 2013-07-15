@@ -1,54 +1,46 @@
 <div class="page-header-row">
-    <div class="page-title">
-        <h1>Login</h1>
-    </div>
+		<div class="page-title">
+				<h1>Login</h1>
+		</div>
 
-    <div class="page-controls">
-    </div>
+		<div class="page-controls">
+		</div>
 
-    <div class="clearfix" />
+		<div class="clearfix" />
 </div>
 
 <div class="page-content" style="min-height: 400px; padding-top: 30px;">
+	<div class="container-fluid">
+		<div class="span10">
 
- <div class="container-fluid">
+			{{#if authUsingLocal}}
+				<div class="alert alert-error login-error hide">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<i class="icon-exclamation-sign icon icon-white" />
+					<span></span>
+				</div>
 
-   <div class="span7">
+				<div class="login-option">
+					<label>Asimov deploy user login</label>
+					<form class="local-login-form">
+						<input type="text" class="username input-medium" id="input-small" placeholder="Username" />
+						<input type="password" class="password input-medium" id="password" placeholder="Password" />
+						<button class="btn btn-primary btn-login pull-right" type="submit">Login</button>
+					</form>
+				</div>
+			{{/if}}
 
-   <div class="alert alert-error login-error hide">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <i class="icon-exclamation-sign icon icon-white" />
-    <span></span>
-   </div>
+			{{#if authUsingGoogle}}
+				<div class="login-option">
+					<label>Google user login</label>
 
-    <form class="form-horizontal login-form">
-        <fieldset>
-          <legend>&nbsp;</legend>
-
-          <div class="control-group">
-             <label class="control-label" for="input-small">Username</label>
-             <div class="controls">
-              <input type="text" class="username input-medium" id="input-small" placeholder="Username" />
-             </div>
-          </div>
-          <div class="control-group">
-             <label class="control-label" for="input-small">Password</label>
-             <div class="controls">
-               <input type="password" class="password input-medium" id="password" placeholder="Password" />
-             </div>
-          </div>
-          <div class="form-actions">
-            <div class="controls">
-              <button class="btn btn-primary btn-login" type="submit">Login</button>
-            </div>
-          </div>
-          <div class="clearfix" />
-
-        </fieldset>
-      </form>
-
-  </div>
-  </div>
+					<a href="/auth/google" class="btn btn-primary pull-right" data-bypass="1">
+						Login
+					</a>
+				</div>
+			{{/if}}
+	</div>
+	</div>
 </div>
 
 

@@ -1,50 +1,65 @@
+/*******************************************************************************
+* Copyright (C) 2012 eBay Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+******************************************************************************/
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var config = require('../config');
-var _ = require('underscore');
+module.exports = function(app, passport) {
 
-var users = config.users;
+	var LocalStrategy = require('passport-local').Strategy;
+	var config = require('../config');
+	var _ = require('underscore');
 
-if (!users) {
-	throw new Error("Missing users config section, needed by local authentication mode!");
-}
+	var users = config.authLocal.users;
 
-passport.serializeUser(function(user, done) {
-	done(null, user.username);
-});
+	if (!users) {
+		throw new Error("Missing users config section, needed by local authentication mode!");
+	}
 
-passport.deserializeUser(function(username, done) {
-	var user = _.find(users, function(user) { return user.username === username; });
-	done(null, user);
-});
+	passport.serializeUser(function(user, done) {
+		done(null, user.username);
+	});
 
-passport.use(new LocalStrategy(
-	function(username, password, done) {
+	passport.deserializeUser(function(username, done) {
 		var user = _.find(users, function(user) { return user.username === username; });
-		if (!user || user.password !== password) {
-			return done(null, false, { message: ' Unkown username or password' });
-		}
-		return done(null, user);
-	})
-);
+		done(null, user);
+	});
 
-function ensureLoggedIn(req, res, next) {
-	if (req.isAuthenticated()) {
-		return next();
-	}
-	res.statusCode = 401;
-	res.json({ error: "Unauthorized" });
-}
+	passport.use(new LocalStrategy(
+		function(username, password, done) {
+			var user = _.find(users, function(user) { return user.username === username; });
+			if (!user || user.password !== password) {
+				return done(null, false, { message: ' Unkown username or password' });
+			}
+			return done(null, user);
+		})
+	);
 
-module.exports = {
-	addAuthMiddleware: function(app) {
-		app.use(passport.initialize());
-		app.use(passport.session());
+	app.post('/login', function(req, res, next) {
+		passport.authenticate('local', function(err, user, info) {
+			if (!user) {
+				return res.send({ status:'err', message: info.message });
+			}
 
-		app.ensureLoggedIn = ensureLoggedIn;
-	},
-	authenticate: function(callback) {
-		return passport.authenticate('local', callback);
-	}
+			req.login(user, function(err) {
+				if (err) { return res.send({ status: 'err', message: err.message }); }
+
+				return res.send({ status: 'ok', username: user.username });
+			});
+
+		})(req, res, next);
+	});
+
 };
+
+

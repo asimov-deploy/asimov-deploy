@@ -20,7 +20,8 @@ define([
 	"app",
 	"dashboard/dashboard",
 	"loadbalancer/loadbalancer",
-	"agentlist"
+	"agentlist",
+	'login/login'
 ],
 
 function($, Backbone, app) {

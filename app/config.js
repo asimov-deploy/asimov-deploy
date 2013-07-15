@@ -18,7 +18,7 @@
 var agents = [];
 var _ = require("underscore");
 var nconf = require('nconf');
-
+var packageInfo = require('../package.json');
 var path = require('path');
 var appPath = path.dirname(process.mainModule.filename);
 
@@ -28,11 +28,22 @@ nconf.defaults({
 	name: "Deploy UI",
 	enableDemo: false,
 	port: process.env.PORT || 3333,
-	authentication: false,
+	authentication: [],
 	sessionSecret: 'asdasdad3242352jji3o2hkjo1n2b3'
 });
 
-var getAgent = function(param) {
+var config = {
+	agents: [],
+	version: packageInfo.version,
+	enableDemo: nconf.get('enableDemo'),
+	users: nconf.get('users'),
+	sessionSecret: nconf.get('sessionSecret'),
+	currentInstance: 0,
+	authLocal: nconf.get('auth-local'),
+	authGoogle: nconf.get('auth-google')
+};
+
+config.getAgent = function(param) {
 	if (param.name) {
 		return _.find(agents, function(agent) { return agent.name === param.name; });
 	}
@@ -41,60 +52,41 @@ var getAgent = function(param) {
 	}
 };
 
-var loadBalancerStatusChanged = function(id, enabled) {
-	var agent = getAgent({loadBalancerId: id});
+config.loadBalancerStatusChanged = function(id, enabled) {
+	var agent = config.getAgent({loadBalancerId: id});
 	if (agent) {
 		agent.loadBalancerEnabled = enabled;
 	}
 };
 
-var current_instance = 0;
+config.nextInstance = function() {
+	config.currentInstance += 1;
 
-var nextInstance = function() {
-	current_instance += 1;
 	var instances = nconf.get('instances');
-	if (instances && current_instance >= instances.length) {
+	if (instances && config.currentInstance >= instances.length) {
 		console.log("Error: port not available!");
 		return false;
 	}
 
-	var instance = instances[current_instance];
+	var instance = instances[config.currentInstance];
 
-	module.exports.port = instance.port;
-	module.exports.name = instance.name;
+	config.port = instance.port;
+	config.name = instance.name;
 
 	return true;
 };
 
-var packageInfo = require('../package.json');
-
-module.exports = {
-	agents: agents,
-	version: packageInfo.version,
-	getAgent: getAgent,
-	loadBalancerStatusChanged: loadBalancerStatusChanged,
-	nextInstance: nextInstance
-};
-
-module.exports.enableDemo = nconf.get('enableDemo');
-module.exports.authentication = nconf.get('authentication');
-module.exports.users = nconf.get('users');
-module.exports.sessionSecret = nconf.get('sessionSecret');
-
 if (nconf.get('instances')) {
 	var instances = nconf.get('instances');
 	var instance = instances[0];
-	module.exports.port = instance.port;
-	module.exports.name = instance.name;
-	module.exports.instances = instances;
+	config.port = instance.port;
+	config.name = instance.name;
+	config.instances = instances;
 }
 else {
-	module.exports.port = nconf.get('port');
-	module.exports.name = nconf.get('name');
-	module.exports.instances = [
-		{
-			name: module.exports.name,
-			port: module.exports.port
-		}
-	];
+	config.port = nconf.get('port');
+	config.name = nconf.get('name');
+	config.instances = [ { name: config.name, port: config.port} ];
 }
+
+module.exports = config;

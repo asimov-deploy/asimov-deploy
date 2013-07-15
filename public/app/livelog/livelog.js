@@ -25,11 +25,13 @@ define([
 ],
 function($, _, Backbone, Marionette, app, LiveLogListView, LiveLogFilterView) {
 
-	var liveLog = {};
-
 	var agentsCollection = new Backbone.Collection();
 
 	app.addInitializer(function() {
+
+		_.each(app.initData.agents, function(agentName) {
+			agentsCollection.add(new Backbone.Model({ id: agentName }));
+		});
 
 		new LiveLogListView({ el: $(".live-log") });
 
@@ -42,12 +44,5 @@ function($, _, Backbone, Marionette, app, LiveLogListView, LiveLogFilterView) {
 
 	});
 
-	// PUBLIC API
-	liveLog.bootstrap = function(agents) {
-		_.each(agents, function(item) {
-			agentsCollection.add(new Backbone.Model({ id: item }));
-		});
-	};
-
-	return liveLog;
+	return {};
 });

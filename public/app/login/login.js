@@ -26,11 +26,13 @@ function($, Backbone, Marionette, app) {
 		url: '/login'
 	});
 
+	var loginViewModel = new Backbone.Model();
+
 	var LoginView = Marionette.ItemView.extend({
 		template: "login-view",
 
 		events: {
-			"click .btn-login" : "login"
+			"submit .local-login-form" : "login"
 		},
 
 		login: function(e) {
@@ -57,10 +59,14 @@ function($, Backbone, Marionette, app) {
 	});
 
 	app.vent.on("login:show", function() {
-		app.mainRegion.show(new LoginView());
+		app.mainRegion.show(new LoginView({ model: loginViewModel }));
 		app.router.showRoute("login");
 	});
 
-	return {};
+	app.addInitializer(function() {
+		loginViewModel.set('authUsingLocal', app.initData.authUsingLocal);
+		loginViewModel.set('authUsingGoogle', app.initData.authUsingGoogle);
+	});
 
+	return {};
 });

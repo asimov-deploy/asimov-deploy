@@ -16,11 +16,39 @@
 
 var config = require('../config');
 
-if (config.authentication === 'local') {
-	module.exports = require('./auth-local');
-	return;
-}
+module.exports = function(app) {
 
-if (!config.authentication) {
-	module.exports = require('./auth-anon');
-}
+	if (!config.authLocal && !config.authGoogle) {
+		app.ensureLoggedIn = function(req, res, next) {
+			next();
+		};
+		return;
+	}
+
+	var passport = require('passport');
+
+	app.use(passport.initialize());
+	app.use(passport.session());
+
+	app.ensureLoggedIn = function (req, res, next) {
+		if (req.isAuthenticated()) {
+			return next();
+		}
+		res.statusCode = 401;
+		res.json({ error: "Unauthorized" });
+	};
+
+	app.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
+
+	if (config.authLocal) {
+		require('./auth-local')(app, passport);
+	}
+
+	if (config.authGoogle) {
+		require('./auth-google')(app, passport);
+	}
+};
+
