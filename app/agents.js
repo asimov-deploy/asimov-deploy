@@ -75,7 +75,7 @@ module.exports = function(app) {
 	});
 
 	// query params: agentName, url
-	app.get("/agent/query", function(req, res) {
+	app.get("/agent/query", app.ensureLoggedIn, function(req, res) {
 		agentApiClient.get(req.query.agentName, req.query.url, function(data) {
 			res.json(data);
 		});

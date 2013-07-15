@@ -25,12 +25,10 @@ var appPath = path.dirname(process.mainModule.filename);
 nconf.file({ file: path.join(appPath, 'config.json') });
 
 nconf.defaults({
-	"username": "deploy",
-	"password": "secret",
-	"name": "Deploy UI",
-	"enableDemo": false,
-	"port": process.env.PORT || 3333,
-	"authentication": false
+	name: "Deploy UI",
+	enableDemo: false,
+	port: process.env.PORT || 3333,
+	authentication: false
 });
 
 var getAgent = function(param) {
@@ -77,10 +75,9 @@ module.exports = {
 	nextInstance: nextInstance
 };
 
-module.exports.username = nconf.get('username');
-module.exports.password = nconf.get('password');
 module.exports.enableDemo = nconf.get('enableDemo');
 module.exports.authentication = nconf.get('authentication');
+module.exports.users = nconf.get('users');
 
 if (nconf.get('instances')) {
 	var instances = nconf.get('instances');

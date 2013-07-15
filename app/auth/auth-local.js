@@ -1,11 +1,13 @@
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var config = require('../config');
 
-var users = [
-	{ username: 'bob', password: 'secret' },
-	{ username: 'joe', password: 'birthday' }
-];
+var users = config.users;
+
+if (!users) {
+	throw new Error("Missing users config section, needed by local authentication mode!");
+}
 
 function findByUsername(username, fn) {
 	for (var i = 0, len = users.length; i < len; i++) {

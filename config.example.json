@@ -1,5 +1,7 @@
 {
-   "username": "deploy",
-   "password": "secret",
-   "port": 3333
+   "port": 3333,
+   "authentication": "local",
+   "users": [
+   	{ "username": "deploy", "password": "secret" }
+   ]
 }
