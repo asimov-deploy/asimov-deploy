@@ -36,7 +36,7 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(express.session({ secret: config.sessionSecret }));
   auth.addAuthMiddleware(app);
   app.use(app.router);
   app.use(express.errorHandler());

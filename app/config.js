@@ -28,7 +28,8 @@ nconf.defaults({
 	name: "Deploy UI",
 	enableDemo: false,
 	port: process.env.PORT || 3333,
-	authentication: false
+	authentication: false,
+	sessionSecret: 'asdasdad3242352jji3o2hkjo1n2b3'
 });
 
 var getAgent = function(param) {
@@ -78,6 +79,7 @@ module.exports = {
 module.exports.enableDemo = nconf.get('enableDemo');
 module.exports.authentication = nconf.get('authentication');
 module.exports.users = nconf.get('users');
+module.exports.sessionSecret = nconf.get('sessionSecret');
 
 if (nconf.get('instances')) {
 	var instances = nconf.get('instances');

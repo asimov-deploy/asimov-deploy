@@ -1,5 +1,6 @@
 {
    "port": 3333,
+   "sessionSecret": "adssaer32t24f23423",
    "authentication": "local",
    "users": [
    	{ "username": "deploy", "password": "secret" }
