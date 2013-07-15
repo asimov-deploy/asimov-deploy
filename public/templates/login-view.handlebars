@@ -14,14 +14,21 @@
  <div class="container-fluid">
 
    <div class="span7">
-    <form class="form-horizontal">
+
+   <div class="alert alert-error login-error hide">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <i class="icon-exclamation-sign icon icon-white" />
+    <span></span>
+   </div>
+
+    <form class="form-horizontal login-form">
         <fieldset>
           <legend>&nbsp;</legend>
 
           <div class="control-group">
              <label class="control-label" for="input-small">Username</label>
              <div class="controls">
-              <input type="text" class="username input-medium" id="input-small" placeholder="Host" />
+              <input type="text" class="username input-medium" id="input-small" placeholder="Username" />
              </div>
           </div>
           <div class="control-group">
@@ -32,10 +39,11 @@
           </div>
           <div class="form-actions">
             <div class="controls">
-              <button class="btn btn-primary btn-login">Login</button>
+              <button class="btn btn-primary btn-login" type="submit">Login</button>
             </div>
           </div>
           <div class="clearfix" />
+
         </fieldset>
       </form>
 

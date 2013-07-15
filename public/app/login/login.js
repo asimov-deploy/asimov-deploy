@@ -22,8 +22,38 @@ define([
 ],
 function($, Backbone, Marionette, app) {
 
+	var LoginCommand = Backbone.Model.extend({
+		url: '/login'
+	});
+
 	var LoginView = Marionette.ItemView.extend({
-		template: "login-view"
+		template: "login-view",
+
+		events: {
+			"click .btn-login" : "login"
+		},
+
+		login: function(e) {
+			e.preventDefault();
+
+			var loginCommand = new LoginCommand({
+				username: $(".username", this.el).val(),
+				password: $(".password", this.el).val()
+			});
+
+			loginCommand.save().done(function () {
+				if (loginCommand.get('status') !== 'ok') {
+					$('.login-error span').text(loginCommand.get('message'));
+					$('.login-error').removeClass('hide');
+				}
+				else {
+					app.vent.trigger('dashboard:show');
+				}
+			});
+
+			return false;
+		}
+
 	});
 
 	app.vent.on("login:show", function() {

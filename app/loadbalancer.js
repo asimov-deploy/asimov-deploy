@@ -21,7 +21,10 @@ var _  = require("underscore");
 
 module.exports = function(server, secure) {
 
-	server.get("/loadbalancer/listHosts", function(req, res) {
+	server.get("/loadbalancer/listHosts", secure, function(req, res) {
+		if (config.agents.length === 0) {
+			return res.json([]);
+		}
 
 		agentApiClient.get(config.agents[0].name, '/loadbalancer/listHosts', function(hostList) {
 			if (!hostList) {

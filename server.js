@@ -63,6 +63,7 @@ require("./app/deploy")(app, ensureAuth);
 require("./app/loadbalancer")(app, ensureAuth);
 require("./app/units")(app, ensureAuth);
 require("./app/versions")(app, ensureAuth);
+require("./app/login")(app, ensureAuth);
 
 app.get('/', function(req, res) {
 

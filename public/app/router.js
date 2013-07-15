@@ -35,6 +35,9 @@ function($, Backbone, app) {
 			'login': 'showLogin'
 		},
 
+		initialize: function(){
+		},
+
 		showDashboard: function() {
 			app.vent.trigger("dashboard:show");
 		},

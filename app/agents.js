@@ -19,7 +19,7 @@ var agentApiClient = require('./services/agent-api-client').create();
 
 module.exports = function(server, secure) {
 
-	server.get("/agents/list", function(req, res) {
+	server.get("/agents/list", secure, function(req, res) {
 		var agentsResp = [];
 
 		config.agents.forEach(function(agent) {

@@ -212,9 +212,9 @@
 @warningBackground:       #fcf8e3;
 @warningBorder:           darken(spin(@warningBackground, -10), 3%);
 
-@errorText:               #b94a48;
-@errorBackground:         #f2dede;
-@errorBorder:             darken(spin(@errorBackground, -10), 3%);
+@errorText:               darken(@white, 10%);
+@errorBackground:         darken(@red, 20%);
+@errorBorder:             lighten(@errorBackground, 10%);
 
 @successText:             #468847;
 @successBackground:       #dff0d8;
