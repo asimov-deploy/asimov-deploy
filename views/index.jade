@@ -28,15 +28,13 @@ html(lang="en")
 
 							li
 								a(href='agents') Agents
-							li.divider-vertical
 
+						ul.nav.pull-right
+							li.divider-vertical
 							li.dropdown#current-user
-
-						ul.nav.pull-right#instance-selection
 							li.divider-vertical
-							li.dropdown
+							li.dropdown#instance-selection
 								a.dropdown-toggle(href='#', data-toggle='dropdown') #{instanceName}
-									b.caret(style='margin-left: 5px')
 								ul.dropdown-menu
 									each item in instances
 										li

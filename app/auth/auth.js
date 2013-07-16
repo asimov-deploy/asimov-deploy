@@ -16,25 +16,10 @@
 
 module.exports = function(app, config) {
 
-	if (config.authNone) {
-		app.ensureLoggedIn = function(req, res, next) {
-			next();
-		};
-		return;
-	}
-
 	var passport = require('passport');
 
 	app.use(passport.initialize());
 	app.use(passport.session());
-
-	app.ensureLoggedIn = function (req, res, next) {
-		if (req.isAuthenticated()) {
-			return next();
-		}
-		res.statusCode = 401;
-		res.json({ error: "Unauthorized" });
-	};
 
 	app.get('/logout', function(req, res) {
 		req.logout();
@@ -44,13 +29,11 @@ module.exports = function(app, config) {
 	var users = {};
 
 	passport.serializeUser(function(user, done) {
-		console.log("serializeUser", user);
 		users[user.id] = user;
 		done(null, user.id);
 	});
 
 	passport.deserializeUser(function(userId, done) {
-		console.log("deserializeUser", userId);
 		done(null, users[userId]);
 	});
 
@@ -60,6 +43,21 @@ module.exports = function(app, config) {
 
 	if (config.authGoogle) {
 		require('./auth-google')(app, passport, config);
+	}
+
+	if (config.authNone) {
+		app.ensureLoggedIn = function(req, res, next) {
+			next();
+		};
+	}
+	else {
+		app.ensureLoggedIn = function (req, res, next) {
+			if (req.isAuthenticated()) {
+				return next();
+			}
+			res.statusCode = 401;
+			res.json({ error: "Unauthorized" });
+		};
 	}
 };
 

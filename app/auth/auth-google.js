@@ -25,12 +25,8 @@ module.exports = function(app, passport, config) {
 		throw new Error('Missing allowed emails array in google auth config');
 	}
 
-	passport.use(new GoogleStrategy({
-			returnURL: 'http://localhost:3333/auth/google/return',
-			realm: 'http://localhost:3333/'
-		},
+	var strategy = new GoogleStrategy({ returnURL: 'dummy' },
 		function(identifier, profile, done) {
-
 			var email = profile.emails[0].value;
 
 			if (_.indexOf(emails, email) === -1) {
@@ -43,14 +39,23 @@ module.exports = function(app, passport, config) {
 				email: email,
 				id: email
 			});
-		})
+		}
 	);
 
-	app.get('/auth/google/return',
-		passport.authenticate('google', {
-			successRedirect: '/',
-			failureRedirect: '/login'
-		}));
+	function changeReturnUrlHack(req) {
+		var hostName = req.headers.host.replace(/:\d+/, '');
+		var baseUrl = "http://" + hostName + ":" + config.port;
+		strategy._relyingParty.realm = baseUrl;
+		strategy._relyingParty.returnUrl = baseUrl + "/auth/google/return";
+	}
 
-	app.get('/auth/google', passport.authenticate('google'));
+	passport.use(strategy);
+
+	app.get('/auth/google/return',passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
+
+	app.get('/auth/google', function(req, res, next) {
+		changeReturnUrlHack(req);
+		passport.authenticate('google')(req, res, next);
+	});
+
 };
