@@ -33,6 +33,9 @@
 		"console": true,
 		"module": true,
 		"GLOBAL": true,
+		"describe": true,
+		"before": true,
+		"it": true,
 		"clientSockets": true,
 		"__dirname": true
 	}

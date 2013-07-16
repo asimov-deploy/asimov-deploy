@@ -15,49 +15,50 @@
 ******************************************************************************/
 
 var _ = require("underscore");
+var path = require('path');
+var fs = require('fs');
 
-function Config() {
+function Config(configOverrides) {
 
-	var nconf = this.loadConfigFromFile();
-
+	this._loadConfigFromFile(configOverrides);
+	this._currentInstance = 0;
 	this.agents = [];
-	this.enableDemo = nconf.get('enableDemo');
-	this.users = nconf.get('users');
-	this.sessionSecret = nconf.get('sessionSecret');
-	this.authLocal = nconf.get('auth-local');
-	this.authGoogle = nconf.get('auth-google');
-	this.authNone = nconf.get('auth-none');
 
-	this.port = nconf.get('port');
-	this.name = nconf.get('name');
-
-	this.instances = nconf.get('instances');
-
-	if (this.instances) {
-		this._currentInstance = 0;
-		this.nextInstance();
-	} else {
+	if (!this.instances) {
 		this.instances = [ { name: this.name, port: this.port } ];
 	}
+
+	this.nextInstance();
 }
 
-Config.prototype.loadConfigFromFile = function() {
+Config.prototype.defaults = {
+	name:				'Deploy UI',
+	enableDemo:		false,
+	port:				process.env.PORT || 3333,
+	sessionSecret: 'asdasdad3242352jji3o2hkjo1n2b3',
+	authNone:		true
+};
 
-	var nconf = require('nconf');
-	var path = require('path');
+Config.prototype._applyConfig = function(cfg) {
+	Object.keys(cfg).forEach(function(key) {
+		this[key] = cfg[key];
+	}.bind(this));
+};
+
+Config.prototype._loadConfigFromFile = function(configOverrides) {
 	var appPath = path.dirname(process.mainModule.filename);
+	var configPath = path.join(appPath, 'config.json');
 
-	nconf.file({ file: path.join(appPath, 'config.json') });
+	this._applyConfig(this.defaults);
 
-	nconf.defaults({
-		'name': 'Deploy UI',
-		'enableDemo': false,
-		'port': process.env.PORT || 3333,
-		'sessionSecret': 'asdasdad3242352jji3o2hkjo1n2b3',
-		'auth-none': true
-	});
+	if (fs.existsSync(configPath)) {
+		var config = require(configPath);
+		this._applyConfig(config);
+	}
 
-	return nconf;
+	if (configOverrides) {
+		this._applyConfig(configOverrides);
+	}
 };
 
 Config.prototype.getAgent = function(param) {
