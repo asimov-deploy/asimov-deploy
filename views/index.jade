@@ -18,6 +18,7 @@ html(lang="en")
 						img(src='/img/full_logo.png')
 					.nav-collapse
 						ul.nav
+							li.divider-vertical
 							li
 								a(href='dashboard') Dashboard
 							li
@@ -27,6 +28,9 @@ html(lang="en")
 
 							li
 								a(href='agents') Agents
+							li.divider-vertical
+
+							li.dropdown#current-user
 
 						ul.nav.pull-right#instance-selection
 							li.divider-vertical
@@ -37,6 +41,7 @@ html(lang="en")
 									each item in instances
 										li
 											a(href='http://#{hostName}:#{item.port}') #{item.name}
+
 		#main-region
 
 		.live-log-wrapper

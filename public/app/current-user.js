@@ -14,34 +14,37 @@
 * limitations under the License.
 ******************************************************************************/
 
-var _ = require('underscore');
-var packageInfo = require('../package.json');
+define([
+	"jquery",
+	"backbone",
+	"marionette",
+	"app"
+],
+function($, Backbone, Marionette, app) {
 
-module.exports = function(app, config) {
+	var CurrentUserView = Marionette.ItemView.extend({
+		template: "current-user-view",
 
-	app.get('/', function(req, res) {
+		initialize: function() {
+			this.model = new Backbone.Model();
+			this.model.set('user', app.initData.user);
 
-		var agents = _.where(config.agents, {dead: false});
-		agents = _.pluck(agents, ["name"]);
+			app.vent.on('user:loggedIn', this.userLoggedIn, this);
 
-		var viewModel = {
-			hostName: req.headers.host.replace(/:\d+/, ''),
-			version: packageInfo.version,
-			port: config.port,
-			instances: config.instances,
-			instanceName: config.name,
-			initData: {
-				agents: agents,
-				authUsingLocal: config.authLocal !== undefined,
-				authUsingGoogle: config.authGoogle !== undefined
-			}
-		};
+			this.listenTo(this.model, 'change', this.render, this);
+		},
 
-		if (req.user) {
-			viewModel.initData.user = req.user.displayName;
+		userLoggedIn: function(user) {
+			this.model.set('user', user);
 		}
 
-		res.render('index', viewModel);
 	});
 
-};
+
+	app.addInitializer(function() {
+		var view = new CurrentUserView({ el: $("#current-user") });
+		view.render();
+	});
+
+	return {};
+});

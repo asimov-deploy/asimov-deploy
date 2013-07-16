@@ -22,7 +22,8 @@ require([
 	"socket-con",
 	"livelog/livelog",
 	"bootstrap",
-	"handlebarsHelpers"
+	"handlebarsHelpers",
+	"current-user"
 ],
 function($, app, Router, Backbone) {
 

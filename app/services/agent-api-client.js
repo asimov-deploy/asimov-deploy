@@ -20,6 +20,7 @@ var restify = require("restify");
 var AgentApiClient = function(config) {
 
 	this.get = function(agentName, url, dataCallback) {
+
 		var agent =  config.getAgent({ name: agentName });
 
 		var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
@@ -31,6 +32,7 @@ var AgentApiClient = function(config) {
 			}
 			dataCallback(data);
 		});
+
 	};
 
 	this.getUnitListForAllAgents = function(dataCallback) {
@@ -73,7 +75,7 @@ var AgentApiClient = function(config) {
 
 
 module.exports = {
-	create: function() {
-		return new AgentApiClient();
+	create: function(config) {
+		return new AgentApiClient(config);
 	}
 };

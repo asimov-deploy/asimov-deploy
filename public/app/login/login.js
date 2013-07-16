@@ -49,6 +49,7 @@ function($, Backbone, Marionette, app) {
 					$('.login-error').removeClass('hide');
 				}
 				else {
+					app.vent.trigger('user:loggedIn', loginCommand.get('user'));
 					app.vent.trigger('dashboard:show');
 				}
 			});

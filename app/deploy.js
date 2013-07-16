@@ -15,9 +15,10 @@
 ******************************************************************************/
 
 var _ = require('underscore');
-var agentApiClient = require('./services/agent-api-client').create();
 
-module.exports = function(app) {
+module.exports = function(app, config) {
+
+	var agentApiClient = require('./services/agent-api-client').create(config);
 
 	// { unitName: "<unitName>", versionId: "<versionId>" }
 	app.post("/deploy/to-all-agents", app.ensureLoggedIn, function (req, res) {

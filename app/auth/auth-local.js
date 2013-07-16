@@ -21,6 +21,11 @@ module.exports = function(app, passport, config) {
 
 	var users = config.authLocal.users;
 
+	users.forEach(function(user) {
+		user.displayName = user.displayName || user.username;
+		user.id = user.username;
+	});
+
 	if (!users) {
 		throw new Error("Missing users config section, needed by local authentication mode!");
 	}
@@ -53,7 +58,7 @@ module.exports = function(app, passport, config) {
 			req.login(user, function(err) {
 				if (err) { return res.send({ status: 'err', message: err.message }); }
 
-				return res.send({ status: 'ok', username: user.username });
+				return res.send({ status: 'ok', user: user.displayName });
 			});
 
 		})(req, res, next);
