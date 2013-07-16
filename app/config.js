@@ -14,8 +14,6 @@
 * limitations under the License.
 ******************************************************************************/
 
-
-var agents = [];
 var _ = require("underscore");
 var nconf = require('nconf');
 var packageInfo = require('../package.json');
@@ -25,68 +23,68 @@ var appPath = path.dirname(process.mainModule.filename);
 nconf.file({ file: path.join(appPath, 'config.json') });
 
 nconf.defaults({
-	name: "Deploy UI",
-	enableDemo: false,
-	port: process.env.PORT || 3333,
-	authentication: [],
-	sessionSecret: 'asdasdad3242352jji3o2hkjo1n2b3'
+	'name': 'Deploy UI',
+	'enableDemo': false,
+	'port': process.env.PORT || 3333,
+	'authentication': [],
+	'sessionSecret': 'asdasdad3242352jji3o2hkjo1n2b3',
+	'auth-none': false
 });
 
-var config = {
-	agents: [],
-	version: packageInfo.version,
-	enableDemo: nconf.get('enableDemo'),
-	users: nconf.get('users'),
-	sessionSecret: nconf.get('sessionSecret'),
-	currentInstance: 0,
-	authLocal: nconf.get('auth-local'),
-	authGoogle: nconf.get('auth-google')
-};
 
-config.getAgent = function(param) {
+function Config() {
+
+	this.agents = [];
+	this.version = packageInfo.version;
+	this.enableDemo = nconf.get('enableDemo');
+
+	this.users = nconf.get('users');
+	this.sessionSecret = nconf.get('sessionSecret');
+	this.authLocal = nconf.get('auth-local');
+	this.authGoogle = nconf.get('auth-google');
+	this.authNone = nconf.get('auth-none');
+
+	this.port = nconf.get('port');
+	this.name = nconf.get('name');
+
+	this.instances = nconf.get('instances');
+
+	if (this.instances) {
+		this._currentInstance = 0;
+		this.nextInstance();
+	} else {
+		this.instances = [ { name: this.name, port: this.port } ];
+	}
+}
+
+Config.prototype.getAgent = function(param) {
 	if (param.name) {
-		return _.find(agents, function(agent) { return agent.name === param.name; });
+		return _.find(this.agents, function(agent) { return agent.name === param.name; });
 	}
 	if (param.loadBalancerId) {
-		return _.find(agents, function(agent) { return agent.loadBalancerId === param.loadBalancerId; });
+		return _.find(this.agents, function(agent) { return agent.loadBalancerId === param.loadBalancerId; });
 	}
 };
 
-config.loadBalancerStatusChanged = function(id, enabled) {
-	var agent = config.getAgent({loadBalancerId: id});
+Config.prototype.loadBalancerStatusChanged = function(id, enabled) {
+	var agent = this.getAgent({loadBalancerId: id});
 	if (agent) {
 		agent.loadBalancerEnabled = enabled;
 	}
 };
 
-config.nextInstance = function() {
-	config.currentInstance += 1;
+Config.prototype.nextInstance = function() {
+	var instance = this.instances[this._currentInstance];
 
-	var instances = nconf.get('instances');
-	if (instances && config.currentInstance >= instances.length) {
-		console.log("Error: port not available!");
-		return false;
+	if (!instance) {
+		throw new Error("Missing another instance, no more ports available");
 	}
 
-	var instance = instances[config.currentInstance];
-
-	config.port = instance.port;
-	config.name = instance.name;
+	this.port = instance.port;
+	this.name = instance.name;
+	this._currentInstance += 1;
 
 	return true;
 };
 
-if (nconf.get('instances')) {
-	var instances = nconf.get('instances');
-	var instance = instances[0];
-	config.port = instance.port;
-	config.name = instance.name;
-	config.instances = instances;
-}
-else {
-	config.port = nconf.get('port');
-	config.name = nconf.get('name');
-	config.instances = [ { name: config.name, port: config.port} ];
-}
-
-module.exports = config;
+module.exports = new Config();

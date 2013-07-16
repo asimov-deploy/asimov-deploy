@@ -18,7 +18,7 @@ var config = require('../config');
 
 module.exports = function(app) {
 
-	if (!config.authLocal && !config.authGoogle) {
+	if (config.authNone) {
 		app.ensureLoggedIn = function(req, res, next) {
 			next();
 		};
