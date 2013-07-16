@@ -12,7 +12,6 @@
     "socket.io": "0.9.16",
     "underscore": "1.4.4",
     "jade": "0.28.2",
-    "nconf": "~0.6.7",
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
     "passport-google": "~0.3.0"
