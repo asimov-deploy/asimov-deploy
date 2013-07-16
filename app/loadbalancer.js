@@ -14,7 +14,7 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('./config.js');
+var config = require('./config');
 var agentApiClient = require('./services/agent-api-client').create();
 var _  = require("underscore");
 

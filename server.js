@@ -15,116 +15,52 @@
 ******************************************************************************/
 
 var express = require('express');
-var restify = require("restify");
-var io = require('socket.io');
-var path = require('path');
 var http = require('http');
-var _ = require('underscore');
 
 var config = require('./app/config');
 var auth = require('./app/auth/auth');
 
 var app = express();
-var server = http.createServer(app);
 
 app.configure(function(){
-  app.set('port', config.port);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.favicon(__dirname + '/public/img/logo.png'));
-  app.use(express.logger('dev'));
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.session({ secret: config.sessionSecret }));
-  auth(app);
-  app.use(app.router);
-  app.use(express.errorHandler());
-  app.locals.pretty = true;
+	app.set('port', config.port);
+	app.set('views', __dirname + '/views');
+	app.set('view engine', 'jade');
+	app.use(express.favicon(__dirname + '/public/img/logo.png'));
+	app.use(express.logger('dev'));
+	app.use(express.cookieParser());
+	app.use(express.bodyParser());
+	app.use(express.methodOverride());
+	app.use(express.session({ secret: config.sessionSecret }));
+	auth(app);
+	app.use(app.router);
+	app.use(express.errorHandler());
+	app.locals.pretty = true;
 });
 
-app.use("/app", express["static"]( __dirname + '/public/app' ));
-app.use("/css", express["static"]( __dirname + '/dist/release' ));
-app.use("/css", express["static"]( __dirname + '/dist/debug' ));
-app.use("/img", express["static"]( __dirname + '/public/img' ));
-app.use("/libs", express["static"]( __dirname + '/dist/release' ));
-app.use("/libs", express["static"]( __dirname + '/dist/debug' ));
-app.use("/libs", express["static"]( __dirname + '/public/libs' ));
+app.use('/app',	express.static(__dirname + '/public/app'));
+app.use('/css',	express.static(__dirname + '/dist/release'));
+app.use('/css',	express.static(__dirname + '/dist/debug'));
+app.use('/img',	express.static(__dirname + '/public/img'));
+app.use('/libs',	express.static(__dirname + '/dist/release'));
+app.use('/libs',	express.static(__dirname + '/dist/debug'));
+app.use('/libs',	express.static(__dirname + '/public/libs'));
 
 if (config.enableDemo) {
 	require('./app/demo-mode/demo-mode')(app);
 }
 
-require("./app/agents")(app);
-require("./app/deploy")(app);
-require("./app/loadbalancer")(app);
-require("./app/units")(app);
-require("./app/versions")(app);
+require('./app/agents')(app);
+require('./app/deploy')(app);
+require('./app/loadbalancer')(app);
+require('./app/units')(app);
+require('./app/versions')(app);
+require('./app/index')(app, config);
 
-app.get('/', function(req, res) {
-
-	var agents = _.where(config.agents, {dead: false});
-	agents = _.pluck(agents, ["name"]);
-
-	var viewModel = {
-		hostName: req.headers.host.replace(/:\d+/, ''),
-		version: config.version,
-		port: config.port,
-		instances: config.instances,
-		instanceName: config.name,
-		initData: {
-			agents: agents,
-			authUsingLocal: config.authLocal != undefined,
-			authUsingGoogle: config.authGoogle != undefined,
-			user: req.user
-		},
-	};
-
-	res.render('index', viewModel);
-});
-
-
-var server = http.createServer(app);
-
-var startServer = function() {
-	server.listen(config.port);
-};
-
-startServer();
-
-server.on("error", function(err) {
-	if (err.code == 'EADDRINUSE')	{
-		if (config.nextInstance())	{
-			startServer();
-		}
-	}
-});
-
-server.on("listening", function() {
-	console.log("Instance name: " + config.name + " Port: " + config.port);
-
-	io = io.listen(server);
-
-	if (config.enableDemo) {
-		io.configure(function () {
-			io.set('transports', ['xhr-polling']);
-			io.set('close timeout', 40);
-			io.set('heartbeat timeout', 30);
-			io.set('heartbeat interval', 35);
-			io.set("polling duration", 40);
-		});
-	}
-
-	io.sockets.on('connection', function(socket) { });
-	io.sockets.on('error', function (exc) {
-		console.log("socket io exception: " + exc);
-	});
-
-	GLOBAL.clientSockets = io;
-});
+require('./app/start-server')(app, http, config);
 
 process.on('uncaughtException', function (err) {
-  console.log('Caught process exception: ' + err);
+	console.log('Caught process exception: ' + err);
 });
 
 

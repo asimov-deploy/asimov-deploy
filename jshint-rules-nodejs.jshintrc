@@ -22,12 +22,18 @@
 	"maxstatements": 50,
 	"maxcomplexity": 5,
 	"smarttabs": true,
+
+	"browser": false,
+	"node": true,
+
 	"globals": {
 		"process": true,
 		"setTimeout": true,
 		"require": true,
 		"console": true,
 		"module": true,
-		"clientSockets": true
+		"GLOBAL": true,
+		"clientSockets": true,
+		"__dirname": true
 	}
 }

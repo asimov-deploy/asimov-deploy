@@ -14,18 +14,30 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('./config');
-var querystring = require("querystring");
+var _ = require('underscore');
 
-module.exports = function(app) {
+module.exports = function(app, config) {
 
-	app.get('/deploylog/file', app.ensureLoggedIn, function(req, res) {
+	app.get('/', function(req, res) {
 
-		var agent =  config.getAgent({ name: req.query.agentName });
-		var unitName = querystring.escape(req.query.unitName);
+		var agents = _.where(config.agents, {dead: false});
+		agents = _.pluck(agents, ["name"]);
 
-		res.redirect(agent.url + '/deploylog/file/' + unitName + "/" + req.query.position);
+		var viewModel = {
+			hostName: req.headers.host.replace(/:\d+/, ''),
+			version: config.version,
+			port: config.port,
+			instances: config.instances,
+			instanceName: config.name,
+			initData: {
+				agents: agents,
+				authUsingLocal: config.authLocal !== undefined,
+				authUsingGoogle: config.authGoogle !== undefined,
+				user: req.user
+			}
+		};
 
+		res.render('index', viewModel);
 	});
 
 };

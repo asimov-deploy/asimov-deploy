@@ -24,6 +24,9 @@
 	"maxstatements": 50,
 	"maxcomplexity": 5,
 	"smarttabs": true,
+
+	"browser": true,
+
 	"globals": {
 		"jQuery": true,
 		"define": true,
