@@ -5,13 +5,17 @@
 
 	"sessionSecret": "adssaer32t24f23423",
 
-	"auth-local": {
+	"enableDemo": false,
+
+	"authNone": false,
+
+	"authLocal": {
 		"users": [
 			{ "username": "deploy", "password": "secret" }
 		]
 	},
 
-	"auth-google": {
+	"authGoogle": {
 		"emails": [ "some_user_email_change_this@gmail.com" ]
 	}
 }

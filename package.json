@@ -14,7 +14,8 @@
     "jade": "0.28.2",
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
-    "passport-google": "~0.3.0"
+    "passport-google": "~0.3.0",
+    "connect-flash": "~0.1.1"
   },
   "repository": {
     "type": "git",

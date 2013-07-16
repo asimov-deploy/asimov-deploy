@@ -30,7 +30,7 @@ module.exports = function(app, passport, config) {
 			var email = profile.emails[0].value;
 
 			if (_.indexOf(emails, email) === -1) {
-				done({ message: 'User not authorized'}, null);
+				done(null, false, { message: "User " + email + " does not have access rights to use Asimov Deploy" });
 				return;
 			}
 
@@ -51,7 +51,7 @@ module.exports = function(app, passport, config) {
 
 	passport.use(strategy);
 
-	app.get('/auth/google/return',passport.authenticate('google', { successRedirect: '/', failureRedirect: '/login' }));
+	app.get('/auth/google/return',passport.authenticate('google', { successRedirect: '/', failureRedirect: '/', failureFlash: true }));
 
 	app.get('/auth/google', function(req, res, next) {
 		changeReturnUrlHack(req);

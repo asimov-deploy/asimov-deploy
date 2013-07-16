@@ -34,7 +34,8 @@ module.exports = function(app, config) {
 			initData: {
 				agents: agents,
 				authUsingLocal: config.authLocal !== undefined,
-				authUsingGoogle: config.authGoogle !== undefined
+				authUsingGoogle: config.authGoogle !== undefined,
+				flashError: req.flash('error')
 			}
 		};
 

@@ -35,6 +35,10 @@ function($, Backbone, Marionette, app) {
 			"submit .local-login-form" : "login"
 		},
 
+		initialize: function() {
+			this.listenTo(this.model, 'change', this.render, this);
+		},
+
 		login: function(e) {
 			e.preventDefault();
 
@@ -45,14 +49,13 @@ function($, Backbone, Marionette, app) {
 
 			loginCommand.save().done(function () {
 				if (loginCommand.get('status') !== 'ok') {
-					$('.login-error span').text(loginCommand.get('message'));
-					$('.login-error').removeClass('hide');
+					this.model.set('error', loginCommand.get('message'));
 				}
 				else {
 					app.vent.trigger('user:loggedIn', loginCommand.get('user'));
 					app.vent.trigger('dashboard:show');
 				}
-			});
+			}.bind(this));
 
 			return false;
 		}
@@ -67,6 +70,11 @@ function($, Backbone, Marionette, app) {
 	app.addInitializer(function() {
 		loginViewModel.set('authUsingLocal', app.initData.authUsingLocal);
 		loginViewModel.set('authUsingGoogle', app.initData.authUsingGoogle);
+
+		if (app.initData.flashError && app.initData.flashError.length > 0) {
+			loginViewModel.set('error', app.initData.flashError[0]);
+		}
+
 	});
 
 	return {};

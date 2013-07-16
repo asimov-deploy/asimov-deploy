@@ -1,26 +1,19 @@
-<div class="page-header-row">
-		<div class="page-title">
-				<h1>Login</h1>
-		</div>
 
-		<div class="page-controls">
-		</div>
+<div class="container" style="padding-top: 100px;">
+	<div class="row">
+		<div class="span8 offset2">
 
-		<div class="clearfix" />
-</div>
-
-<div class="page-content" style="min-height: 400px; padding-top: 30px;">
-	<div class="container-fluid">
-		<div class="span10">
-
-			{{#if authUsingLocal}}
-				<div class="alert alert-error login-error hide">
+			{{#if error}}
+				<div class="alert alert-error">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
 					<i class="icon-exclamation-sign icon icon-white" />
-					<span></span>
+					<span>{{error}}</span>
 				</div>
+			{{/if}}
 
-				<div class="login-option">
+			{{#if authUsingLocal}}
+
+				<div class="login-option well">
 					<label>Asimov deploy user login</label>
 					<form class="local-login-form">
 						<input type="text" class="username input-medium" id="input-small" placeholder="Username" />
@@ -34,8 +27,8 @@
 			{{/if}}
 
 			{{#if authUsingGoogle}}
-				<div class="login-option">
-					<label>Google user login</label>
+				<div class="login-option well">
+					<label style="display: inline-block">Google user login</label>
 
 					<a href="/auth/google" class="btn btn-info pull-right" data-bypass="1">
 						<i class="icon icon-user icon-white" />
@@ -43,8 +36,9 @@
 					</a>
 				</div>
 			{{/if}}
-	</div>
+		</div>
 	</div>
 </div>
+
 
 

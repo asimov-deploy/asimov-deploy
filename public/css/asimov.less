@@ -136,20 +136,26 @@ a:hover {
 // Asimov Login
 .login-option {
 
-  border-bottom: 1px solid @grayDark;
+  border-top: solid 2px @grayDark;
+  border-bottom: solid 2px @grayDark;
+  .box-shadow(0 4px 6px rgba(0,0,0,.9));
+  margin-bottom: 40px;
 
-  padding: 20px 0;
   overflow: hidden;
 
+  form {
+    margin: 0;
+  }
+
   label {
-    float: left;
     padding: 5px 30px 0 0;
+    color: @grayLight;
   }
+
   input {
-    float: left;
-    margin-right: 30px;
-    margin-bottom: 0;
+    margin: 5px 30px 0 0;
   }
+
   button, a {
     float: right;
     margin-top: 5px;

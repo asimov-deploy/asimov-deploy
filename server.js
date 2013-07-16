@@ -17,6 +17,7 @@
 var express = require('express');
 var http = require('http');
 var app = express();
+var flash = require('connect-flash');
 var auth = require('./app/auth/auth');
 var AsimovConfig = require('./app/config').Config;
 
@@ -32,6 +33,7 @@ app.configure(function(){
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 	app.use(express.session({ secret: config.sessionSecret }));
+	app.use(flash());
 	auth(app, config);
 	app.use(app.router);
 	app.use(express.errorHandler());
