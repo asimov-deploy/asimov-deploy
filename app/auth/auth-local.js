@@ -21,33 +21,24 @@ module.exports = function(app, passport, config) {
 
 	var users = config.authLocal.users;
 
-	users.forEach(function(user) {
-		user.displayName = user.displayName || user.username;
-		user.id = user.username;
-	});
-
 	if (!users) {
 		throw new Error("Missing users config section, needed by local authentication mode!");
 	}
 
-	passport.serializeUser(function(user, done) {
-		done(null, user.username);
-	});
+	function localLogin(username, password, done) {
+		var user = _.find(users, function(user) { return user.name === username; });
 
-	passport.deserializeUser(function(username, done) {
-		var user = _.find(users, function(user) { return user.username === username; });
-		done(null, user);
-	});
+		if (!user || user.password !== password) {
+			return done(null, false, { message: ' Unkown username or password' });
+		}
 
-	passport.use(new LocalStrategy(
-		function(username, password, done) {
-			var user = _.find(users, function(user) { return user.username === username; });
-			if (!user || user.password !== password) {
-				return done(null, false, { message: ' Unkown username or password' });
-			}
-			return done(null, user);
-		})
-	);
+		return done(null, {
+			name: user.name,
+			id: user.name
+		});
+	}
+
+	passport.use(new LocalStrategy(localLogin));
 
 	app.post('/login', function(req, res, next) {
 		passport.authenticate('local', function(err, user, info) {
@@ -58,7 +49,7 @@ module.exports = function(app, passport, config) {
 			req.login(user, function(err) {
 				if (err) { return res.send({ status: 'err', message: err.message }); }
 
-				return res.send({ status: 'ok', user: user.displayName });
+				return res.send({ status: 'ok', user: { name: user.name } });
 			});
 
 		})(req, res, next);

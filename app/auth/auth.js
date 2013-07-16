@@ -41,6 +41,19 @@ module.exports = function(app, config) {
 		res.redirect('/');
 	});
 
+	var users = {};
+
+	passport.serializeUser(function(user, done) {
+		console.log("serializeUser", user);
+		users[user.id] = user;
+		done(null, user.id);
+	});
+
+	passport.deserializeUser(function(userId, done) {
+		console.log("deserializeUser", userId);
+		done(null, users[userId]);
+	});
+
 	if (config.authLocal) {
 		require('./auth-local')(app, passport, config);
 	}

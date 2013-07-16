@@ -1,8 +1,10 @@
 
 {{#if user}}
+
+	<img src="http://www.gravatar.com/avatar/{{user.emailHash}}?d=mm" width="25px" />
+
 	<a href="#" data-toggle="dropdown" class="dropdown-toggle">
-		<i class="icon icon-user icon-white" />
-		{{user}}
+		{{user.name}}
 	</a>
 	<ul class="dropdown-menu">
 		<li><a href="/logout">Logout</a></li>

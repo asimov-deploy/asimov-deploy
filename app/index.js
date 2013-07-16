@@ -16,12 +16,13 @@
 
 var _ = require('underscore');
 var packageInfo = require('../package.json');
+var crypto = require('crypto');
 
 module.exports = function(app, config) {
 
 	app.get('/', function(req, res) {
 
-		var agents = _.where(config.agents, {dead: false});
+		var agents = _.where(config.agents, { dead: false });
 		agents = _.pluck(agents, ["name"]);
 
 		var viewModel = {
@@ -38,7 +39,16 @@ module.exports = function(app, config) {
 		};
 
 		if (req.user) {
-			viewModel.initData.user = req.user.displayName;
+			var user = {};
+			user.name = req.user.name;
+			user.email = req.user.email;
+
+			if (user.email) {
+				var md5sum = crypto.createHash('md5');
+				user.emailHash = md5sum.update(user.email).digest('hex');
+			}
+
+			viewModel.initData.user = user;
 		}
 
 		res.render('index', viewModel);
