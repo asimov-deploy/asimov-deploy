@@ -2,7 +2,9 @@
 
 describe('config', function(){
 
-	var config = require("../../app/config");
+	var AsimovConfig = require("../../app/config").Config;
+	var config = new AsimovConfig();
+
 	require('should');
 
 	before(function() {

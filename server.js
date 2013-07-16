@@ -16,11 +16,11 @@
 
 var express = require('express');
 var http = require('http');
-
-var config = require('./app/config');
-var auth = require('./app/auth/auth');
-
 var app = express();
+var auth = require('./app/auth/auth');
+var AsimovConfig = require('./app/config').Config;
+
+var config = new AsimovConfig();
 
 app.configure(function(){
 	app.set('port', config.port);
@@ -32,7 +32,7 @@ app.configure(function(){
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 	app.use(express.session({ secret: config.sessionSecret }));
-	auth(app);
+	auth(app, config);
 	app.use(app.router);
 	app.use(express.errorHandler());
 	app.locals.pretty = true;
@@ -50,11 +50,11 @@ if (config.enableDemo) {
 	require('./app/demo-mode/demo-mode')(app);
 }
 
-require('./app/agents')(app);
-require('./app/deploy')(app);
-require('./app/loadbalancer')(app);
-require('./app/units')(app);
-require('./app/versions')(app);
+require('./app/agents')(app, config);
+require('./app/deploy')(app, config);
+require('./app/loadbalancer')(app, config);
+require('./app/units')(app, config);
+require('./app/versions')(app, config);
 require('./app/index')(app, config);
 
 require('./app/start-server')(app, http, config);

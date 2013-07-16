@@ -14,12 +14,11 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('./config');
-var agentApiClient = require('./services/agent-api-client').create();
 var _  = require("underscore");
 
+module.exports = function(app, config) {
 
-module.exports = function(app) {
+	var agentApiClient = require('./services/agent-api-client').create(config);
 
 	app.get("/loadbalancer/listHosts", app.ensureLoggedIn, function(req, res) {
 		if (config.agents.length === 0) {

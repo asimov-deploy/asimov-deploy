@@ -14,10 +14,9 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('./config.js');
 var agentApiClient = require('./services/agent-api-client').create();
 
-module.exports = function(app) {
+module.exports = function(app, config) {
 
 	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
 		var agentsResp = [];

@@ -15,6 +15,7 @@
 ******************************************************************************/
 
 var _ = require('underscore');
+var packageInfo = require('../package.json');
 
 module.exports = function(app, config) {
 
@@ -25,7 +26,7 @@ module.exports = function(app, config) {
 
 		var viewModel = {
 			hostName: req.headers.host.replace(/:\d+/, ''),
-			version: config.version,
+			version: packageInfo.version,
 			port: config.port,
 			instances: config.instances,
 			instanceName: config.name,

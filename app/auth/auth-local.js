@@ -14,10 +14,9 @@
 * limitations under the License.
 ******************************************************************************/
 
-module.exports = function(app, passport) {
+module.exports = function(app, passport, config) {
 
 	var LocalStrategy = require('passport-local').Strategy;
-	var config = require('../config');
 	var _ = require('underscore');
 
 	var users = config.authLocal.users;

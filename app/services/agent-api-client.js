@@ -14,11 +14,10 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('../config.js');
 var async = require('async');
 var restify = require("restify");
 
-var AgentApiClient = function() {
+var AgentApiClient = function(config) {
 
 	this.get = function(agentName, url, dataCallback) {
 		var agent =  config.getAgent({ name: agentName });

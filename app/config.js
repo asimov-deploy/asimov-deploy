@@ -15,29 +15,13 @@
 ******************************************************************************/
 
 var _ = require("underscore");
-var nconf = require('nconf');
-var packageInfo = require('../package.json');
-var path = require('path');
-var appPath = path.dirname(process.mainModule.filename);
-
-nconf.file({ file: path.join(appPath, 'config.json') });
-
-nconf.defaults({
-	'name': 'Deploy UI',
-	'enableDemo': false,
-	'port': process.env.PORT || 3333,
-	'authentication': [],
-	'sessionSecret': 'asdasdad3242352jji3o2hkjo1n2b3',
-	'auth-none': false
-});
-
 
 function Config() {
 
-	this.agents = [];
-	this.version = packageInfo.version;
-	this.enableDemo = nconf.get('enableDemo');
+	var nconf = this.loadConfigFromFile();
 
+	this.agents = [];
+	this.enableDemo = nconf.get('enableDemo');
 	this.users = nconf.get('users');
 	this.sessionSecret = nconf.get('sessionSecret');
 	this.authLocal = nconf.get('auth-local');
@@ -56,6 +40,25 @@ function Config() {
 		this.instances = [ { name: this.name, port: this.port } ];
 	}
 }
+
+Config.prototype.loadConfigFromFile = function() {
+
+	var nconf = require('nconf');
+	var path = require('path');
+	var appPath = path.dirname(process.mainModule.filename);
+
+	nconf.file({ file: path.join(appPath, 'config.json') });
+
+	nconf.defaults({
+		'name': 'Deploy UI',
+		'enableDemo': false,
+		'port': process.env.PORT || 3333,
+		'sessionSecret': 'asdasdad3242352jji3o2hkjo1n2b3',
+		'auth-none': true
+	});
+
+	return nconf;
+};
 
 Config.prototype.getAgent = function(param) {
 	if (param.name) {
@@ -87,4 +90,6 @@ Config.prototype.nextInstance = function() {
 	return true;
 };
 
-module.exports = new Config();
+module.exports = {
+	Config: Config
+};

@@ -61,8 +61,8 @@ module.exports = function(grunt) {
 
 		watch: {
 			node_src: {
-				files: ["*.js", "app/**/*.js"],
-				tasks: ["jshint"]
+				files: ["*.js", "app/**/*.js", "test/backend/*.js"],
+				tasks: ["jshint", "mochaTest"]
 			},
 
 			ui_src: {
@@ -110,7 +110,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-notify');
 
 	// Default task(s).
-	grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'less', 'handlebars', 'concat']);
+	grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'less', 'handlebars', 'concat', 'mochaTest']);
 
 	grunt.registerTask("release", ['default', 'cssmin', 'uglify', 'mochaTest']);
 

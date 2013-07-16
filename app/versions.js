@@ -14,10 +14,9 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('./config');
 var querystring = require("querystring");
 
-module.exports = function(app) {
+module.exports = function(app, config) {
 
 	app.get('/deploylog/file', app.ensureLoggedIn, function(req, res) {
 

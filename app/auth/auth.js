@@ -14,9 +14,7 @@
 * limitations under the License.
 ******************************************************************************/
 
-var config = require('../config');
-
-module.exports = function(app) {
+module.exports = function(app, config) {
 
 	if (config.authNone) {
 		app.ensureLoggedIn = function(req, res, next) {
@@ -44,11 +42,11 @@ module.exports = function(app) {
 	});
 
 	if (config.authLocal) {
-		require('./auth-local')(app, passport);
+		require('./auth-local')(app, passport, config);
 	}
 
 	if (config.authGoogle) {
-		require('./auth-google')(app, passport);
+		require('./auth-google')(app, passport, config);
 	}
 };
 
