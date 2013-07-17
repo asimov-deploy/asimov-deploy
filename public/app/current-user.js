@@ -34,6 +34,11 @@ function($, Backbone, Marionette, app) {
 			this.listenTo(this.model, 'change', this.render, this);
 		},
 
+		render: function() {
+			$(this.el).toggleClass('dropdown', this.model.get('user') !== undefined);
+			Marionette.ItemView.prototype.render.call(this);
+		},
+
 		userLoggedIn: function(user) {
 			this.model.set('user', user);
 		}

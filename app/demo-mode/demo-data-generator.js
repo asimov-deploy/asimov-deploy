@@ -141,8 +141,17 @@ versions["backend.queue-handler"] = versions["backend.member-notification"] = [
 	{ "version": "1.5.0", "timestamp": "2013-06-21 12:26:11", "branch": "poc", "commit": "14cbf25", "id": "mykillerapp-v1.5.0-[master]-[14cbf25].prod.zip" }
 ];
 
+var deployLog = [
+	{ timestamp: "2013-06-14 16:25:11", version: "2.1.0", branch: "master", commit: "14cbf27", status: "Success" },
+	{ timestamp: "2013-06-13 12:21:11", version: "2.0.0", branch: "master", commit: "14cbf27", status: "Success" },
+	{ timestamp: "2013-06-12 11:21:11", version: "1.8.0", branch: "uber-feature", commit: "14cbf27", status: "DeployFailed" },
+	{ timestamp: "2013-06-10 07:25:11", version: "1.6.0", branch: "master", commit: "14cbf27", status: "Success" },
+	{ timestamp: "2013-06-10 07:15:01", version: "1.1.0", branch: "develop", commit: "14cbf27", status: "Success" }
+];
+
 module.exports = {
 	agents: agents,
 	units: units,
-	versions: versions
+	versions: versions,
+	deployLog: deployLog
 };

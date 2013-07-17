@@ -1,6 +1,5 @@
 
 {{#if user}}
-
 	<a href="#" data-toggle="dropdown" class="dropdown-toggle">
 		<i class="icon-user icon-white" />
 		{{user.name}}
@@ -9,4 +8,9 @@
 	<ul class="dropdown-menu">
 		<li><a href="/logout">Logout</a></li>
 	</ul>
+{{else}}
+	<a href="login">
+		<i class="icon-user icon-white" />
+		Login
+	</a>
 {{/if}}

@@ -19,7 +19,7 @@ module.exports = function(app, passport, config) {
 	var _ = require('underscore');
 	var GoogleStrategy = require('passport-google').Strategy;
 
-	var emails = config.authGoogle.emails;
+	var emails = config['auth-google'].emails;
 
 	if (!emails || emails.length === 0) {
 		throw new Error('Missing allowed emails array in google auth config');

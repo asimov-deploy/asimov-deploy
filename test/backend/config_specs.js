@@ -47,7 +47,7 @@ describe('config module', function(){
 		var config = new AsimovConfig();
 
 		it('Enable demo should be false by default', function() {
-			config.enableDemo.should.equal(false);
+			config['enable-demo'].should.equal(false);
 		});
 
 		it('Should have default port and name', function() {

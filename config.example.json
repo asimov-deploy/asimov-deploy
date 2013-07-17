@@ -3,19 +3,19 @@
 
 	"port": 3333,
 
-	"sessionSecret": "adssaer32t24f23423",
+	"session-secret": "adssaer32t24f23423",
 
-	"enableDemo": false,
+	"enable-demo": false,
 
-	"authNone": false,
+	"auth-anonymous": false,
 
-	"authLocal": {
+	"auth-local": {
 		"users": [
 			{ "username": "deploy", "password": "secret" }
 		]
 	},
 
-	"authGoogle": {
+	"auth-google": {
 		"emails": [ "some_user_email_change_this@gmail.com" ]
 	}
 }

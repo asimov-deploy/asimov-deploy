@@ -32,7 +32,7 @@ app.configure(function(){
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(express.session({ secret: config.sessionSecret }));
+	app.use(express.session({ secret: config['session-secret'] }));
 	app.use(flash());
 	auth(app, config);
 	app.use(app.router);
@@ -48,7 +48,7 @@ app.use('/libs',	express.static(__dirname + '/dist/release'));
 app.use('/libs',	express.static(__dirname + '/dist/debug'));
 app.use('/libs',	express.static(__dirname + '/public/libs'));
 
-if (config.enableDemo) {
+if (config['enable-demo']) {
 	require('./app/demo-mode/demo-mode')(app);
 }
 

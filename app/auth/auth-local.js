@@ -19,7 +19,7 @@ module.exports = function(app, passport, config) {
 	var LocalStrategy = require('passport-local').Strategy;
 	var _ = require('underscore');
 
-	var users = config.authLocal.users;
+	var users = config['auth-local'].users;
 
 	if (!users) {
 		throw new Error("Missing users config section, needed by local authentication mode!");

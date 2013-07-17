@@ -32,11 +32,11 @@ function Config(configOverrides) {
 }
 
 Config.prototype.defaults = {
-	name:				'Deploy UI',
-	enableDemo:		false,
-	port:				process.env.PORT || 3333,
-	sessionSecret: 'asdasdad3242352jji3o2hkjo1n2b3',
-	authNone:		true
+	'name':				'Deploy UI',
+	'enable-demo':		false,
+	'port':				process.env.PORT || 3333,
+	'session-secret': 'asdasdad3242352jji3o2hkjo1n2b3',
+	'auth-none':		true
 };
 
 Config.prototype._applyConfig = function(cfg) {

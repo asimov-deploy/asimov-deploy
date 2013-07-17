@@ -37,15 +37,15 @@ module.exports = function(app, config) {
 		done(null, users[userId]);
 	});
 
-	if (config.authLocal) {
+	if (config['auth-local']) {
 		require('./auth-local')(app, passport, config);
 	}
 
-	if (config.authGoogle) {
+	if (config['auth-google']) {
 		require('./auth-google')(app, passport, config);
 	}
 
-	if (config.authNone) {
+	if (config['auth-anonymous']) {
 		app.ensureLoggedIn = function(req, res, next) {
 			next();
 		};

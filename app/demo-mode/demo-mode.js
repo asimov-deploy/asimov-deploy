@@ -15,7 +15,7 @@
 ******************************************************************************/
 
 
-module.exports = function(server) {
+module.exports = function(app) {
 
 	var demodata = require('./demo-data-generator.js');
 	var demoUtils = require('./demo-utils.js');
@@ -40,15 +40,19 @@ module.exports = function(server) {
 		clientSockets.sockets.emit('agent:event', data);
 	}
 
-	server.get('/agents/list', function(req, res) {
+	app.get('/agents/list', app.ensureLoggedIn, function(req, res) {
 		res.json(demodata.agents);
 	});
 
-	server.get('/units/list', function(req, res) {
+	app.get('/units/list', app.ensureLoggedIn, function(req, res) {
 		res.json(demodata.units);
 	});
 
-	server.get("/agent/query", function(req, res) {
+	app.get("/agent/query", app.ensureLoggedIn, function(req, res) {
+		if (req.query.url.indexOf('deploylog') !== -1) {
+			return res.json(demodata.deployLog);
+		}
+
 		if (req.query.url.indexOf('api.asimov-demo.com') !== -1) {
 			return res.json(demodata.versions["api.asimov-demo.com"]);
 		}
@@ -60,7 +64,7 @@ module.exports = function(server) {
 		}
 	});
 
-	server.post("/loadbalancer/change", function(req, res) {
+	app.post("/loadbalancer/change", app.ensureLoggedIn, function(req, res) {
 		res.json("ok");
 
 		req.body.hosts.forEach(function(host) {
@@ -82,7 +86,7 @@ module.exports = function(server) {
 		});
 	});
 
-	server.get("/loadbalancer/listHosts", function(req, res) {
+	app.get("/loadbalancer/listHosts", app.ensureLoggedIn, function(req, res) {
 		var hosts = _.map(demodata.agents, function(agent) {
 			return {
 				id: agent.loadBalancerId,
@@ -94,10 +98,10 @@ module.exports = function(server) {
 		res.json(hosts);
 	});
 
-	server.post("/deploy/deploy", function(req, res) {
+	app.post("/deploy/deploy", app.ensureLoggedIn, function(req, res) {
 
 		var versions = demodata.versions[req.body.unitName];
-		console.log(versions);
+
 		var version = _.find(versions, function(version) { return version.id === req.body.versionId; });
 
 		emitAgentEvent({
@@ -160,7 +164,7 @@ module.exports = function(server) {
 		emitVerifyTest();
 	}
 
-	server.post("/agent/action", function(req, res) {
+	app.post("/agent/action", app.ensureLoggedIn, function(req, res) {
 		res.json('ok');
 
 		if (req.body.actionName === "Verify") {

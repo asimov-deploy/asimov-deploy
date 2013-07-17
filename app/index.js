@@ -33,8 +33,8 @@ module.exports = function(app, config) {
 			instanceName: config.name,
 			initData: {
 				agents: agents,
-				authUsingLocal: config.authLocal !== undefined,
-				authUsingGoogle: config.authGoogle !== undefined,
+				authUsingLocal: config['auth-local'] !== undefined,
+				authUsingGoogle: config['auth-google'] !== undefined,
 				flashError: req.flash('error')
 			}
 		};
