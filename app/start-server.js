@@ -39,7 +39,7 @@ module.exports = function(app, http, config) {
 
 		io = io.listen(server);
 
-		if (config.enableDemo) {
+		if (config['enable-demo']) {
 			io.configure(function () {
 				io.set('transports', ['xhr-polling']);
 				io.set('close timeout', 40);
