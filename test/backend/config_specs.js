@@ -1,6 +1,6 @@
 require('should');
 
-describe('config module', function(){
+describe('Config', function(){
 
 	var AsimovConfig = require("../../app/config").Config;
 

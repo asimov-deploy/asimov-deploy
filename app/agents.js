@@ -14,9 +14,9 @@
 * limitations under the License.
 ******************************************************************************/
 
-var agentApiClient = require('./services/agent-api-client').create();
-
 module.exports = function(app, config) {
+
+	var agentApiClient = require('./services/agent-api-client').create(config);
 
 	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
 		var agentsResp = [];
@@ -69,7 +69,7 @@ module.exports = function(app, config) {
 	});
 
 	app.post("/agent/action", app.ensureLoggedIn, function(req, res) {
-		agentApiClient.sendCommand(req.body.agentName, '/action', req.body);
+		agentApiClient.sendCommand(req.body.agentName, '/action', req.body, req.user);
 		res.json('ok');
 	});
 

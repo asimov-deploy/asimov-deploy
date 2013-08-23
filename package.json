@@ -36,7 +36,8 @@
     "grunt-cli": "~0.1.7",
     "grunt-notify": "~0.2.3",
     "mocha": "1.6.0",
-    "should": "*"
+    "should": "*",
+    "sinon": "~1.7.3"
   },
   "engines": {
     "node": "0.10.x",

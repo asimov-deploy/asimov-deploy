@@ -32,7 +32,7 @@ module.exports = function(app, config) {
 			results.forEach(function(item) {
 
 				if (_.find(item.units, filterUnitsByUnitName)) {
-					agentApiClient.sendCommand(item.agent.name, '/deploy/deploy', req.body);
+					agentApiClient.sendCommand(item.agent.name, '/deploy/deploy', req.body, req.user);
 				}
 
 			});
@@ -45,7 +45,7 @@ module.exports = function(app, config) {
 	// request json body
 	// { agentName: "<agentName>", unitName: "<unitName>" }
 	app.post("/deploy/deploy", app.ensureLoggedIn, function(req, res) {
-		agentApiClient.sendCommand(req.body.agentName, '/deploy/deploy', req.body);
+		agentApiClient.sendCommand(req.body.agentName, '/deploy/deploy', req.body, req.user);
 		res.json('ok');
 	});
 

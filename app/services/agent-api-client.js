@@ -15,9 +15,10 @@
 ******************************************************************************/
 
 var async = require('async');
-var restify = require("restify");
 
-var AgentApiClient = function(config) {
+var AgentApiClient = function(config, restify) {
+
+	restify = restify || require("restify");
 
 	this.get = function(agentName, url, dataCallback) {
 
@@ -54,11 +55,25 @@ var AgentApiClient = function(config) {
 		});
 	};
 
-	this.sendCommand = function(agentName, commandUrl, parameters) {
-		var agent = config.getAgent({ name: agentName });
-		var client = restify.createJsonClient({ url: agent.url });
+	this.test = function(agentName) {
+		return config.getAgent(agentName);
+	};
 
-		commandUrl = commandUrl + "?apikey=" + agent.apiKey;
+	this.sendCommand = function(agentName, commandUrl, parameters, user) {
+		var agent = config.getAgent({ name: agentName });
+		var headers = {};
+
+		headers.Authorization = agent.apiKey;
+
+		if (user) {
+			headers.UserId = encodeURIComponent(user.id);
+			headers.UserName = encodeURIComponent(user.name);
+		}
+
+		var client = restify.createJsonClient({
+			url: agent.url,
+			headers: headers
+		});
 
 		client.post(commandUrl, parameters, function(err, req, res, obj) {
 			if (err) {
@@ -75,7 +90,7 @@ var AgentApiClient = function(config) {
 
 
 module.exports = {
-	create: function(config) {
-		return new AgentApiClient(config);
+	create: function(config, restify) {
+		return new AgentApiClient(config, restify);
 	}
 };
