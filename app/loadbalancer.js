@@ -44,12 +44,12 @@ module.exports = function(app, config) {
 	});
 
 	app.post("/loadbalancer/change", app.ensureLoggedIn,  function(req, res) {
-		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/change', req.body);
+		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/change', req.body, req.user);
 		res.json('ok');
 	});
 
 	app.post("/loadbalancer/settings", app.ensureLoggedIn, function(req, res) {
-		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/settings', req.body);
+		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/settings', req.body, req.user);
 		res.json('ok');
 	});
 

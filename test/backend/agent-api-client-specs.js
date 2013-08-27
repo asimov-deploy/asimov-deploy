@@ -34,9 +34,9 @@ describe('AgentApiClient', function(){
 			jsonClientOptions.headers.Authorization.should.equal('12321313213');
 		});
 
-		it('should send user id in User header', function(){
-			jsonClientOptions.headers.UserId.should.equal('myCoolUserId');
-			jsonClientOptions.headers.UserName.should.equal('coolName');
+		it('should add userId and userName to parameters', function(){
+			jsonClientPostSpy.getCall(0).args[1].userId.should.equal("myCoolUserId");
+			jsonClientPostSpy.getCall(0).args[1].userName.should.equal("coolName");
 		});
 
 		it('should post command to agent url', function(){

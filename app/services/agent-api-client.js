@@ -61,19 +61,16 @@ var AgentApiClient = function(config, restify) {
 
 	this.sendCommand = function(agentName, commandUrl, parameters, user) {
 		var agent = config.getAgent({ name: agentName });
-		var headers = {};
-
-		headers.Authorization = agent.apiKey;
-
-		if (user) {
-			headers.UserId = encodeURIComponent(user.id);
-			headers.UserName = encodeURIComponent(user.name);
-		}
 
 		var client = restify.createJsonClient({
 			url: agent.url,
-			headers: headers
+			headers: { Authorization: agent.apiKey }
 		});
+
+		if (user) {
+			parameters.userId = user.id;
+			parameters.userName = user.name;
+		}
 
 		client.post(commandUrl, parameters, function(err, req, res, obj) {
 			if (err) {

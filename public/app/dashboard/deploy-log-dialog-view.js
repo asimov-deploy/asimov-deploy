@@ -78,11 +78,15 @@ function($, _, Backbone, Marionette, app, AgentQueryCollection) {
 
 		show: function() {
 			this.render();
-			$(".modal").modal("show");
+			$(".modal")
+				.addClass('deploy-log-dialog')
+				.modal("show");
 		},
 
 		close: function() {
-			$(".modal").modal("hide");
+			$(".modal")
+				.removeClass('deploy-log-dialog')
+				.modal("hide");
 			this.undelegateEvents();
 		}
 
