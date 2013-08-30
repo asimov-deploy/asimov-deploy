@@ -15,13 +15,14 @@
 ******************************************************************************/
 
 define([
-	"jquery",
-	"backbone",
-	"app",
-	"dashboard/dashboard",
-	"loadbalancer/loadbalancer",
-	"agentlist",
-	'login/login'
+	'jquery',
+	'backbone',
+	'app',
+	'dashboard/dashboard',
+	'loadbalancer/loadbalancer',
+	'agentlist',
+	'login/login',
+	'deploylog/deploylog'
 ],
 
 function($, Backbone, app) {
@@ -33,7 +34,8 @@ function($, Backbone, app) {
 			'loadbalancer': 'showLoadbalancer',
 			'loadbalancer/settings': 'showLoadbalancerSettings',
 			'agents': 'showAgentList',
-			'login': 'showLogin'
+			'login': 'showLogin',
+			'deploylog/:unitName/:agentName': 'showDeployLog'
 		},
 
 		initialize: function(){
@@ -57,6 +59,10 @@ function($, Backbone, app) {
 
 		showAgentList: function() {
 			app.vent.trigger("agentlist:show");
+		},
+
+		showDeployLog: function(unitName, agentName) {
+			app.vent.trigger('deploylog:show', { unitName: unitName, agentName: agentName });
 		},
 
 		showRoute: function(path) {

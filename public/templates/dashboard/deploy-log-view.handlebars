@@ -1,35 +1,35 @@
 
 
 <div class="page-header-row">
-    <div class="page-title">
-        <h1>Deploy Log <small>{{unitName}} on {{agentName}}</small></h1>
-    </div>
+		<div class="page-title">
+				<h1>Deploy log</h1>
+				<h2>{{unitName}} on {{agentName}}</h2>
+		</div>
 
-    <div class="page-controls">
-      <button class="btn btn-info">Back</button>
-    </div>
+		<div class="page-controls">
+			<button class="btn btn-info">Back</button>
+		</div>
 
-    <div class="clearfix" />
+		<div class="clearfix" />
 </div>
 
 <div class="page-content">
+	 <table class="table version-table table-striped table-bordered version-table">
+			<thead>
+				<tr>
+					<th style="width: 140px">Deploy date</th>
+					<th style="width: 80px">By user</th>
+					<th style="width: 80px">Version</th>
+					<th style="width: 80px">Branch</th>
+					<th style="width: 80px">Commit</th>
+					<th>Status</th>
+				</tr>
+			<thead>
 
-    <table class="table version-table table-striped table-bordered version-table">
-      <thead>
-        <tr>
-          <th style="width: 100px">Deploy date</th>
-          <th style="width: 80px">By user</th>
-          <th style="width: 80px">Version</th>
-          <th style="width: 80px">Branch</th>
-          <th style="width: 80px">Commit</th>
-          <th style="width: 80px">Status</th>
-        </tr>
-      <thead>
+			<tbody class="log-rows-container">
+			</tbody>
 
-      <tbody>
-      </tbody>
-
-    </table>
-  </div>
+		</table>
+	</div>
 
 </div>

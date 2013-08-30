@@ -2,39 +2,47 @@
 // -----------
 
 .page-header-row {
-    padding: 10px 30px 10px 15px;
-    background: transparent;
+	padding: 10px 30px 10px 15px;
+	background: transparent;
 
 	.page-title {
-	    float: left;
+		float: left;
 
-	    h1 {
-	    	font-size: 18pt;
-	    	border: none;
-	    	margin: 0;
+		h1 {
+			font-size: 18pt;
+			border: none;
+			margin: 0;
+			display: inline-block;
+		}
+		h2 {
+			font-size: 14px;
+			border: none;
+			margin: 0 0 0 20px;
+			font-weight: normal;
+			display: inline-block;
 		}
 	}
 
 	.page-controls {
-	    float: right;
-	    margin-top: 8px;
+		float: right;
+		margin-top: 8px;
 
-	    input,label, button {
-	    	display:inline;
-	    }
+		input,label, button {
+			display:inline;
+		}
 	}
 }
 
 .page-content {
-    border-top: 1px solid #444444;
-    background: @pageContentBackground;
-    margin: 0;
-    padding: 0;
-    clear: both;
-    .box-shadow(0 2px 4px rgba(0,0,0,.8));
+	border-top: 1px solid #444444;
+	background: @pageContentBackground;
+	margin: 0;
+	padding: 0;
+	clear: both;
+	.box-shadow(0 2px 4px rgba(0,0,0,.8));
 
-    table {
-    		margin-bottom: 0;
-    }
+	table {
+		margin-bottom: 0;
+	}
 }
 

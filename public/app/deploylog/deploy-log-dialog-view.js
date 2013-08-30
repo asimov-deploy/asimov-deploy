@@ -39,7 +39,7 @@ function($, _, Backbone, Marionette, app, AgentQueryCollection) {
 	return Marionette.CompositeView.extend({
 		itemView: DeployLogItemView,
 		template: "dashboard/deploy-log-view",
-		itemViewContainer: "tbody",
+		itemViewContainer: ".log-rows-container",
 
 		events: {
 			"click .btn-close": "close"
