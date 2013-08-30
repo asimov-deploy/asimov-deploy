@@ -41,8 +41,6 @@ function($, _, Backbone, Marionette, app, AgentQueryCollection) {
 		template: "dashboard/deploy-log-view",
 		itemViewContainer: "tbody",
 
-		el: $("#asimov-modal"),
-
 		events: {
 			"click .btn-close": "close"
 		},

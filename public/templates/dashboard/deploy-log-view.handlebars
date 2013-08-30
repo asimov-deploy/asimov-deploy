@@ -1,10 +1,19 @@
 
-  <div class="modal-header">
-    <button type="button" class="close btn-close">×</button>
-    <h3 style="display:inline">Deploy Log : </h3>
-    {{unitName}} on {{agentName}}
-  </div>
-  <div class="modal-body">
+
+<div class="page-header-row">
+    <div class="page-title">
+        <h1>Deploy Log <small>{{unitName}} on {{agentName}}</small></h1>
+    </div>
+
+    <div class="page-controls">
+      <button class="btn btn-info">Back</button>
+    </div>
+
+    <div class="clearfix" />
+</div>
+
+<div class="page-content">
+
     <table class="table version-table table-striped table-bordered version-table">
       <thead>
         <tr>
@@ -22,6 +31,5 @@
 
     </table>
   </div>
-  <div class="modal-footer">
-    <button class="btn btn-close btn-primary">Close</button>
-  </div>
+
+</div>

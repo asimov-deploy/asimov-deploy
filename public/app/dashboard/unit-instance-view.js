@@ -20,9 +20,10 @@ define([
 	"./confirm-deploy-view",
 	"./verify-log-view",
 	"./version-dialog-view",
-	"./deploy-log-dialog-view"
+	"./deploy-log-dialog-view",
+	"app"
 ],
-function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, DeployLogDialogView) {
+function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, DeployLogDialogView, app) {
 
 	return Backbone.Marionette.ItemView.extend({
 		template: "dashboard/unit-instance-view",
@@ -48,7 +49,7 @@ function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, Deplo
 			e.preventDefault();
 
 			var deployLog = new DeployLogDialogView({ agentName: this.model.get('agentName'), unitName: this.model.get('unitName') });
-			deployLog.show();
+			app.mainRegion.show(deployLog);
 		},
 
 		toggleSelection: function() {
