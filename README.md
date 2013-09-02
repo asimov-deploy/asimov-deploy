@@ -1,4 +1,4 @@
-Asimov Deploy [![Build Status](https://api.travis-ci.org/asimov-deploy/asimov-deploy.png)](https://travis-ci.org/asimov-deploy/asimov-deploy)
+Asimov Deploy [![NPM version](https://badge.fury.io/js/asimov-deploy-ui.png)](https://npmjs.org/package/asimov-deploy-ui)  [![Build Status](https://api.travis-ci.org/asimov-deploy/asimov-deploy.png)](https://travis-ci.org/asimov-deploy/asimov-deploy)
 =============
 
 Asimov Deploy is a simple distributed deployment tool that enables you to deploy applications to multiple machines through central web interface. Actual deploymentents are handled on each machine by the locally installed deploy agent.
