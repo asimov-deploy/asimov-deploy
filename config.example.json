@@ -11,7 +11,7 @@
 
 	"auth-local": {
 		"users": [
-			{ "username": "deploy", "password": "secret" }
+			{ "name": "deploy", "password": "secret" }
 		]
 	},
 

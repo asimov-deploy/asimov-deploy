@@ -36,7 +36,7 @@ Config.prototype.defaults = {
 	'enable-demo':		false,
 	'port':				process.env.PORT || 3333,
 	'session-secret': 'asdasdad3242352jji3o2hkjo1n2b3',
-	'auth-none':		true
+	'auth-anonymous':	true
 };
 
 Config.prototype._applyConfig = function(cfg) {
