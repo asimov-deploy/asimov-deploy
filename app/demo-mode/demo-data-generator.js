@@ -142,11 +142,11 @@ versions["backend.queue-handler"] = versions["backend.member-notification"] = [
 ];
 
 var deployLog = [
-	{ timestamp: "2013-06-14 16:25:11", version: "2.1.0", branch: "master", commit: "14cbf27", status: "Success" },
-	{ timestamp: "2013-06-13 12:21:11", version: "2.0.0", branch: "master", commit: "14cbf27", status: "Success" },
-	{ timestamp: "2013-06-12 11:21:11", version: "1.8.0", branch: "uber-feature", commit: "14cbf27", status: "DeployFailed" },
-	{ timestamp: "2013-06-10 07:25:11", version: "1.6.0", branch: "master", commit: "14cbf27", status: "Success" },
-	{ timestamp: "2013-06-10 07:15:01", version: "1.1.0", branch: "develop", commit: "14cbf27", status: "Success" }
+	{ timestamp: "2013-06-14 16:25:11", username: "BlameMe",				version: "2.1.0", branch: "master", commit: "14cbf27", status: "Success" },
+	{ timestamp: "2013-06-13 12:21:11", username: "Torkel Ödegaard",	version: "2.0.0", branch: "master", commit: "14cbf27", status: "Success" },
+	{ timestamp: "2013-06-12 11:21:11", username: "Test User",			version: "1.8.0", branch: "uber-feature", commit: "14cbf27", status: "DeployFailed" },
+	{ timestamp: "2013-06-10 07:25:11", username: "Test User",			version: "1.6.0", branch: "master", commit: "14cbf27", status: "Success" },
+	{ timestamp: "2013-06-10 07:15:01", username: "Demo User",			version: "1.1.0", branch: "develop", commit: "14cbf27", status: "Success" }
 ];
 
 module.exports = {
