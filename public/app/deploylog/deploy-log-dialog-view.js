@@ -42,7 +42,7 @@ function($, _, Backbone, Marionette, app, AgentQueryCollection) {
 		itemViewContainer: ".log-rows-container",
 
 		events: {
-			"click .btn-close": "close"
+			"click .btn-back": "backToDashboard"
 		},
 
 		initialize: function(options) {
@@ -74,18 +74,8 @@ function($, _, Backbone, Marionette, app, AgentQueryCollection) {
 			window.open("/deploylog/file?" + $.param(params));
 		},
 
-		show: function() {
-			this.render();
-			$(".modal")
-				.addClass('deploy-log-dialog')
-				.modal("show");
-		},
-
-		close: function() {
-			$(".modal")
-				.removeClass('deploy-log-dialog')
-				.modal("hide");
-			this.undelegateEvents();
+		backToDashboard: function() {
+			app.vent.trigger('dashboard:show');
 		}
 
 	});
