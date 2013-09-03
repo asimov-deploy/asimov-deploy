@@ -80,10 +80,12 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 		versionSelected: function(versionId, version, branch) {
 			var selectedInstances = this.instances.where({selected: true});
 			var agentNames = _.map(selectedInstances, function(unit) { return unit.get('agentName'); });
+			var hasDeployParameters = selectedInstances[0].get('hasDeployParameters');
 
 			var confirmView = new ConfirmDeployView({
 				unitName: this.model.get('name'),
 				agentNames: agentNames,
+				hasDeployParameters: hasDeployParameters,
 				deployInfo: {
 					version: version,
 					versionId: versionId,
