@@ -20,7 +20,7 @@ module.exports = function(app, config) {
 
 	app.get('/deploylog/file', app.ensureLoggedIn, function(req, res) {
 
-		var agent =  config.getAgent({ name: req.query.agentName });
+		var agent =  config.getAgent(req.query.agentName);
 		var unitName = querystring.escape(req.query.unitName);
 
 		res.redirect(agent.url + '/deploylog/file/' + unitName + "/" + req.query.position);

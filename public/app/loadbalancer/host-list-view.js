@@ -36,17 +36,17 @@ function($, Backbone, HostItemView) {
 		},
 
 		executeChange: function() {
-			var hosts = this.collection.filter(function(host) { return host.get('action'); });
+			this.collection.forEach(function (agent) {
+				if (!agent.get('action')) {
+					return;
+				}
 
-			if (hosts.length > 0) {
-				var command = new ChangeLoadBalancerStatusCommand({
-					hosts: hosts
-				});
-				command.save();
-			}
+				new ChangeLoadBalancerStatusCommand({
+					agentName: agent.get('name'),
+					action: agent.get('action')
+				}).save();
 
-			this.collection.forEach(function(host) {
-				host.set({ action: null });
+				agent.set({ action: null });
 			});
 		},
 

@@ -27,8 +27,7 @@ module.exports = function(app, config) {
 			results.forEach(function(item) {
 				agentsResp.push({
 					name: item.agent.name,
-					loadBalancerEnabled: item.agent.loadBalancerEnabled,
-					loadBalancerId: item.agent.loadBalancerId,
+					loadBalancerState: item.agent.loadBalancerState,
 					units: item.units
 				});
 			});

@@ -30,8 +30,7 @@ function($, Marionette) {
         },
 
         initialize: function() {
-            this.model.on("change:enabled", this.render, this);
-            this.model.on("change:action", this.render, this);
+            this.listenTo(this.model, "change", this.render, this);
         },
 
         enable: function() {

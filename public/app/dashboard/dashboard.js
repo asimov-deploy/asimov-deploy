@@ -44,8 +44,8 @@ function(_, app, UnitListView, UnitCollection) {
 	app.vent.on("agent:event:loadBalancerStateChanged", function(data) {
 		unitCollection.forEach(function(unit) {
 			unit.get('instances').forEach(function(instance) {
-				if (instance.get('loadBalancerId') === data.id) {
-					instance.set({ loadBalancerEnabled: data.enabled });
+				if (instance.get('agentName') === data.agentName) {
+					instance.set({ loadBalancerState: data.state });
 				}
 			});
 		});

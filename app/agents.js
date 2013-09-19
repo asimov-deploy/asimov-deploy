@@ -27,7 +27,7 @@ module.exports = function(app, config) {
 				dead: agent.dead,
 				version: agent.version,
 				configVersion: agent.configVersion,
-				loadBalancerId: agent.loadBalancerId
+				loadBalancerState: agent.loadBalancerState
 			});
 		});
 
@@ -36,7 +36,7 @@ module.exports = function(app, config) {
 
 	app.post("/agent/heartbeat", function(req, res) {
 
-		var agent = config.getAgent({ name: req.body.name });
+		var agent = config.getAgent(req.body.name);
 		if (!agent) {
 			agent = { name: req.body.name };
 			config.agents.push(agent);
@@ -48,16 +48,19 @@ module.exports = function(app, config) {
 		agent.dead = false;
 		agent.version = req.body.version;
 		agent.configVersion = req.body.configVersion;
-		agent.loadBalancerId = req.body.loadBalancerId;
+		agent.loadBalancerState = req.body.loadBalancerState;
 
 		res.json('ok');
 	});
+
+
 
 	app.post("/agent/event", function(req, res) {
 		clientSockets.sockets.volatile.emit('agent:event', req.body);
 
 		if (req.body.eventName === "loadBalancerStateChanged") {
-			config.loadBalancerStatusChanged(req.body.id, req.body.enabled);
+			var agent = config.getAgent(req.body.agentName);
+			agent.loadBalancerState = req.body.state;
 		}
 
 		res.json("ok");

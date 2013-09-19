@@ -61,20 +61,8 @@ Config.prototype._loadConfigFromFile = function(configOverrides) {
 	}
 };
 
-Config.prototype.getAgent = function(param) {
-	if (param.name) {
-		return _.find(this.agents, function(agent) { return agent.name === param.name; });
-	}
-	if (param.loadBalancerId) {
-		return _.find(this.agents, function(agent) { return agent.loadBalancerId === param.loadBalancerId; });
-	}
-};
-
-Config.prototype.loadBalancerStatusChanged = function(id, enabled) {
-	var agent = this.getAgent({loadBalancerId: id});
-	if (agent) {
-		agent.loadBalancerEnabled = enabled;
-	}
+Config.prototype.getAgent = function(name) {
+	return _.find(this.agents, function(agent) { return agent.name === name; });
 };
 
 Config.prototype.nextInstance = function() {

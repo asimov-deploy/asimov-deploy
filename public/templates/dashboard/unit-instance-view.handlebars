@@ -19,15 +19,15 @@
 	</a>
 </td>
 <td style="width: 35px; text-align:center;">
-	{{#if loadBalancerEnabled}}
-		<button class="btn btn-success btn-loadbalancer"><i class="icon-share2" /></button>
-	{{/if}}
-	{{#ifEqFalse loadBalancerEnabled}}
-		<button class="btn btn-danger btn-loadbalancer"><i class="icon-share2" /></button>
-	{{/ifEqFalse}}
-	{{#ifUndefined loadBalancerEnabled}}
+	{{#if loadBalancerState}}
+		{{#if loadBalancerState.enabled}}
+			<button class="btn btn-success btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+		{{else}}
+			<button class="btn btn-danger btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+		{{/if}}
+	{{else}}
 		<button class="btn btn-info btn-loadbalancer"><i class="icon-share2" /></button>
-	{{/ifUndefined}}
+	{{/if}}
 </td>
 <td>
 	<button class="btn-hover btn-select {{#if selected}}selected{{/if}}">

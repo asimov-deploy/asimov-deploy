@@ -22,7 +22,7 @@ var AgentApiClient = function(config, restify) {
 
 	this.get = function(agentName, url, dataCallback) {
 
-		var agent =  config.getAgent({ name: agentName });
+		var agent =  config.getAgent(agentName);
 
 		var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
 
@@ -60,7 +60,7 @@ var AgentApiClient = function(config, restify) {
 	};
 
 	this.sendCommand = function(agentName, commandUrl, parameters, user) {
-		var agent = config.getAgent({ name: agentName });
+		var agent = config.getAgent(agentName);
 
 		var client = restify.createJsonClient({
 			url: agent.url,

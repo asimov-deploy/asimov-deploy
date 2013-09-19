@@ -18,17 +18,17 @@ define([
     "jquery",
     "backbone",
     "app",
-    "./host-list-view",
-    "./settings-view"
+    "./host-list-view"
 ],
-function($, Backbone, app, HostListView, SettingsView) {
+function($, Backbone, app, HostListView) {
 
     var HostStatus = Backbone.Model.extend({
+        idAttribute: "name"
     });
 
     var HostStatusCollection = Backbone.Collection.extend({
         model: HostStatus,
-        url: '/loadbalancer/listHosts'
+        url: '/loadbalancer/servers'
     });
 
     var hosts = new HostStatusCollection();
@@ -37,9 +37,9 @@ function($, Backbone, app, HostListView, SettingsView) {
     var loadbalancer = {};
 
     app.vent.on("agent:event:loadBalancerStateChanged", function(data) {
-        var host = hosts.get(data.id);
-        if (host) {
-            host.set({enabled: data.enabled});
+        var agent = hosts.get(data.agentName);
+        if (agent) {
+            agent.set({ loadBalancerState: data.state });
         }
     });
 
@@ -50,12 +50,6 @@ function($, Backbone, app, HostListView, SettingsView) {
         if (hosts.length === 0) {
             hosts.fetch();
         }
-    });
-
-    app.vent.on("loadbalancer:settings:show", function() {
-        app.mainRegion.show(new SettingsView());
-
-        app.router.showRoute("loadbalancer/settings");
     });
 
     return loadbalancer;

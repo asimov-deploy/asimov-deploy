@@ -32,7 +32,6 @@ function($, Backbone, app) {
 			'': 'showDashboard',
 			'dashboard': 'showDashboard',
 			'loadbalancer': 'showLoadbalancer',
-			'loadbalancer/settings': 'showLoadbalancerSettings',
 			'agents': 'showAgentList',
 			'login': 'showLogin',
 			'deploylog/:unitName/:agentName': 'showDeployLog'
@@ -47,10 +46,6 @@ function($, Backbone, app) {
 
 		showLoadbalancer: function() {
 			app.vent.trigger("loadbalancer:show");
-		},
-
-		showLoadbalancerSettings: function() {
-			app.vent.trigger("loadbalancer:settings:show");
 		},
 
 		showLogin: function() {

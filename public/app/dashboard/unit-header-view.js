@@ -55,7 +55,7 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 			var anySelected = selectedInstances.length > 0;
 			var allSelected = selectedInstances.length === this.instances.length;
 			var showLoadBalancerToggle = this.instances.some(function(instance) {
-				return instance.get('loadBalancerEnabled') !== undefined;
+				return instance.get('loadBalancerState') ? true : false;
 			});
 
 			this.model.set({showActions: anySelected, allSelected: allSelected, showLoadBalancerToggle: showLoadBalancerToggle});
@@ -117,21 +117,15 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 
 		toggleLoadBalancer: function() {
 			var selectedInstances = this.instances.where({selected: true});
-			var toggleHosts = _.map(selectedInstances, function(instance) {
-				var data = { };
+			_.each(selectedInstances, function (instance) {
+				var currentState = instance.get('loadBalancerState');
 
-				data.id = instance.get('loadBalancerId');
-				data.enabled = instance.get('loadBalancerEnabled');
-				data.action = data.enabled ? "disable"  : "enable";
-
-				return data;
+				new ChangeLoadBalancerStatusCommand({
+					agentName: instance.get('agentName'),
+					action: currentState.enabled ? "disable"  : "enable"
+				}).save();
 			});
-
-			var command = new ChangeLoadBalancerStatusCommand({hosts: toggleHosts});
-			command.save();
 		}
-
-
 	});
 
 });

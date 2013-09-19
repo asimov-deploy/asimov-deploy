@@ -14,42 +14,29 @@
 * limitations under the License.
 ******************************************************************************/
 
-var _  = require("underscore");
-
 module.exports = function(app, config) {
 
 	var agentApiClient = require('./services/agent-api-client').create(config);
 
-	app.get("/loadbalancer/listHosts", app.ensureLoggedIn, function(req, res) {
-		if (config.agents.length === 0) {
-			return res.json([]);
-		}
+	app.get("/loadbalancer/servers", app.ensureLoggedIn, function(req, res) {
+		var agentsResp = [];
 
-		agentApiClient.get(config.agents[0].name, '/loadbalancer/listHosts', function(hostList) {
-			if (!hostList) {
-				return res.json({});
+		config.agents.forEach(function(agent) {
+			if (agent.dead) {
+				return;
 			}
 
-			hostList.forEach(function(host) {
-				config.loadBalancerStatusChanged(host.id, host.enabled);
+			agentsResp.push({
+				name: agent.name,
+				loadBalancerState: agent.loadBalancerState
 			});
-
-			var filtered = _.filter(hostList, function(host) {
-				return config.getAgent({loadBalancerId: host.id});
-			});
-
-			res.json(filtered);
 		});
 
+		res.json(agentsResp);
 	});
 
 	app.post("/loadbalancer/change", app.ensureLoggedIn,  function(req, res) {
-		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/change', req.body, req.user);
-		res.json('ok');
-	});
-
-	app.post("/loadbalancer/settings", app.ensureLoggedIn, function(req, res) {
-		agentApiClient.sendCommand(config.agents[0].name, '/loadbalancer/settings', req.body, req.user);
+		agentApiClient.sendCommand(req.body.agentName, '/loadbalancer/change', req.body, req.user);
 		res.json('ok');
 	});
 
