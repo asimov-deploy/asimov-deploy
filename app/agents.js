@@ -34,6 +34,25 @@ module.exports = function(app, config) {
 		res.json(agentsResp);
 	});
 
+	function handleNewLoadBalancerState(agent, newState) {
+		var prevState = agent.loadBalancerState;
+		agent.loadBalancerState = newState;
+
+		if (!prevState || !newState) {
+			return;
+		}
+
+		var stateDiff = newState.enabled !== prevState.enabled;
+		var connDiff = Math.abs(newState.connectionCount - prevState.connectionCount);
+		if (stateDiff || connDiff > 0) {
+			clientSockets.sockets.volatile.emit('agent:event', {
+				eventName: 'loadBalancerStateChanged',
+				agentName: agent.name,
+				state: newState
+			});
+		}
+	}
+
 	app.post("/agent/heartbeat", function(req, res) {
 
 		var agent = config.getAgent(req.body.name);
@@ -48,12 +67,11 @@ module.exports = function(app, config) {
 		agent.dead = false;
 		agent.version = req.body.version;
 		agent.configVersion = req.body.configVersion;
-		agent.loadBalancerState = req.body.loadBalancerState;
+
+		handleNewLoadBalancerState(agent, req.body.loadBalancerState);
 
 		res.json('ok');
 	});
-
-
 
 	app.post("/agent/event", function(req, res) {
 		clientSockets.sockets.volatile.emit('agent:event', req.body);
