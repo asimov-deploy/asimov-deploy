@@ -26,8 +26,6 @@ module.exports = function(app, config) {
 		res.redirect('/');
 	});
 
-	var users = {};
-
 	passport.serializeUser(function(user, done) {
 		done(null, user);
 	});
