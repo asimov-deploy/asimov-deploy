@@ -32,7 +32,14 @@ app.configure(function(){
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(express.session({ secret: config['session-secret'] }));
+	app.use(express.cookieSession({
+		secret: config['session-secret'],
+		cookie: {
+			path: '/',
+			httpOnly: true,
+			maxAge: 60*60*1000
+		}
+	}));
 	app.use(flash());
 	auth(app, config);
 	app.use(app.router);

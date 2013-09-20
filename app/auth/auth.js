@@ -29,12 +29,11 @@ module.exports = function(app, config) {
 	var users = {};
 
 	passport.serializeUser(function(user, done) {
-		users[user.id] = user;
-		done(null, user.id);
+		done(null, user);
 	});
 
-	passport.deserializeUser(function(userId, done) {
-		done(null, users[userId]);
+	passport.deserializeUser(function(user, done) {
+		done(null, user);
 	});
 
 	if (config['auth-local']) {
