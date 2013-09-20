@@ -24,7 +24,7 @@ function($, _, Backbone, UnitInstance) {
 
 	var UnitInstanceCollection = Backbone.Collection.extend({
 		comparator: function(a) {
-			return a.get('loadBalancerId') || a.get('agentName');
+			return a.get('agentName');
 		}
 	});
 
