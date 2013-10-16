@@ -25,8 +25,11 @@ for(var i = 1; i <= 5; i++) {
 		dead: false,
 		version: "0.6.12",
 		configVersion: 43,
-		loadBalancerId: i,
-		loadBalancerEnabled: true
+		loadBalancerState: {
+			enabled: true,
+			connectionCount: Math.floor((Math.random()*580)),
+			serverId: "SE1-WEBFRONT-0" + i
+		}
 	});
 }
 
@@ -36,8 +39,11 @@ for(var i = 1; i <= 3; i++) {
 		dead: false,
 		version: "0.6.12",
 		configVersion: 43,
-		loadBalancerId: i+5,
-		loadBalancerEnabled: true
+		loadBalancerState: {
+			enabled: true,
+			connectionCount: Math.floor((Math.random()*580)),
+			serverId: "SE1-WEBFRONT-0" + i
+		}
 	});
 }
 
@@ -46,8 +52,7 @@ agents.forEach(function(agent) {
 	if (agent.name.indexOf('WEBFRONT') !== -1) {
 		units.push({
 			name: agent.name,
-			loadBalancerId: agent.loadBalancerId,
-			loadBalancerEnabled: agent.loadBalancerEnabled,
+			loadBalancerState: agent.loadBalancerState,
 			units: [
 				{
 					name: 'asimov-demo.com',
@@ -85,7 +90,7 @@ agents.forEach(function(agent) {
 		units.push({
 			name: agent.name,
 			loadBalancerId: agent.loadBalancerId,
-			loadBalancerEnabled: agent.loadBalancerEnabled,
+			loadBalancerState: agent.loadBalancerState,
 			units: [
 				{
 					name: 'backend.queue-handler',

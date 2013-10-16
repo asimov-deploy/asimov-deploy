@@ -67,31 +67,30 @@ module.exports = function(app) {
 	app.post("/loadbalancer/change", app.ensureLoggedIn, function(req, res) {
 		res.json("ok");
 
-		req.body.hosts.forEach(function(host) {
-
-			var agent = _.find(demodata.agents, function(agent) {
-				return agent.loadBalancerId === host.id;
-			});
-
-			agent.loadBalancerEnabled = !agent.loadBalancerEnabled;
-
-			emitLog(agent.name, agent.loadBalancerEnabled ? "Load balancer state enabled (accessible)" : "Load balancer state disabled (inaccessible)");
-
-			emitAgentEvent({
-				eventName: "loadBalancerStateChanged",
-				id: host.id,
-				enabled: agent.loadBalancerEnabled
-			});
-
+		var agent = _.find(demodata.agents, function(agent) {
+			return agent.name === req.body.agentName;
 		});
+
+		var enable = req.body.action === "enable";
+
+		emitLog(agent.name, enable ? "Load balancer state enabled (accessible)" : "Load balancer state disabled (inaccessible)");
+
+		agent.loadBalancerState.enabled = enable;
+		agent.loadBalancerState.connectionCount = enable ? Math.floor((Math.random()*20)) : 0;
+
+		emitAgentEvent({
+			agentName: agent.name,
+			state: agent.loadBalancerState,
+			eventName: "loadBalancerStateChanged"
+		});
+
 	});
 
-	app.get("/loadbalancer/listHosts", app.ensureLoggedIn, function(req, res) {
+	app.get("/loadbalancer/servers", app.ensureLoggedIn, function(req, res) {
 		var hosts = _.map(demodata.agents, function(agent) {
 			return {
-				id: agent.loadBalancerId,
 				name: agent.name,
-				enabled: agent.loadBalancerEnabled
+				loadBalancerState: agent.loadBalancerState
 			};
 		});
 
@@ -208,5 +207,24 @@ module.exports = function(app) {
 		}
 
 	});
+
+	setInterval(function () {
+
+		_.each(demodata.agents, function (agent) {
+			if (!agent.loadBalancerState.enabled) {
+				return;
+			}
+
+			agent.loadBalancerState.connectionCount += Math.floor((Math.random()*40)) - 20;
+
+			emitAgentEvent({
+				agentName: agent.name,
+				state: agent.loadBalancerState,
+				eventName: "loadBalancerStateChanged"
+			});
+
+		});
+
+	}, 5000);
 
 };
