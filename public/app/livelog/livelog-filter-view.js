@@ -50,6 +50,7 @@ function($, _, Backbone, Marionette, app) {
 
 		initialize: function() {
 			this.on("itemview:filterToggle", this.filterToggle, this);
+			this.render();
 		},
 
 		filterToggle: function() {
