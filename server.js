@@ -37,7 +37,7 @@ app.configure(function(){
 		cookie: {
 			path: '/',
 			httpOnly: true,
-			maxAge: 60*60*1000
+			maxAge: 24 * 60 * 60 * 1000
 		}
 	}));
 	app.use(flash());
