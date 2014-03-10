@@ -17,15 +17,19 @@
 module.exports = function(app, passport, config) {
 
 	var LocalStrategy = require('passport-local').Strategy;
+	var BasicStrategy = require('passport-http').BasicStrategy;
+
 	var _ = require('underscore');
 
-	var users = config['auth-local'].users;
+	var authConfig = config['auth-local'];
+	var users = authConfig.users;
 
 	if (!users) {
 		throw new Error("Missing users config section, needed by local authentication mode!");
 	}
 
 	function localLogin(username, password, done) {
+		console.log("LOOOOOGIN LOGIN LOGIN!");
 		var user = _.find(users, function(user) { return user.name === username; });
 
 		if (!user || user.password !== password) {
@@ -39,6 +43,20 @@ module.exports = function(app, passport, config) {
 	}
 
 	passport.use(new LocalStrategy(localLogin));
+
+	if (authConfig.basic) {
+		passport.use(new BasicStrategy(localLogin));
+
+		app.use(function(req, res, next){
+			if (req.headers.authorization) {
+				passport.authenticate('basic', { session: false })(req, res, next);
+			}
+			else {
+				next();
+			}
+		});
+	}
+
 
 	app.post('/login', function(req, res, next) {
 		passport.authenticate('local', function(err, user, info) {

@@ -21,11 +21,6 @@ module.exports = function(app, config) {
 	app.use(passport.initialize());
 	app.use(passport.session());
 
-	app.get('/logout', function(req, res) {
-		req.logout();
-		res.redirect('/');
-	});
-
 	passport.serializeUser(function(user, done) {
 		done(null, user);
 	});
@@ -56,5 +51,10 @@ module.exports = function(app, config) {
 			res.json({ error: "Unauthorized" });
 		};
 	}
+
+	app.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
 };
 
