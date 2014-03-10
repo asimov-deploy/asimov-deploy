@@ -19,9 +19,13 @@ var http = require('http');
 var app = express();
 var flash = require('connect-flash');
 var auth = require('./app/auth/auth');
+var events = require('events');
+var _ = require('underscore');
 var AsimovConfig = require('./app/config').Config;
 
 var config = new AsimovConfig();
+
+app.vent = new events.EventEmitter();
 
 app.configure(function(){
 	app.set('port', config.port);
@@ -66,10 +70,12 @@ require('./app/units')(app, config);
 require('./app/versions')(app, config);
 require('./app/index')(app, config);
 
+_.each(config.plugins, function(plugin) {
+	require(plugin.module)(app, plugin, config);
+});
+
 require('./app/start-server')(app, http, config);
 
 process.on('uncaughtException', function (err) {
 	console.log('Caught process exception: ' + err);
 });
-
-

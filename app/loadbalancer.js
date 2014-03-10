@@ -40,4 +40,9 @@ module.exports = function(app, config) {
 		res.json('ok');
 	});
 
+	app.vent.on('agentEvent:loadBalancerStateChanged', function(evt) {
+		var agent = config.getAgent(evt.agentName);
+		agent.loadBalancerState = evt.state;
+	});
+
 };

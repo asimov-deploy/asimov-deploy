@@ -75,12 +75,7 @@ module.exports = function(app, config) {
 
 	app.post("/agent/event", function(req, res) {
 		clientSockets.sockets.volatile.emit('agent:event', req.body);
-
-		if (req.body.eventName === "loadBalancerStateChanged") {
-			var agent = config.getAgent(req.body.agentName);
-			agent.loadBalancerState = req.body.state;
-		}
-
+		app.vent.emit('agentEvent:' + req.body.eventName, req.body);
 		res.json("ok");
 	});
 
