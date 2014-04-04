@@ -23,7 +23,7 @@ module.exports = function(app, config) {
 	app.get('/', function(req, res) {
 
 		var agents = _.where(config.agents, { dead: false });
-		var groups = _.pluck(agents, ["group"]);
+		var groups = _.uniq(_.pluck(agents, ["group"]));
 
 		agents = _.pluck(agents, ["name"]);
 

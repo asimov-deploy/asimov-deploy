@@ -41,28 +41,5 @@ describe('Config', function(){
 
 	});
 
-	describe('config with 3 instances', function() {
-
-		var config = new AsimovConfig({
-			instances: [
-				{ name: 'instance1', port: 3334 },
-				{ name: 'instance2', port: 3335 },
-				{ name: 'instance3', port: 3336 }
-			]
-		});
-
-		it('start name and port should be from first instance', function() {
-			config.name.should.equal('instance1');
-			config.port.should.equal(3334);
-		});
-
-		it('after nextInstance is called, name and port should be from second instance', function() {
-			config.nextInstance();
-			config.name.should.equal('instance2');
-			config.port.should.equal(3335);
-		});
-
-	});
-
 
 });
