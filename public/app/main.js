@@ -23,7 +23,8 @@ require([
 	"livelog/livelog",
 	"bootstrap",
 	"handlebarsHelpers",
-	"current-user"
+	"current-user",
+	"group-selection"
 ],
 function($, app, Router, Backbone) {
 

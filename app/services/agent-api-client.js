@@ -15,6 +15,7 @@
 ******************************************************************************/
 
 var async = require('async');
+var _ = require('underscore');
 
 var AgentApiClient = function(config, restify) {
 
@@ -36,10 +37,15 @@ var AgentApiClient = function(config, restify) {
 
 	};
 
-	this.getUnitListForAllAgents = function(dataCallback) {
+	this.getUnitListForAgentGroup = function(group, dataCallback) {
 		var result = [];
+		var agents = config.agents;
 
-		async.forEach(config.agents, function(agent, done) {
+		if (group) {
+			agents = _.where(agents, { group: group });
+		}
+
+		async.forEach(agents, function(agent, done) {
 			if (agent.dead) {
 				done();
 				return;

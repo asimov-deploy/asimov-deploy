@@ -31,11 +31,6 @@ html(lang="en")
 							li#current-user
 							li.divider-vertical
 							li.dropdown#instance-selection
-								a.dropdown-toggle(href='#', data-toggle='dropdown') #{instanceName}
-								ul.dropdown-menu
-									each item in instances
-										li
-											a(href='http://#{hostName}:#{item.port}') #{item.name}
 
 		#main-region
 

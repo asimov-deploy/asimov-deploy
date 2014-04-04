@@ -24,6 +24,7 @@ module.exports = function(app, config) {
 		config.agents.forEach(function(agent) {
 			agentsResp.push({
 				name: agent.name,
+				group: agent.group,
 				dead: agent.dead,
 				version: agent.version,
 				configVersion: agent.configVersion,
@@ -67,6 +68,7 @@ module.exports = function(app, config) {
 		agent.dead = false;
 		agent.version = req.body.version;
 		agent.configVersion = req.body.configVersion;
+		agent.group = req.body.group;
 
 		handleNewLoadBalancerState(agent, req.body.loadBalancerState);
 

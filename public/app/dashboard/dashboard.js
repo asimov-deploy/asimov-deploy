@@ -26,6 +26,10 @@ function(_, app, UnitListView, UnitCollection) {
 	var dashboard = {};
 
 	// events
+	app.vent.on("group-changed", function() {
+		unitCollection.fetch();
+	});
+
 	app.vent.on("agent:event:deployStarted", function(data) {
 		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
 		unit.deployStarted(data);

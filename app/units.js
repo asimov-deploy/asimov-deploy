@@ -19,10 +19,11 @@ module.exports = function(app, config) {
 	var agentApiClient = require('./services/agent-api-client').create(config);
 
 	app.get("/units/list", app.ensureLoggedIn, function(req, res) {
+		var group = req.query.group;
 
 		var agentsResp = [];
 
-		agentApiClient.getUnitListForAllAgents(function(results) {
+		agentApiClient.getUnitListForAgentGroup(group, function(results) {
 
 			results.forEach(function(item) {
 				agentsResp.push({

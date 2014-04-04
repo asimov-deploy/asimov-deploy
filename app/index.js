@@ -23,15 +23,16 @@ module.exports = function(app, config) {
 	app.get('/', function(req, res) {
 
 		var agents = _.where(config.agents, { dead: false });
+		var groups = _.pluck(agents, ["group"]);
+
 		agents = _.pluck(agents, ["name"]);
 
 		var viewModel = {
 			hostName: req.headers.host.replace(/:\d+/, ''),
 			version: packageInfo.version,
 			port: config.port,
-			instances: config.instances,
-			instanceName: config.name,
 			initData: {
+				groups: groups,
 				agents: agents,
 				authUsingLocal: config['auth-local'] !== undefined,
 				authUsingGoogle: config['auth-google'] !== undefined,

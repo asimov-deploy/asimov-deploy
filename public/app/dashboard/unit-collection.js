@@ -18,9 +18,10 @@ define([
 	"jquery",
 	"underscore",
 	"backbone",
+	"app",
 	"./unit-instance"
 ],
-function($, _, Backbone, UnitInstance) {
+function($, _, Backbone, app, UnitInstance) {
 
 	var UnitInstanceCollection = Backbone.Collection.extend({
 		comparator: function(a) {
@@ -75,7 +76,12 @@ function($, _, Backbone, UnitInstance) {
 			var self = this;
 			var defered = $.Deferred();
 
-			$.getJSON('units/list', function(agents) {
+			$.ajax({
+				type: 'GET',
+				url: "/units/list",
+				data: $.param({group: app.currentGroup}),
+				dataType: 'json'
+			}).done(function(agents) {
 				agents.forEach(function(agent) {
 					agent.units.forEach(function(instance) {
 						var unit = self.addOrGetUnit(instance.name, instance.actions, tempList);
@@ -99,5 +105,5 @@ function($, _, Backbone, UnitInstance) {
 			return defered.promise();
 		}
 
-    });
+	});
 });
