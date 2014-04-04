@@ -20,22 +20,13 @@ module.exports = function(app, http, config) {
 
 	var server = http.createServer(app);
 
-	var startServer = function() {
-		server.listen(config.port);
-	};
-
-	startServer();
+	server.listen(config.port);
 
 	server.on("error", function(err) {
-		if (err.code === 'EADDRINUSE')	{
-			if (config.nextInstance())	{
-				startServer();
-			}
-		}
+		console.log('ERROR:', err);
 	});
 
 	server.on("listening", function() {
-		console.log("Instance name: " + config.name + " Port: " + config.port);
 
 		io = io.listen(server);
 

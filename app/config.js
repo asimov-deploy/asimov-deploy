@@ -19,16 +19,8 @@ var path = require('path');
 var fs = require('fs');
 
 function Config(configOverrides) {
-
 	this._loadConfigFromFile(configOverrides);
-	this._currentInstance = 0;
 	this.agents = [];
-
-	if (!this.instances) {
-		this.instances = [ { name: this.name, port: this.port } ];
-	}
-
-	this.nextInstance();
 }
 
 Config.prototype.defaults = {
@@ -64,20 +56,6 @@ Config.prototype._loadConfigFromFile = function(configOverrides) {
 
 Config.prototype.getAgent = function(name) {
 	return _.find(this.agents, function(agent) { return agent.name === name; });
-};
-
-Config.prototype.nextInstance = function() {
-	var instance = this.instances[this._currentInstance];
-
-	if (!instance) {
-		throw new Error("Missing another instance, no more ports available");
-	}
-
-	this.port = instance.port;
-	this.name = instance.name;
-	this._currentInstance += 1;
-
-	return true;
 };
 
 module.exports = {
