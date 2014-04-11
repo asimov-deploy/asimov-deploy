@@ -43,8 +43,8 @@ module.exports = function(app, passport, config) {
 	);
 
 	function changeReturnUrlHack(req) {
-		var hostName = req.headers.host.replace(/:\d+/, '');
-		var baseUrl = "http://" + hostName + ":" + config.port;
+		var hostName = req.headers.host;
+		var baseUrl = "http://" + hostName;
 		strategy._relyingParty.realm = baseUrl;
 		strategy._relyingParty.returnUrl = baseUrl + "/auth/google/return";
 	}
