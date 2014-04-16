@@ -32,6 +32,8 @@ module.exports = function(app, config) {
 			});
 		});
 
+		agentsResp = agentsResp.sort();
+
 		res.json(agentsResp);
 	});
 
