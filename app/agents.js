@@ -16,6 +16,7 @@
 
 module.exports = function(app, config) {
 
+	var _ = require('underscore');
 	var agentApiClient = require('./services/agent-api-client').create(config);
 
 	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
@@ -32,7 +33,7 @@ module.exports = function(app, config) {
 			});
 		});
 
-		agentsResp = agentsResp.sort();
+		agentsResp = _.sortBy(agentsResp);
 
 		res.json(agentsResp);
 	});
