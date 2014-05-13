@@ -2,7 +2,7 @@
   "name": "asimov-deploy-ui",
   "description": "Web UI For Assimov Deploy (distributed deploy system)",
   "author": "Ebay Inc",
-  "version": "0.6.31",
+  "version": "0.6.32",
   "homepage": "https://github.com/asimov-deploy/asimov-deploy",
   "dependencies": {
     "async": ">= 0.1.22",
@@ -48,7 +48,6 @@
   },
   "main": "server.js",
   "scripts": {
-    "postinstall": "./node_modules/.bin/grunt release",
     "start": "node server.js",
     "prepublish": "grunt release",
     "test": "grunt release"
