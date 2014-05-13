@@ -59,6 +59,7 @@ function(Marionette) {
 		if (object === "Stop") { return "icon-off"; }
 		if (object === "Start") { return "icon-play-circle"; }
 		if (object === "Verify") { return "icon-heart"; }
+		if (object === "Rollback") { return "icon-repeat"; }
 		return "";
 	});
 
