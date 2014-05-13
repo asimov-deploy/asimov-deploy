@@ -48,6 +48,7 @@
   },
   "main": "server.js",
   "scripts": {
+    "postinstall": "./node_modules/grunt/bin/grunt release",
     "start": "node server.js",
     "prepublish": "grunt release",
     "test": "grunt release"
