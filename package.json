@@ -50,6 +50,7 @@
   "scripts": {
     "start": "node server.js",
     "prepublish": "grunt release",
+    "install": "grunt release",
     "test": "grunt release"
   },
   "keywords": [
