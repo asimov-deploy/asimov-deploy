@@ -56,11 +56,21 @@ function(Marionette) {
 	});
 
 	Handlebars.registerHelper('iconForUnitAction', function(object) {
-		if (object === "Stop") { return "icon-off"; }
-		if (object === "Start") { return "icon-play-circle"; }
-		if (object === "Verify") { return "icon-heart"; }
-		if (object === "Rollback") { return "icon-repeat"; }
-		return "";
+		switch (object)
+		{
+		case "Apply":
+			return "icon-check";
+		case "Stop":
+			return "icon-off";
+		case "Start":
+			return "icon-play-circle";
+		case "Verify":
+			return "icon-heart";
+		case "Rollback":
+			return "icon-repeat";
+		default:
+			return "";
+		}
 	});
 
 	return {};

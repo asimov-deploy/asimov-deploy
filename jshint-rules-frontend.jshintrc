@@ -22,7 +22,7 @@
 	"browser": true,
 	"undef": true,
 	"maxstatements": 50,
-	"maxcomplexity": 5,
+	"maxcomplexity": 6,
 	"smarttabs": true,
 
 	"browser": true,
