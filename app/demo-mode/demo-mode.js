@@ -94,7 +94,7 @@ module.exports = function(app) {
 			};
 		});
 
-		res.json(hosts);
+		res.json(_.sortBy(hosts, 'name'));
 	});
 
 	app.post("/deploy/deploy", app.ensureLoggedIn, function(req, res) {

@@ -19,20 +19,7 @@ module.exports = function(app, config) {
 	var agentApiClient = require('./services/agent-api-client').create(config);
 
 	app.get("/loadbalancer/servers", app.ensureLoggedIn, function(req, res) {
-		var agentsResp = [];
-
-		config.agents.forEach(function(agent) {
-			if (agent.dead) {
-				return;
-			}
-
-			agentsResp.push({
-				name: agent.name,
-				loadBalancerState: agent.loadBalancerState
-			});
-		});
-
-		res.json(agentsResp);
+		res.json(config.getAgentList());
 	});
 
 	app.post("/loadbalancer/change", app.ensureLoggedIn,  function(req, res) {

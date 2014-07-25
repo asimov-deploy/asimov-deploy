@@ -9,8 +9,8 @@ describe('Config', function(){
 		var config = new AsimovConfig();
 
 		before(function() {
-			config.agents.push({ name: "Hello", loadBalancerId: 2 });
 			config.agents.push({ name: "Test", loadBalancerId: 5 });
+			config.agents.push({ name: "Hello", loadBalancerId: 2 });
 		});
 
 		describe('getAgent', function(){
@@ -22,6 +22,15 @@ describe('Config', function(){
 				agent2.name.should.equal("Test");
 			});
 
+		});
+
+		describe('getAgentList', function(){
+			it('should return a list of agents sorted alphabetically', function(){
+				var agentList = config.getAgentList();
+
+				agentList[0].name.should.equal("Hello");
+				agentList[1].name.should.equal("Test");
+			});
 		});
 
 	});

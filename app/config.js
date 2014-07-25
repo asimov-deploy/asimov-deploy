@@ -58,6 +58,22 @@ Config.prototype.getAgent = function(name) {
 	return _.find(this.agents, function(agent) { return agent.name === name; });
 };
 
+Config.prototype.getAgentList = function() {
+	var agentsResp = [];
+
+	this.agents.forEach(function(agent) {
+		if (agent.dead) {
+			return;
+		}
+
+		agentsResp.push({
+			name: agent.name,
+			loadBalancerState: agent.loadBalancerState
+		});
+	});
+	return _.sortBy(agentsResp, 'name');
+};
+
 module.exports = {
 	Config: Config
 };
