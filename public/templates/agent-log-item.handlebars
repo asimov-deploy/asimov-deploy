@@ -2,7 +2,7 @@
 <span style="color: rgb(253, 248, 185)">&lt;</span><span style="color: rgb(252, 181, 129)">{{agentName}}</span><span style="color: rgb(253, 248, 185)">&gt;</span>
 <span style="color: rgb(106, 253, 81)">[</span><span style="color: rgb(162, 196, 253)">{{level}}</span><span style="color: rgb(106, 253, 81)">]</span>
 <!--<span class="logger">{{logger}}</span>-->
-<span class="message">{{message}}</span>
+<span style="color:{{getLevelColor level}}">{{message}}</span>
 {{#if exception}}
 	<div>
 		<span style="color: rgb(255, 0, 0)">{{exception}}</span>

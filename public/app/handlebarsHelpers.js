@@ -25,6 +25,30 @@ function(Marionette) {
 		}
 	};
 
+	Handlebars.registerHelper('getLevelColor', function(level) {
+				switch (level) {
+				case "info" : {
+						return 'white';
+					}
+					break;
+				case "debug" : {
+						return 'LightGreen';
+					}
+					break;
+				case "warning" : {
+						return 'orange';
+					}
+					break;
+				case "exception" : {
+						return 'red';
+					}
+					break;
+				default : {
+						return 'white';
+					}
+				}
+			});
+
 	Handlebars.registerHelper('ifEqFalse', function(conditional, options) {
 		if(conditional === false) {
 			return options.fn(this);
