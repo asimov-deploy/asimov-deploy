@@ -119,6 +119,7 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 			var selectedInstances = this.instances.where({selected: true});
 			_.each(selectedInstances, function (instance) {
 				var currentState = instance.get('loadBalancerState');
+				instance.set({ showAsChanging: true });
 
 				new ChangeLoadBalancerStatusCommand({
 					agentName: instance.get('agentName'),

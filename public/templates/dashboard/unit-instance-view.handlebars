@@ -20,10 +20,14 @@
 </td>
 <td style="width: 35px; text-align:center;">
 	{{#if loadBalancerState}}
-		{{#if loadBalancerState.enabled}}
-			<button class="btn btn-success btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+		{{#if showAsChanging}}
+			<button class="btn btn-changing btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
 		{{else}}
-			<button class="btn btn-danger btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+			{{#if loadBalancerState.enabled}}
+				<button class="btn btn-success btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+			{{else}}
+				<button class="btn btn-danger btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+			{{/if}}
 		{{/if}}
 	{{else}}
 		<button class="btn btn-info btn-loadbalancer"><i class="icon-share2" /></button>

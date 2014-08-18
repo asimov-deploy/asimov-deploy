@@ -50,6 +50,7 @@ function(_, app, UnitListView, UnitCollection) {
 			unit.get('instances').forEach(function(instance) {
 				if (instance.get('agentName') === data.agentName) {
 					instance.set({ loadBalancerState: data.state });
+					instance.set({ showAsChanging: false });
 				}
 			});
 		});
