@@ -1,25 +1,29 @@
 <div id="verify-log-modal">
-	<div class="modal-header">
-		<button type="button" class="close btn-close">×</button>
-		<h3>Verify Log</h3>
-	</div>
-	<div class="modal-body">
-		{{#each verifySteps}}
-			{{#if test}}
-				{{#if test.pass}}
-						<div class="verify-log-step verify-log-step-pass">{{test.message}}</div>
-				{{else}}
-						<div class="verify-log-step verify-log-step-fail">{{test.message}}</div>
-				{{/if}}
-			{{/if}}
-			{{#if report}}
-					<div style="margin-top: 10px">
-						<a href="{{report.url}}" target="_blank">{{report.title}}</a>
-					</div>
-			{{/if}}
-		{{/each}}
-	</div>
-	<div class="modal-footer">
-		<button href="#" class="btn btn-close btn-primary">Close</button>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close btn-close">×</button>
+				<h3>Verify Log</h3>
+			</div>
+			<div class="modal-body">
+				{{#each verifySteps}}
+					{{#if test}}
+						{{#if test.pass}}
+								<div class="verify-log-step verify-log-step-pass">{{test.message}}</div>
+						{{else}}
+								<div class="verify-log-step verify-log-step-fail">{{test.message}}</div>
+						{{/if}}
+					{{/if}}
+					{{#if report}}
+							<div style="margin-top: 10px">
+								<a href="{{report.url}}" target="_blank">{{report.title}}</a>
+							</div>
+					{{/if}}
+				{{/each}}
+			</div>
+			<div class="modal-footer">
+				<button href="#" class="btn btn-close btn-primary">Close</button>
+			</div>
+		</div>
 	</div>
 </div>

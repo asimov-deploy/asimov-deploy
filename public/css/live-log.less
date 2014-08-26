@@ -18,8 +18,8 @@
  	margin-bottom: 5px;
  	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 3px 5px rgba(0, 0, 0, 0.2);
  	padding: 0px 0px 0px 10px;
-	border: 1px solid @navbarInverseBorder;
-	#gradient > .vertical(@navbarInverseBackgroundHighlight, @navbarInverseBackground);
+	border: 1px solid @navbar-inverse-border;
+	#gradient > .vertical(@navbarInverseBackgroundHighlight, @navbar-inverse-bg);
 
 	span {
 		padding-right: 10px;
@@ -32,7 +32,7 @@
 	}
 
 	label:hover {
-		color: @grayLighter;
+		color: @gray-lighter;
 	}
 
 	.btn-live-log-filter {
@@ -61,7 +61,7 @@
 		}
 	}
 
-	li:not(:first-child) { border-left: 1px solid @navbarInverseBackground; }
+	li:not(:first-child) { border-left: 1px solid @navbar-inverse-bg; }
 	li:not(:last-child) { border-right: 1px solid @navbarInverseBackgroundHighlight; }
 
  }

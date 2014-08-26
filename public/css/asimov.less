@@ -34,7 +34,7 @@ body {
 	}
 }
 
-.navbar .brand {
+.navbar .navbar-brand {
    position: relative;
    top: 2px;
    left: -12px;
@@ -82,11 +82,11 @@ body {
 // -----------------------------------------------------
 
 .well, .hero-unit {
-	.border-radius(1px);
+	border-radius: 1px;
 }
 
 .well, .hero-unit {
-	border-top: solid 1px lighten(@grayDark, 5%);
+	border-top: solid 1px lighten(@gray-dark, 5%);
 	.box-shadow(0 2px 4px rgba(0,0,0,.8));
 }
 
@@ -123,7 +123,7 @@ li#instance-selection .caret {
 }
 
 .unit-status-success {
-	.buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
+	//.buttonBackground(@btn-success-bg, @btnSuccessBackgroundHighlight);
 }
 
 a {
@@ -136,9 +136,9 @@ a:hover {
 // Asimov Login
 .login-option {
 
-  border-top: solid 2px @grayDark;
-  border-bottom: solid 2px @grayDark;
-  .box-shadow(0 0 30px 4px @grayDarker);
+  border-top: solid 2px @gray-dark;
+  border-bottom: solid 2px @gray-dark;
+  .box-shadow(0 0 30px 4px @gray-darker);
   margin-bottom: 40px;
 
   overflow: hidden;
@@ -149,7 +149,7 @@ a:hover {
 
   label {
     padding: 5px 30px 0 0;
-    color: @grayLight;
+    color: @gray-light;
   }
 
   input {

@@ -12,12 +12,12 @@ html(lang="en")
 
 	body
 		.navbar.navbar-inverse.navbar-fixed-top
-			.navbar-inner
-				.container-fluid
-					a.brand(href='#')
+			.navbar-header
+				.container
+					a.navbar-brand(href='#')
 						img(src='/img/full_logo.png')
 					.nav-collapse
-						ul.nav
+						ul.nav.navbar-nav
 							li
 								a(href='dashboard') Dashboard
 							li.divider-vertical
@@ -27,7 +27,7 @@ html(lang="en")
 							li
 								a(href='agents') Agents
 
-						ul.nav.pull-right
+						ul.nav.navbar-nav.pull-right
 							li#current-user
 							li.divider-vertical
 							li.dropdown#instance-selection

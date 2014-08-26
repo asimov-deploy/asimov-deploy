@@ -3,42 +3,46 @@
 	 <button type="button" class="close btn-close">×</button>
 	 <h3>Confirm deploy</h3>
 	</div>
-	<div class="modal-body">
-		<div class="deploy-info-wrapper">
-			<div class="input-prepend deploy-read-only-value">
-				<span class="add-on">Deploy unit</span>
-			<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{unitName}}" />
-			</div>
-			<div class="input-prepend deploy-read-only-value">
-				<span class="add-on">Version</span>
-			<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{version}} ({{branch}})" />
-			</div>
-			<div class="input-prepend deploy-read-only-value">
-				<span class="add-on">Agents</span>
-			<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{#each agents}}{{this}} {{/each}}" />
-			</div>
-			{{#if parameters}}
-				<div class="deploy-parameters">
-					<h5>Parameters</h5>
-					{{#each parameters}}
-						{{#ifTypeText type}}
-							<div class="input-prepend">
-						  <span class="add-on">{{name}}</span>
-						  <input type="text" class="input-xlarge" id="deploy-param-{{name}}" spellcheck="false" value="{{default}}" />
+	<div class="modal-dialog">
+      	<div class="modal-content">
+			<div class="modal-body">
+				<div class="deploy-info-wrapper">
+					<div class="input-prepend deploy-read-only-value">
+						<span class="add-on">Deploy unit</span>
+					<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{unitName}}" />
+					</div>
+					<div class="input-prepend deploy-read-only-value">
+						<span class="add-on">Version</span>
+					<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{version}} ({{branch}})" />
+					</div>
+					<div class="input-prepend deploy-read-only-value">
+						<span class="add-on">Agents</span>
+					<input type="text" disabled class="input-xlarge" spellcheck="false" value="{{#each agents}}{{this}} {{/each}}" />
+					</div>
+					{{#if parameters}}
+						<div class="deploy-parameters">
+							<h5>Parameters</h5>
+							{{#each parameters}}
+								{{#ifTypeText type}}
+									<div class="input-prepend">
+								  <span class="add-on">{{name}}</span>
+								  <input type="text" class="input-xlarge" id="deploy-param-{{name}}" spellcheck="false" value="{{default}}" />
+								</div>
+								{{/ifTypeText}}
+								{{#ifTypePassword type}}
+									<div class="input-prepend">
+								  <span class="add-on">{{name}}</span>
+								  <input type="password" class="input-xlarge" id="deploy-param-{{name}}" value="{{default}}" />
+								</div>
+								{{/ifTypePassword}}
+							{{/each}}
 						</div>
-						{{/ifTypeText}}
-						{{#ifTypePassword type}}
-							<div class="input-prepend">
-						  <span class="add-on">{{name}}</span>
-						  <input type="password" class="input-xlarge" id="deploy-param-{{name}}" value="{{default}}" />
-						</div>
-						{{/ifTypePassword}}
-					{{/each}}
+					{{/if}}
 				</div>
-			{{/if}}
-		</div>
-		<div class="deploy-button-wrapper">
-			<button class="btn btn-primary btn-mega btn-deploy pull-right">Deploy</button>
-		</div>
+				<div class="deploy-button-wrapper">
+					<button class="btn btn-primary btn-mega btn-deploy pull-right">Deploy</button>
+				</div>
+			</div>
+	  	</div>
 	</div>
 </div>
