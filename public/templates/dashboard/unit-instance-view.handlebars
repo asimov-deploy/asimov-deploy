@@ -1,6 +1,6 @@
 <td class="deploy-unit-instance-agent-name">
 	{{#if url}}
-		<a href="{{url}}" target="_blank"><i class="icon-share icon-white"/></a>
+		<a href="{{url}}" target="_blank"><i class="glyphicon glyphicon-share glyphicon-white"/></a>
 	{{/if}}
 	{{agentName}}
 </td>
@@ -21,21 +21,21 @@
 <td style="width: 35px; text-align:center;">
 	{{#if loadBalancerState}}
 		{{#if showAsChanging}}
-			<button class="btn btn-changing btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+			<button class="btn btn-changing btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="glyphicon icon-share2" /></button>
 		{{else}}
 			{{#if loadBalancerState.enabled}}
-				<button class="btn btn-success btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+				<button class="btn btn-success btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="glyphicon icon-share2" /></button>
 			{{else}}
-				<button class="btn btn-danger btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="icon-share2" /></button>
+				<button class="btn btn-danger btn-loadbalancer" title="Connections: {{loadBalancerState.connectionCount}}"><i class="glyphicon icon-share2" /></button>
 			{{/if}}
 		{{/if}}
 	{{else}}
-		<button class="btn btn-info btn-loadbalancer"><i class="icon-share2" /></button>
+		<button class="btn btn-info btn-loadbalancer"><i class="glyphicon icon-share2" /></button>
 	{{/if}}
 </td>
 <td>
 	<button class="btn-hover btn-select {{#if selected}}selected{{/if}}">
-			<i class="icon-white icon-ok"></i>
+			<i class="glyphicon glyphicon-white glyphicon-ok"></i>
 		</button>
 	</li>
 </td>
@@ -57,7 +57,7 @@
 					{{/if}}
 				{{/if}}
 				{{#if completed}}
-					<i class="icon-ok icon-white" />
+					<i class="glyphicon glyphicon-ok glyphicon-white" />
 				{{/if}}
 				{{#if report}}
 					<span class="verify-report"><a href="{{report.url}}" target="_blank">{{report.title}}</a></span>

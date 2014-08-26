@@ -14,13 +14,13 @@ body {
   	padding-top: 40px;
   	padding-bottom: 160px;
   	font-size: 14px;
-    background: @bodyBackground;
+    background: @body-bg;
 }
 
 // NAVBAR
 // -----------------------------------------------------
 
-.navbar-inverse .nav-collapse {
+.navbar-inverse .navbar-collapse {
 
 	.nav li.dropdown.open > .dropdown-toggle,
 	.nav li.dropdown.active > .dropdown-toggle,
@@ -90,6 +90,9 @@ body {
 	.box-shadow(0 2px 4px rgba(0,0,0,.8));
 }
 
+.glyphicon-white, .glyphicon-white a {
+  color: #fff;
+}
 
 // FOOTER
 // -----
@@ -123,7 +126,7 @@ li#instance-selection .caret {
 }
 
 .unit-status-success {
-	//.buttonBackground(@btn-success-bg, @btnSuccessBackgroundHighlight);
+	.button-variant(@btn-success-bg, @btnSuccessBackgroundHighlight, @btn-default-border);
 }
 
 a {

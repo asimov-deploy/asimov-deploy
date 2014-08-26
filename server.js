@@ -55,6 +55,7 @@ app.use('/app',	express.static(__dirname + '/public/app'));
 app.use('/css',	express.static(__dirname + '/dist/release'));
 app.use('/css',	express.static(__dirname + '/dist/debug'));
 app.use('/img',	express.static(__dirname + '/public/img'));
+app.use('/fonts',	express.static(__dirname + '/public/fonts'));
 app.use('/libs',	express.static(__dirname + '/dist/release'));
 app.use('/libs',	express.static(__dirname + '/dist/debug'));
 app.use('/libs',	express.static(__dirname + '/public/libs'));

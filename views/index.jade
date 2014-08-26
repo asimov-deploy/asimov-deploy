@@ -16,7 +16,7 @@ html(lang="en")
 				.container
 					a.navbar-brand(href='#')
 						img(src='/img/full_logo.png')
-					.nav-collapse
+					.navbar-collapse
 						ul.nav.navbar-nav
 							li
 								a(href='dashboard') Dashboard
@@ -38,13 +38,13 @@ html(lang="en")
 			.live-log-header
 				span.pull-left Live Log
 				a.pull-left.btn-live-log-filter(href="#", title="show/hide filters", data-bypass=1)
-					i.icon-filter.icon-white
+					i.glyphicon.glyphicon-filter.glyphicon-white
 				ul.live-log-filter-selection.pull-left(style='display: none')
 				#asimov-version.pull-right
 					| v#{version}
 				.clearfix
 			.live-log
 
-		.modal.hide#asimov-modal
+		.modal#asimov-modal
 
 		input(type="hidden", id="init-data", value="#{JSON.stringify(initData)}")

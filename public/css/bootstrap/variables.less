@@ -7,33 +7,44 @@
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:            lighten(#000, 13.5%); // #222
-@gray-dark:              lighten(#000, 20%);   // #333
-@gray:                   lighten(#000, 33.5%); // #555
-@gray-light:             lighten(#000, 46.7%); // #777
-@gray-lighter:           lighten(#000, 93.5%); // #eee
+@gray-darker:            #020202; // #222
+@gray-dark:              #282828;   // #333
+@gray:                   #999; // #555
+@gray-light:             #ADAFAE; // #777
+@gray-lighter:           #eee; // #eee
 
-@brand-primary:         #428bca;
-@brand-success:         #5cb85c;
+@brand-primary:         @blueDark;
+@brand-success:         @green;
 @brand-info:            #5bc0de;
-@brand-warning:         #f0ad4e;
-@brand-danger:          #d9534f;
+@brand-warning:         lighten(@orange, 15%);
+@brand-danger:          lighten(@red, 10%);
 
+// Accent colors
+// -------------------------
+@blue:                  #33B5E5;
+@blueDark:              #0792FF;
+@green:                 #669900;
+@greenText:             #6EFF00;
+@red:                   #BD362F;
+@yellow:                #ECBB13;
+@orange:                #FF8800;
+@pink:                  #FF4444;
+@purple:                #9933CC;
+@white:                 #fff;
 
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-@body-bg:               #fff;
+@body-bg:               #111111;
 //** Global text color on `<body>`.
-@text-color:            @gray-dark;
+@text-color:            @gray;
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            @blue;
 //** Link hover color set via `darken()` function.
-@link-hover-color:      darken(@link-color, 15%);
-
+@link-hover-color:      @white;
 
 //== Typography
 //
@@ -126,13 +137,13 @@
 //** Default background color used for all tables.
 @table-bg:                      transparent;
 //** Background color used for `.table-striped`.
-@table-bg-accent:               #f9f9f9;
+@table-bg-accent:               rgba(100, 100, 100, 0.1);
 //** Background color used for `.table-hover`.
-@table-bg-hover:                #f5f5f5;
+@table-bg-hover:                @gray-dark;
 @table-bg-active:               @table-bg-hover;
 
 //** Border color for table and cell borders.
-@table-border-color:            #ddd;
+@table-border-color:            #222;
 
 
 //== Buttons
@@ -142,8 +153,8 @@
 @btn-font-weight:                normal;
 
 @btn-default-color:              #333;
-@btn-default-bg:                 #fff;
-@btn-default-border:             #ccc;
+@btn-default-bg:                 darken(@gray, 20%);
+@btn-default-border:             @gray-darker;
 
 @btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
@@ -154,7 +165,7 @@
 @btn-success-border:             darken(@btn-success-bg, 5%);
 
 @btn-info-color:                 #fff;
-@btn-info-bg:                    @brand-info;
+@btn-info-bg:                    darken(@gray, 47%);
 @btn-info-border:                darken(@btn-info-bg, 5%);
 
 @btn-warning-color:              #fff;
@@ -173,7 +184,7 @@
 //##
 
 //** `<input>` background color
-@input-bg:                       #fff;
+@input-bg:                       @gray-darker;
 //** `<input disabled>` background color
 @input-bg-disabled:              @gray-lighter;
 
@@ -210,7 +221,7 @@
 //## Dropdown menu container and contents.
 
 //** Background for the dropdown menu.
-@dropdown-bg:                    #fff;
+@dropdown-bg:                    @gray-darker;
 //** Dropdown menu `border-color`.
 @dropdown-border:                rgba(0,0,0,.15);
 //** Dropdown menu `border-color` **for IE8**.
@@ -575,7 +586,7 @@
 @modal-title-line-height:     @line-height-base;
 
 //** Background color of modal content area
-@modal-content-bg:                             #fff;
+@modal-content-bg:                             #111111;
 //** Modal content border color
 @modal-content-border-color:                   rgba(0,0,0,.2);
 //** Modal content border color **for IE8**

@@ -3,19 +3,19 @@
 </td>
 <td>
 	<button class="btn-hover btn-select {{#if allSelected}}selected{{/if}}">
-		<i class="icon-white icon-ok"></i>
+		<i class="glyphicon glyphicon-white glyphicon-ok"></i>
 	</button>
 </td>
 <td colspan="3" style="width: 100%">
 	{{#if showActions}}
 		<button class="btn btn-info btn-select-version" style="margin-right: 30px">
-			<icon class="icon-download-alt icon-white" />
+			<icon class="glyphicon glyphicon-download-alt glyphicon-white" />
 			Deploy
 		</button>
 
 		{{#each actions}}
 			<button class="btn btn-info btn-unit-action" data-action-name="{{this}}">
-				<icon class="{{iconForUnitAction this}} icon-white" />
+				<icon class="glyphicon glyph{{iconForUnitAction this}} glyphicon-white" />
 				{{this}}
 			</button>
 		{{/each}}
