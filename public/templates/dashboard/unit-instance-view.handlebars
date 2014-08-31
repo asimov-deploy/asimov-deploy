@@ -4,7 +4,7 @@
 	{{/if}}
 	{{agentName}}
 </td>
-<td>
+<td class="deploy-unit-instance-version">
 	{{#if deployInfo}}
 		<a href="test" data-bypass="1" class="select-version">{{deployInfo.version}}</a>
 		<span>({{deployInfo.branch}})</span>
@@ -13,7 +13,7 @@
 		<span>({{branch}})</span>
 	{{/if}}
 </td>
-<td style="text-align: center">
+<td class="deploy-unit-instance-status">
 	<a href="deploy-log" data-bypass="1" class="deploy-log-link status-{{status}}">
 		{{status}}
 	</a>
