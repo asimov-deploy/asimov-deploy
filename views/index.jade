@@ -12,25 +12,25 @@ html(lang="en")
 
 	body
 		.navbar.navbar-inverse.navbar-fixed-top
-			.navbar-header
-				.container
+			.container-fluid
+				.navbar-header
 					a.navbar-brand(href='#')
 						img(src='/img/full_logo.png')
-					.navbar-collapse
-						ul.nav.navbar-nav
-							li
-								a(href='dashboard') Dashboard
-							li.divider-vertical
-							li
-								a(href='loadbalancer') Load Balancer
-							li.divider-vertical
-							li
-								a(href='agents') Agents
+				.navbar-collapse
+					ul.nav.navbar-nav
+						li
+							a(href='dashboard') Dashboard
+						li.divider-vertical
+						li
+							a(href='loadbalancer') Load Balancer
+						li.divider-vertical
+						li
+							a(href='agents') Agents
 
-						ul.nav.navbar-nav.pull-right
-							li#current-user
-							li.divider-vertical
-							li.dropdown#instance-selection
+					ul.nav.navbar-nav.pull-right
+						li#current-user
+						li.divider-vertical
+						li.dropdown#instance-selection
 
 		#main-region
 

@@ -4,7 +4,7 @@
 		<div class="col-md-8 col-md-offset-2">
 
 			{{#if error}}
-				<div class="alert alert-error">
+				<div class="alert alert-danger">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
 					<i class="glyphicon glyphicon-exclamation-sign glyphicon-white" />
 					<span>{{error}}</span>
@@ -15,9 +15,13 @@
 
 				<div class="login-option well">
 					<label>Asimov deploy user</label>
-					<form class="local-login-form">
-						<input type="text" class="username input-medium" id="input-small" placeholder="Username" />
-						<input type="password" class="password input-medium" id="password" placeholder="Password" />
+					<form class="local-login-form form-inline">
+						<div class="form-group">
+							<input type="text" class="username input-sm form-control id="input-small" placeholder="Username" />
+						</div>
+						<div class="form-group">
+							<input type="password" class="password input-sm form-control" id="password" placeholder="Password" />
+						</div>
 						<button class="btn btn-info btn-login pull-right" type="submit">
 							<i class="glyphicon glyphicon-user glyphicon-white" />
 							Login

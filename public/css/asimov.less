@@ -37,8 +37,8 @@ body {
 .navbar .navbar-brand {
    position: relative;
    top: 2px;
-   left: -12px;
-   padding: 0;
+   padding-top: 0;
+   padding-bottom: 0;
    margin: 0;
    margin-right: 0px;
 }
@@ -51,7 +51,20 @@ body {
     background-color: inherit;
     color: #EDEDED;
     border-bottom: 3px solid #0792FF;
+    padding-top: 10px;
     padding-bottom: 2px;
+}
+
+.navbar-nav > li > a {
+  padding-top: 10px;
+  text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+}
+
+.navbar .divider-vertical {
+  height: 40px;
+  margin: 0 9px;
+  border-left: 1px solid #111;
+  border-right: 1px solid #222;
 }
 
 
@@ -80,15 +93,6 @@ body {
 
 // MISC
 // -----------------------------------------------------
-
-.well, .hero-unit {
-	border-radius: 1px;
-}
-
-.well, .hero-unit {
-	border-top: solid 1px lighten(@gray-dark, 5%);
-	.box-shadow(0 2px 4px rgba(0,0,0,.8));
-}
 
 .glyphicon-white, .glyphicon-white a {
   color: #fff;

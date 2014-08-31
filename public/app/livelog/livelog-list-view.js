@@ -44,7 +44,7 @@ function($, _, Backbone, Marionette, app) {
 			var min = $(this.el).css("min-height");
 			var max = $(this.el).css("max-height");
 
-			if (current === min) {
+			if (current <= min) {
 				$(this.el).animate({ height: max}, 500);
 			} else {
 				$(this.el).animate({ height: min}, 500);
