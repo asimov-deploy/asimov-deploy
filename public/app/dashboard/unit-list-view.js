@@ -17,9 +17,20 @@
 define([
 	"jquery",
 	"marionette",
-	"./unit-instance-list-view"
+	"./unit-instance-list-view",
+	"./deploy-lifecycle-view",
+	"./../app",
+	"backbone"
 ],
-function($, Marionette, UnitInstanceListView) {
+function($, Marionette, UnitInstanceListView, DeployLifecycle, app, Backbone) {
+
+	var DeployLifecycleStartCommand = Backbone.Model.extend({
+		url: "/deploy-lifecycle/start"
+	});
+
+	var DeployLifecycleCompleteCommand = Backbone.Model.extend({
+		url: "/deploy-lifecycle/complete"
+	});
 
 	return Marionette.CompositeView.extend({
 		itemView: UnitInstanceListView,
@@ -29,7 +40,9 @@ function($, Marionette, UnitInstanceListView) {
 
 		events: {
 			"click .btn-refresh": "refresh",
-			"change .search-query": "filterUpdated"
+			"change .search-query": "filterUpdated",
+			"click .btn-start-deploy" : "startDeploy",
+			"click .btn-stop-deploy" : "stopDeploy"
 		},
 
 		initialize: function(options) {
@@ -41,6 +54,30 @@ function($, Marionette, UnitInstanceListView) {
 			if (this.collection.length > 0) {
 				this.applyFilter();
 			}
+		},
+
+		startDeploy: function() {
+			var dlc = new DeployLifecycle();
+			dlc.on('submit', this.deployStarted, this);
+			dlc.show();
+		},
+
+		deployStarted: function (view) {
+			console.log("deployStarted");
+			console.log(view);
+			this.toggleDeployButtons();
+			new DeployLifecycleStartCommand().save();
+		},
+
+		stopDeploy: function() {
+			console.log("stopDeploy");
+			this.toggleDeployButtons();
+			new DeployLifecycleCompleteCommand().save();
+		},
+
+		toggleDeployButtons: function () {
+			$('.btn-stop-deploy').toggle();
+			$('.btn-start-deploy').toggle();
 		},
 
 		refresh: function(e) {

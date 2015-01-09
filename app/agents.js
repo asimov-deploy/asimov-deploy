@@ -18,6 +18,7 @@ module.exports = function(app, config) {
 
 	var _ = require('underscore');
 	var agentApiClient = require('./services/agent-api-client').create(config);
+	var deployLifecycleClient = require('./services/deploy-lifecycle-client').create(config);
 
 	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
 		var agentsResp = [];
@@ -81,6 +82,7 @@ module.exports = function(app, config) {
 	app.post("/agent/event", function(req, res) {
 		clientSockets.sockets.volatile.emit('agent:event', req.body);
 		app.vent.emit('agentEvent:' + req.body.eventName, req.body);
+		deployLifecycleClient.send(req.body.eventName, req.body);
 		res.json("ok");
 	});
 

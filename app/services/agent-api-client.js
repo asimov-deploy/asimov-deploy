@@ -24,7 +24,6 @@ var AgentApiClient = function(config, restify) {
 	this.get = function(agentName, url, dataCallback) {
 
 		var agent =  config.getAgent(agentName);
-
 		var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
 
 		client.get(url, function(err, req, _, data) {
