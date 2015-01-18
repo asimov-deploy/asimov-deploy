@@ -29,11 +29,11 @@ module.exports = function(app, passport, config) {
 	}
 
 	if(!clientSecret){
-		throw new Error('Missing clientSecret in google auth config');	
+		throw new Error('Missing clientSecret in google auth config');
 	}
 
 	if(!callbackURL){
-		throw new Error('Missing callbackURL in google auth config');	
+		throw new Error('Missing callbackURL in google auth config');
 	}
 
 	var strategy = new GoogleStrategy({
