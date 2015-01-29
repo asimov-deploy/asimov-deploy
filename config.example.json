@@ -16,6 +16,9 @@
 	},
 
 	"auth-google": {
-		"emails": [ "some_user_email_change_this@gmail.com" ]
+		"emails": [ "some_user_email_change_this@gmail.com" ],
+		"clientID": "clientID from https://console.developers.google.com",
+		"clientSecret": "clientSecret from https://console.developers.google.com",
+		"callbackURL": "callbackURL entered in https://console.developers.google.com, example http://your-host.com/auth/google/callback"
 	}
 }

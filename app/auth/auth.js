@@ -39,7 +39,17 @@ module.exports = function(app, config) {
 	}
 
 	if (config['auth-google']) {
-		require('./auth-google')(app, passport, config);
+		if(config['auth-google'].clientID){
+			require('./auth-google-oauth2')(app, passport, config);
+		} else {
+			console.warn('OpenID2 for Google accounts is going away on April 20, 2015');
+			console.warn(
+				'To continue using Google auth after that date, ' +
+				'go to https://console.developers.google.com to configure OAuth 2.0 credentials and enable the Google+ API, ' +
+				'then add ClientID, clientSecret and callbackURL to your asimov google-auth config.'
+			);
+			require('./auth-google')(app, passport, config);
+		}
 	}
 
 	if (config['auth-anonymous']) {
