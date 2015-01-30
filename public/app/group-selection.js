@@ -39,6 +39,10 @@ function($, Backbone, Marionette, app, _) {
 				ul.append($('<li><a href="#" class="change-group-btn">' + group + '</a></li>'));
 			});
 
+			if(!app.initData.groups || app.initData.groups.length === 0) {
+				ul.append($('<li><a href="#" class="change-group-btn">' + app.initData.instanceName + '</a></li>'));
+			}
+
 			$(this.el).html('');
 			$(this.el).append(toggle);
 			$(this.el).append(ul);
@@ -57,11 +61,11 @@ function($, Backbone, Marionette, app, _) {
 	app.addInitializer(function() {
 		app.currentGroup = localStorage.getItem('current-group');
 		if (!app.currentGroup) {
-			if (app.initData.groups) {
+			if (app.initData.groups && app.initData.groups.length > 0) {
 				app.currentGroup = app.initData.groups[0];
 			}
 			else {
-				app.currentGroup = 'NA';
+				app.currentGroup = app.initData.instanceName;
 			}
 		}
 

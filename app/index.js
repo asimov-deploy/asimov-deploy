@@ -32,6 +32,7 @@ module.exports = function(app, config) {
 			version: packageInfo.version,
 			port: config.port,
 			initData: {
+				instanceName: config.name,
 				groups: groups,
 				agents: agents,
 				authUsingLocal: config['auth-local'] !== undefined,
