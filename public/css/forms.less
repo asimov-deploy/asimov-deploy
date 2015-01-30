@@ -2,17 +2,17 @@
 // -----------------------------------------------------
 
 legend, label {
-	color: @textColor;
-	border-bottom: 0px solid @grayDark;
+	color: @text-color;
+	border-bottom: 0px solid @gray-dark;
 }
 
 legend {
 	margin:0;
-	border-bottom: 1px solid @grayDark;
+	border-bottom: 1px solid @gray-dark;
 }
 
 input, textarea, select, .uneditable-input {
-	color: @grayDark;
+	color: @gray-dark;
 }
 
 input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly], .uneditable-input {
@@ -42,7 +42,7 @@ select:focus {
 	background: transparent;
 }
 
-.input-prepend {
+.input-group {
 
     .add-on {
       background-color: #272727;
@@ -50,6 +50,14 @@ select:focus {
       text-shadow: none;
       color: #BDBDBD;
     }
+}
+
+input.search-query {
+  padding-right: 14px;
+  padding-left: 14px;
+  margin-bottom: 0px;
+  border-radius: 15px;
+  width: 210px;
 }
 
 // LOADBALANCER SETTINGS FORM

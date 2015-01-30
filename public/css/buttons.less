@@ -1,7 +1,6 @@
 .btn {
   line-height: 14px;
-
-  .box-shadow(inset 0 1px 0 rgba(255,255,255,.12), 0 1px 2px rgba(0,0,0,.05));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 1px 2px rgba(0,0,0,.05);
 }
 
 .loadbalancer-action {
@@ -25,10 +24,10 @@
 
 // Changing shown as yellow (like a traffic light)
 .btn-changing {
-  .buttonBackground(@btnChangingBackground, @btnChangingBackgroundHighlight);
+  .button-variant(@btnChangingBackground, @btnChangingBackgroundHighlight, @btn-default-border);
 }
 
-.icon-share2, .nav .active > a > .icon-share2 {
+.icon-share2, .navbar .active > a > .icon-share2 {
   background: url("../img/share.png") 0 0;
   width: 14px;
   height: 14px;

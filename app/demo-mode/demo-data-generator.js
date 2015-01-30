@@ -135,10 +135,30 @@ versions["api.asimov-demo.com"] = [
 	{ "version": "2.9.0", "timestamp": "2013-06-25 16:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v2.9.0-[master]-[14cbf25].prod.zip" },
 	{ "version": "2.8.0", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25",	"id": "mykillerapp-v2.8.0-[master]-[14cbf25].prod.zip" },
 	{ "version": "2.7.0", "timestamp": "2013-06-24 15:26:11", "branch": "my-new-feature", "commit": "14cbf25", "id": "mykillerapp-v2.7.0-[master]-[14cbf25].prod.zip"	},
-	{ "version": "1.5.0", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.5.0-[master]-[14cbf25].prod.zip" }
+	{ "version": "1.5.0", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.5.0-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.4.9",  "timestamp": "2013-06-28 16:26:11", "branch": "master", "commit": "14cbf27", "id": "mykillerapp-v1.4.9-[master]-[14cbf27].prod.zip" },
+	{ "version": "1.4.8", "timestamp": "2013-06-25 16:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.4.8-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.4.7", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25",	"id": "mykillerapp-v1.4.7-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.4.6", "timestamp": "2013-06-24 15:26:11", "branch": "my-new-feature", "commit": "14cbf25", "id": "mykillerapp-v1.4.6-[master]-[14cbf25].prod.zip"	},
+	{ "version": "1.4.5", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.4.5-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.4.4",  "timestamp": "2013-06-28 16:26:11", "branch": "master", "commit": "14cbf27", "id": "mykillerapp-v1.4.4-[master]-[14cbf27].prod.zip" },
+	{ "version": "1.4.3", "timestamp": "2013-06-25 16:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.4.3-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.4.2", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25",	"id": "mykillerapp-v1.4.2-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.4.1", "timestamp": "2013-06-24 15:26:11", "branch": "my-new-feature", "commit": "14cbf25", "id": "mykillerapp-v1.4.1-[master]-[14cbf25].prod.zip"	},
+	{ "version": "1.4.0", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.4.0-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.3.9",  "timestamp": "2013-06-28 16:26:11", "branch": "master", "commit": "14cbf27", "id": "mykillerapp-v1.3.9-[master]-[14cbf27].prod.zip" },
+	{ "version": "1.3.8", "timestamp": "2013-06-25 16:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.3.8-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.3.7", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25",	"id": "mykillerapp-v1.3.7-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.3.6", "timestamp": "2013-06-24 15:26:11", "branch": "my-new-feature", "commit": "14cbf25", "id": "mykillerapp-v1.3.6-[master]-[14cbf25].prod.zip"	},
+	{ "version": "1.3.5", "timestamp": "2013-06-24 15:26:11", "branch": "master", "commit": "14cbf25", "id": "mykillerapp-v1.3.5-[master]-[14cbf25].prod.zip" }
 ];
 
 versions["backend.queue-handler"] = versions["backend.member-notification"] = [
+	{ "version": "2.1.0",  "timestamp": "2013-06-28 16:26:11", "branch": "master", "commit": "14cbf27", "id": "mykillerapp-v3.0.0-[master]-[14cbf27].prod.zip" },
+	{ "version": "2.0.0", "timestamp": "2013-06-25 16:26:11", "branch": "develop", "commit": "14cbf25", "id": "mykillerapp-v2.9.0-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.8.0", "timestamp": "2013-06-23 15:26:11", "branch": "master", "commit": "14cbf25",	"id": "mykillerapp-v2.8.0-[master]-[14cbf25].prod.zip" },
+	{ "version": "1.7.0", "timestamp": "2013-06-20 13:26:11", "branch": "my-new-feature", "commit": "14cbf25", "id": "mykillerapp-v2.7.0-[master]-[14cbf25].prod.zip"	},
+	{ "version": "1.5.0", "timestamp": "2013-06-21 12:26:11", "branch": "poc", "commit": "14cbf25", "id": "mykillerapp-v1.5.0-[master]-[14cbf25].prod.zip" },
 	{ "version": "2.1.0",  "timestamp": "2013-06-28 16:26:11", "branch": "master", "commit": "14cbf27", "id": "mykillerapp-v3.0.0-[master]-[14cbf27].prod.zip" },
 	{ "version": "2.0.0", "timestamp": "2013-06-25 16:26:11", "branch": "develop", "commit": "14cbf25", "id": "mykillerapp-v2.9.0-[master]-[14cbf25].prod.zip" },
 	{ "version": "1.8.0", "timestamp": "2013-06-23 15:26:11", "branch": "master", "commit": "14cbf25",	"id": "mykillerapp-v2.8.0-[master]-[14cbf25].prod.zip" },

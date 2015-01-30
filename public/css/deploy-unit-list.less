@@ -42,6 +42,15 @@
 	padding-left: 40px;
 }
 
+.deploy-unit-instance-version {
+	min-width: 250px;
+}
+
+.deploy-unit-instance-status {
+	min-width: 100px;
+	text-align: center;
+}
+
 .deploy-unit-instance {
 	td {
 		padding-top: 4px;
@@ -68,20 +77,24 @@
 		i {
 			opacity: 1;
 		}
-
-		.buttonBackground(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
+		.button-variant(@btn-primary-bg, @btnPrimaryBackgroundHighlight, @btn-default-border);
 	}
 }
 
 .deploy-unit-row td {
 	border-left: none;
 	border-top: 4px solid black;
+	padding: 6px;
+	height: 50px;
 
 	.btn-small {
 		padding: 3px 14px;
 	}
 }
 
+.deploy-unit-row .btn {
+	height: 30px;
+}
 
 .unit-instance-verify-glimps {
 

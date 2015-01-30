@@ -8,8 +8,9 @@
     margin: 10px 10px;
     display: table-cell;
     width: 100%;
+    padding: 10px;
 
-    .input-prepend .add-on {
+    .input-group .add-on {
         width: 100px;
         display: inline-block;
         color: @blue;
@@ -20,6 +21,10 @@
         border: none;
     }
 
+    .deploy-read-only-value {
+        padding: 5px;
+    }
+
     .deploy-read-only-value input {
         margin: 0px;
         cursor: default;
@@ -28,6 +33,7 @@
     input[disabled] {
         background-color: transparent;
         border: none;
+        color: @gray;
     }
 }
 
