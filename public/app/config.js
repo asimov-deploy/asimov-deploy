@@ -30,6 +30,7 @@ require.config({
 		marionette: "../libs/backbone.marionette",
 		"backbone.babysitter": "../libs/backbone.babysitter",
 		"backbone.wreqr": "../libs/backbone.wreqr",
+		"jquery.cookie": "../libs/jquery.cookie",
 
 		'socket.io': '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
 	},

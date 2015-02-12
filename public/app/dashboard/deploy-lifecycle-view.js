@@ -38,7 +38,8 @@ function($, _, Marionette) {
 			var form = $(e.target);
 			var title = form.find('#title').val();
 			var body = form.find('#body').val();
-			this.trigger('submit', { body:body, title:title });
+
+			this.trigger('submit', { description:body, title:title });
 			this.close();
 		},
 
