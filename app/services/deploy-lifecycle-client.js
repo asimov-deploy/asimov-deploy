@@ -45,10 +45,6 @@ var DeployLifecycleClient = function(config, restify) {
 		eventBody.startedBy = deployData.user;
 		eventBody.timestamp = new Date().toISOString();
 
-		console.log('--- start of eventBody ---');
-		console.log(eventBody);
-		console.log('--- end of eventBody ---');
-
 		var client = restify.createJsonClient({
 			url: config.logServerUrl,
 			connectTimeout: 200
