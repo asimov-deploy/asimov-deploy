@@ -3,6 +3,7 @@
 		<h1>Dashboard</h1>
 	</div>
 
+	{{#if deployAnnotationsEnabled}}
 	<div class="page-commands">
 		{{#if hasActiveDeploy}}
 		<button class="btn btn-success btn-stop-deploy" data-loading-text="Stop...">
@@ -16,6 +17,7 @@
 		</button>
 		{{/if}}
 	</div>
+	{{/if}}
 
 	<div class="page-controls">
 

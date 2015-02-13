@@ -18,12 +18,14 @@ module.exports = function(app, config) {
 
 	var lifecycleClient = require('./services/deploy-lifecycle-client').create(config);
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
+	var featureToggle = require('./feature-toggle').create(config);
 	var uuid = require('node-uuid');
 
-	app.post("/deploy-lifecycle/start", app.ensureLoggedIn, function(req, res) {
+	var annotationsConfig = featureToggle.getActiveFeature('deployAnnotations');
 
+	app.post("/deploy-lifecycle/start", app.ensureLoggedIn, function(req, res) {
 		var deployId = uuid.v1();
-		res.cookie(config.deployIdCookie, deployId);
+		res.cookie(annotationsConfig.deployIdCookie, deployId);
 
 		var data = {
 			title: req.body.title,
@@ -36,11 +38,10 @@ module.exports = function(app, config) {
 	});
 
 	app.post("/deploy-lifecycle/complete", app.ensureLoggedIn, function(req, res) {
+		var deployId = req.cookies[annotationsConfig.deployIdCookie];
+		res.clearCookie(annotationsConfig.deployIdCookie);
 
-		var deployId = req.cookies[config.deployIdCookie];
-		res.clearCookie(config.deployIdCookie);
-
-		lifecycleClient.send('completeDeployLifecycleCommand', req.body, deployId, function () {
+		lifecycleClient.send('completeDeployLifecycleCommand', req.body, deployId, function() {
 			lifecycleSession.end(deployId);
 		});
 

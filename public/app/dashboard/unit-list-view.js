@@ -59,7 +59,16 @@ define([
 			},
 
 			initDeployMode: function() {
-				var deployIdCookie = $.cookie('asimov-deploy-id');
+				var featureToggles = app.initData.featureToggles;
+				var annotationConfig = featureToggles.deployAnnotations;
+				if (!featureToggles || !annotationConfig) {
+					this.deployAnnotationsEnabled = false;
+					return;
+				}
+
+				this.deployAnnotations = annotationConfig.enabled === true;
+
+				var deployIdCookie = $.cookie(annotationConfig.deployIdCookie);
 				this.hasActiveDeploy = deployIdCookie !== undefined;
 			},
 
@@ -113,7 +122,8 @@ define([
 			serializeData: function() {
 				return {
 					filterText: this.filterText,
-					hasActiveDeploy: this.hasActiveDeploy
+					hasActiveDeploy: this.hasActiveDeploy,
+					deployAnnotationsEnabled: this.deployAnnotations
 				};
 			},
 

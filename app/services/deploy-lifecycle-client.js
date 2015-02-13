@@ -17,7 +17,7 @@
 var DeployLifecycleClient = function(config, restify) {
 
 	var lifecycleSession = require('./deploy-lifecycle-session').create();
-
+	var featureToggle = require('./../feature-toggle').create(config);
 	restify = restify || require("restify");
 
 	var actionUrlMappings = [];
@@ -25,11 +25,16 @@ var DeployLifecycleClient = function(config, restify) {
 	actionUrlMappings.completeDeployLifecycleCommand = '/deploy/finished';
 	actionUrlMappings.deployCompleted = '/deploy/unit_completed';
 
+	var annotationsConfig = featureToggle.getActiveFeature('deployAnnotations');
+
 	this.send = function(eventName, eventBody, deployId, callback) {
 
-		var urlAction = actionUrlMappings[eventName];
+		if (annotationsConfig.enabled !== true) {
+			return;
+		}
 
-		if (!config.logServerUrl || !urlAction) {
+		var urlAction = actionUrlMappings[eventName];
+		if (!annotationsConfig.logServerUrl || !urlAction) {
 			console.log('No config.logServerUrl or missing urlAction for ' + eventName);
 			return;
 		}
@@ -46,7 +51,7 @@ var DeployLifecycleClient = function(config, restify) {
 		eventBody.timestamp = new Date().toISOString();
 
 		var client = restify.createJsonClient({
-			url: config.logServerUrl,
+			url: annotationsConfig.logServerUrl,
 			connectTimeout: 200
 		});
 
