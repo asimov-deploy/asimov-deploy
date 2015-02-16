@@ -47,4 +47,15 @@ module.exports = function(app, config) {
 
 		res.json('ok');
 	});
+
+	app.post("/deploy-lifecycle/cancel", app.ensureLoggedIn, function(req, res) {
+		var deployId = req.cookies[annotationsConfig.deployIdCookie];
+		res.clearCookie(annotationsConfig.deployIdCookie);
+
+		lifecycleClient.send('cancelDeployLifecycleCommand', req.body, deployId, function() {
+			lifecycleSession.end(deployId);
+		});
+
+		res.json('ok');
+	});
 };

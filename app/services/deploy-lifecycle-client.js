@@ -23,6 +23,7 @@ var DeployLifecycleClient = function(config, restify) {
 	var actionUrlMappings = [];
 	actionUrlMappings.startDeployLifecycleCommand = '/deploy/start';
 	actionUrlMappings.completeDeployLifecycleCommand = '/deploy/finished';
+	actionUrlMappings.cancelDeployLifecycleCommand = '/deploy/cancelled';
 	actionUrlMappings.deployCompleted = '/deploy/unit_completed';
 
 	var annotationsConfig = featureToggle.getActiveFeature('deployAnnotations');

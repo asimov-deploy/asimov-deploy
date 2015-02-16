@@ -33,6 +33,10 @@ define([
 			url: "/deploy-lifecycle/complete"
 		});
 
+		var DeployLifecycleCancelCommand = Backbone.Model.extend({
+			url: "/deploy-lifecycle/cancel"
+		});
+
 		return Marionette.CompositeView.extend({
 			itemView: UnitInstanceListView,
 			itemViewContainer: "table",
@@ -43,7 +47,8 @@ define([
 				"click .btn-refresh": "refresh",
 				"change .search-query": "filterUpdated",
 				"click .btn-start-deploy": "startDeploy",
-				"click .btn-stop-deploy": "stopDeploy"
+				"click .btn-finish-deploy": "finishDeploy",
+				"click .btn-cancel-deploy": "cancelDeploy"
 			},
 
 			initialize: function(options) {
@@ -85,9 +90,14 @@ define([
 				command.save();
 			},
 
-			stopDeploy: function() {
+			finishDeploy: function() {
 				this.toggleDeployButtons(false);
 				new DeployLifecycleCompleteCommand().save();
+			},
+
+			cancelDeploy: function() {
+				this.toggleDeployButtons(false);
+				new DeployLifecycleCancelCommand().save();
 			},
 
 			toggleDeployButtons: function(hasActiveDeploy) {

@@ -6,9 +6,13 @@
 	{{#if deployAnnotationsEnabled}}
 	<div class="page-commands">
 		{{#if hasActiveDeploy}}
-		<button class="btn btn-success btn-stop-deploy" data-loading-text="Stop...">
+		<button class="btn btn-danger btn-cancel-deploy" data-loading-text="Cancelling...">
 			<i class="icon-white icon-stop"></i>
-			Deploy finished
+			Cancel deploy
+		</button>
+		<button class="btn btn-success btn-finish-deploy" data-loading-text="Finishing...">
+			<i class="icon-white icon-stop"></i>
+			Finish deploy
 		</button>
 		{{else}}
 		<button class="btn btn-primary btn-start-deploy" data-loading-text="Starting...">
