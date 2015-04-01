@@ -74,7 +74,6 @@ function(_, app, UnitListView, UnitCollection) {
 	});
 
 	app.vent.on("dashboard:show", function() {
-
 		var view = new UnitListView({ collection: unitCollection });
 		app.mainRegion.show(view);
 

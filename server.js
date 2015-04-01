@@ -65,6 +65,7 @@ if (config['enable-demo']) {
 
 require('./app/agents')(app, config);
 require('./app/deploy')(app, config);
+require('./app/deploy-lifecycle')(app, config);
 require('./app/loadbalancer')(app, config);
 require('./app/units')(app, config);
 require('./app/versions')(app, config);

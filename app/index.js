@@ -20,6 +20,8 @@ var crypto = require('crypto');
 
 module.exports = function(app, config) {
 
+	var featureToggles = require('./feature-toggle').create(config);
+
 	app.get('/', function(req, res) {
 
 		var agents = _.where(config.agents, { dead: false });
@@ -36,7 +38,8 @@ module.exports = function(app, config) {
 				agents: agents,
 				authUsingLocal: config['auth-local'] !== undefined,
 				authUsingGoogle: config['auth-google'] !== undefined,
-				flashError: req.flash('error')
+				flashError: req.flash('error'),
+				featureToggles: featureToggles.getActiveFeatures()
 			}
 		};
 

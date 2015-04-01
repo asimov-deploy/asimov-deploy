@@ -14,40 +14,44 @@
 * limitations under the License.
 ******************************************************************************/
 
-require.config({
+define([
+	"jquery",
+	"underscore",
+	"marionette"
+],
+function($, _, Marionette) {
 
-	deps: ["main"],
-
-	paths: {
-		// JavaScript folders
-		libs: "../libs",
-
-		// Libraries
-		jquery: "../libs/jquery",
-		underscore: "../libs/lodash",
-		bootstrap: "../libs/bootstrap",
-		backbone: "../libs/backbone",
-		marionette: "../libs/backbone.marionette",
-		"backbone.babysitter": "../libs/backbone.babysitter",
-		"backbone.wreqr": "../libs/backbone.wreqr",
-		"jquery.cookie": "../libs/jquery.cookie",
-
-		'socket.io': '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
-	},
-
-	shim: {
-		backbone: {
-			deps: ["underscore", "jquery"],
-			exports: "Backbone"
+	return Marionette.ItemView.extend({
+		el: $("#asimov-modal"),
+		template: "dashboard/deploy-lifecycle-view",
+		events: {
+			"click .btn-close": "close",
+			"submit" : "submit"
 		},
 
-		bootstrap: {
-			deps:["jquery"]
-		}
+		initialize: function() {
+			_.bindAll(this, "show");
+		},
 
-	}
+		submit: function (e) {
+			e.preventDefault();
+			var form = $(e.target);
+			var title = form.find('#title').val();
+			var body = form.find('#body').val();
+
+			this.trigger('submit', { description:body, title:title });
+			this.close();
+		},
+
+		show: function() {
+			this.render();
+			$(".modal").modal("show");
+		},
+
+		close: function() {
+			$(".modal").modal("hide");
+			this.undelegateEvents();
+		}
+	});
 
 });
-
-
-
