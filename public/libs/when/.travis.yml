@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - '0.10'
+script: npm run ci
+branches:
+  only:
+    - dev
+    - master
+env:
+  global:
+    - SAUCE_USERNAME="cujojs-when"
+    - SAUCE_ACCESS_KEY="e5d3d1a5-bc49-4607-8a7e-702a512c7f60"

@@ -50,7 +50,6 @@ function($, _, Marionette, Backbone, app, AgentQueryCollection) {
         },
 
         initialize: function(options) {
-
             this.on("itemview:versionSelected", this.versionSelected, this);
 
             this.collection = new AgentQueryCollection({
@@ -68,12 +67,12 @@ function($, _, Marionette, Backbone, app, AgentQueryCollection) {
         },
 
         versionSelected: function(view) {
-            this.close();
             this.trigger("versionSelected", view.model.get('id'), view.model.get('version'), view.model.get('branch'));
         },
 
         close: function() {
             $(".modal").modal("hide");
+            this.trigger("closed");
             this.undelegateEvents();
         }
 

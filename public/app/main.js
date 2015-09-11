@@ -17,6 +17,7 @@
 require([
 	"jquery",
 	"app",
+	"autopilot/autopilot",
 	"router",
 	"backbone",
 	"socket-con",
@@ -26,7 +27,7 @@ require([
 	"current-user",
 	"group-selection"
 ],
-function($, app, Router, Backbone) {
+function($, app, autopilot, Router, Backbone) {
 
 	$(function() {
 

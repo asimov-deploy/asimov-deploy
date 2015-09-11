@@ -154,9 +154,76 @@ var deployLog = [
 	{ timestamp: "2013-06-10 07:15:01", username: "Demo User",			version: "1.1.0", branch: "develop", commit: "14cbf27", status: "Success" }
 ];
 
+var autopilot = {
+    preferredBranch: 'master',
+    deployableUnitSets: [
+        {
+            "id": "api_asimov_demo_com",
+            "name": "Api",
+            "description": "Automatic deploy of api.asimov-demo.com",
+            "units": [ "api.asimov-demo.com" ],
+            "defaultDeployToMaximumAgentsSimultaneously": 2,
+            "defaultVerificationIterationCount": 1,
+            "verificationSteps": [ "DisableLoadbalancerForAgents", "Deploy", "Verify", "Prompt", "EnableLoadbalancerForAgents" ],
+            "steps": [ "DisableLoadbalancerForAgents", "Deploy", "Verify", "EnableLoadbalancerForAgents" ]
+        },
+        {
+            "id": "asimov_demo_com",
+            "name": "Site",
+            "description": "Automatic deploy of asimov-demo.com",
+            "units": [ "asimov-demo.com" ],
+            "defaultDeployToMaximumAgentsSimultaneously": 2,
+            "defaultVerificationIterationCount": 1,
+            "verificationSteps": [ "DisableLoadbalancerForAgents", "Deploy", "Prompt", "EnableLoadbalancerForAgents" ],
+            "steps": [ "DisableLoadbalancerForAgents", "Deploy", "EnableLoadbalancerForAgents" ]
+        },
+        {
+            "id": "api_asimov_demo_com_and_asimov_demo_com",
+            "name": "Api + Site",
+            "description": "Automatic deploy of api.asimov-demo.com and asimov-demo.com",
+            "units": [ "asimov-demo.com", "api.asimov-demo.com" ],
+            "defaultDeployToMaximumAgentsSimultaneously": 2,
+            "defaultVerificationIterationCount": 1,
+            "verificationSteps": [ "DisableLoadbalancerForAgents", "Deploy", "Prompt", "EnableLoadbalancerForAgents" ],
+            "steps": [ "DisableLoadbalancerForAgents", "Deploy", "EnableLoadbalancerForAgents" ]
+        },
+        {
+            "id": "backend_member_notification",
+            "name": "Member Notification",
+            "description": "Automatic deploy of backend.member-notification",
+            "units": [ "backend.member-notification" ],
+            "defaultDeployToMaximumAgentsSimultaneously": 1,
+            "defaultVerificationIterationCount": 1,
+            "verificationSteps": [ "Deploy", "Prompt" ],
+            "steps": [ "Deploy" ]
+        },
+        {
+            "id": "backend_queue_handler",
+            "name": "Queue Handler",
+            "description": "Automatic deploy of backend.queue-handler",
+            "units": [ "backend.queue-handler" ],
+            "defaultDeployToMaximumAgentsSimultaneously": 1,
+            "defaultVerificationIterationCount": 1,
+            "verificationSteps": [ "Deploy", "Prompt" ],
+            "steps": [ "Deploy" ]
+        },
+        {
+            "id": "backend_member_notification_and_backend_queue_handler",
+            "name": "Member Notification + Queue Handler",
+            "description": "Automatic deploy of backend.member-notification and backend.queue-handler",
+            "units": [ "backend.member-notification", "backend.queue-handler" ],
+            "defaultDeployToMaximumAgentsSimultaneously": 1,
+            "defaultVerificationIterationCount": 1,
+            "verificationSteps": [ "Deploy", "Prompt" ],
+            "steps": [ "Deploy" ]
+        }
+    ]
+};
+
 module.exports = {
 	agents: agents,
 	units: units,
 	versions: versions,
-	deployLog: deployLog
+	deployLog: deployLog,
+	autopilot: autopilot
 };
