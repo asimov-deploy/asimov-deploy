@@ -1,0 +1,12 @@
+<div class="control-container">
+    <button type="button" class="btn btn-danger btn-large btn-abort">
+      <i class="icon-white icon-off"></i>
+      Abort automatic deploy
+    </button>
+    {{#if paused}}
+    <button type="button" class="btn btn-success btn-large btn-continue">
+      <i class="icon-white icon-play"></i>
+      Continue
+    </button>
+    {{/if}}
+</div>

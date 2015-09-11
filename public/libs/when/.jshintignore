@@ -1,0 +1,9 @@
+node_modules/
+.git/
+.idea/
+experiments/
+test/monitor/
+test/browser/
+es6-shim/
+build/when.js
+bower_components/

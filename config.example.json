@@ -27,6 +27,9 @@
 			"logServerUrl": "http://localhost:9195",
 			"deployIdCookie": "asimov-deploy-id",
 			"enabled" : true
-		}
-	}
+		},
+        "autopilot": {
+            "enabled" : true
+        }
+    }
 }

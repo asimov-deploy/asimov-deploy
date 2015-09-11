@@ -16,10 +16,11 @@
 
 define([
 	"jquery",
+	"underscore",
 	"backbone",
 	"marionette"
 ],
-function($, Backbone, Marionette) {
+function($, _, Backbone, Marionette) {
 
 	var app = new Marionette.Application();
 
