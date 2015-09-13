@@ -25,9 +25,9 @@ module.exports = function(app, config) {
     app.get('/auto-deploy/deployable-unit-sets/:deployableUnitSetId/units', app.ensureLoggedIn, function(req, res) {
         var deployableUnitSet = _.findWhere(config.autopilot.deployableUnitSets, { id: req.params.deployableUnitSetId });
 
-        var agents = [];
-
         agentApiClient.getUnitListForAgentGroup(null, function(results) {
+            var agents = [];
+
             results.forEach(function(item) {
                 agents.push({
                     name: item.agent.name,
@@ -36,44 +36,63 @@ module.exports = function(app, config) {
                 });
             });
 
-        });
+            agents = _.sortBy(agents, 'name');
 
-        var agentUnits = _.flatten(_.map(agents, function (agent) {
-            var result = [];
+            var agentUnits = _.flatten(_.map(agents, function (agent) {
+                var result = [];
 
-            _.each(agent.units, function (unit) {
-                result.push({
-                    agentName: agent.name,
-                    unitName: unit.name
+                _.each(agent.units, function (unit) {
+                    result.push({
+                        agentName: agent.name,
+                        unitName: unit.name
+                    });
                 });
-            });
 
-            return result;
-        }));
+                return result;
+            }));
 
-        var unitsWithInstances =
-            _
-            .chain(agentUnits)
-            .groupBy('unitName')
-            .map(function(agentUnits, unitName) {
-                agentApiClient.get(_.first(agentUnits), '/versions/' + unitName, function(versions) {
-                    var version = null;
-
-                    if (config.autopilot.preferredBranch) {
-                        version = _.findWhere(versions[unitName], { branch: config.autopilot.preferredBranch });
-                    }
-                    else {
-                        version = _.first(versions[unitName]);
-                    }
-
+            var unitsWithInstances =
+                _
+                .chain(agentUnits)
+                .filter(function (item) {
+                    return _.contains(deployableUnitSet.units, item.unitName);
+                })
+                .groupBy('unitName')
+                .map(function(agents, unitName) {
                     return {
                         unitName: unitName,
-                        instances: _.pluck(agentUnits, 'agentName'),
-                        selectedVersion: version
+                        instances: _.pluck(agents, 'agentName')
                     };
+                })
+                .value();
+
+            var unitVersions = {};
+
+            _.each(unitsWithInstances, function (unitWithInstances) {
+                agentApiClient.get(_.first(unitWithInstances.instances), '/versions/' + unitWithInstances.unitName, function(versions) {
+                    var version;
+
+                    if (config.autopilot.preferredBranch) {
+                        version = _.findWhere(versions, { branch: config.autopilot.preferredBranch });
+                    }
+                    else {
+                        version = _.first(versions);
+                    }
+
+                    unitVersions[unitWithInstances.unitName] = version;
+
+                    if (Object.keys(unitVersions).length === unitsWithInstances.length) {
+                        finish(res, deployableUnitSet, unitsWithInstances, unitVersions);
+                    }
                 });
-            })
-            .value();
+            });
+        });
+    });
+
+    var finish = function (res, deployableUnitSet, unitsWithInstances, unitVersions) {
+        _.each(unitsWithInstances, function (unitWithInstances) {
+            unitWithInstances.selectedVersion = unitVersions[unitWithInstances.unitName];
+        });
 
         var result = [];
 
@@ -82,5 +101,5 @@ module.exports = function(app, config) {
         });
 
         res.json(result);
-    });
+    };
 };

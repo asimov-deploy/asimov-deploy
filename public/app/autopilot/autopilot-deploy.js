@@ -33,10 +33,12 @@ function($, _, app, Backbone, DeployManager, TaskAbortedException) {
                 function () {
                     app.vent.trigger('autopilot:deploy-completed');
                 })
-            .otherwise(function (e) { return e instanceof TaskAbortedException; }, function () {
+            .otherwise(function (e) { return e instanceof TaskAbortedException; }, function (e) {
+                console.error('deploy aborted', e);
                 app.vent.trigger('autopilot:deploy-aborted');
             })
             .otherwise(function (e) {
+                console.error('deploy failed', e);
                 app.vent.trigger('autopilot:deploy-failed', e);
             });
     });

@@ -85,10 +85,12 @@ function(_, when, sequence, Backbone, app, TaskAbortedException) {
 
     return {
         execute: function (task) {
-            var tasks = [];
-            tasks.push(createEnableLoadBalancerForAgentsTask(task.agents));
+            return function () {
+                var tasks = [];
+                tasks.push(createEnableLoadBalancerForAgentsTask(task.agents));
 
-            return sequence(tasks);
+                return sequence(tasks);
+            };
         },
 
         getInfo: function () {

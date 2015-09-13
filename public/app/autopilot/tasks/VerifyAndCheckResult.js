@@ -14,39 +14,28 @@
 * limitations under the License.
 ******************************************************************************/
 
-/* jshint -W074 */
-
 define([
-    "require",
-    "when/sequence",
-    "./DisableLoadbalancerForAgents",
-    "./EnableLoadbalancerForAgents",
-    "./Deploy",
-    "./Prompt",
+    "when/parallel",
     "./Verify",
-    "./CheckVerifyResult",
-    "./DeployAndCheckVerifyResult",
-    "./VerifyAndCheckResult"
+    "./CheckVerifyResult"
 ],
-function(require, sequence) {
-    var _getTask = function (taskName) {
-        return require('./' + taskName);
-    };
-
-    var tasks = {
-        createTask: function (data) {
-            return function() {
+function(parallel, verifyTask, checkVerifyResultTask) {
+    return {
+        execute: function (task) {
+            return function () {
                 var tasks = [];
-                var task = _getTask(data.name);
-                tasks.push(task.execute(data));
-                return sequence(tasks);
+                tasks.push(checkVerifyResultTask.execute(task));
+                tasks.push(verifyTask.execute(task));
+
+                return parallel(tasks);
             };
         },
-        getTaskInformation: function (taskName) {
-            var task = _getTask(taskName);
-            return task.getInfo();
+
+        getInfo: function () {
+            return {
+                title: 'Verify and check result',
+                description: 'Verify each unit in set and check result from verify and prompt user if there are failed steps'
+            };
         }
     };
-
-    return tasks;
 });

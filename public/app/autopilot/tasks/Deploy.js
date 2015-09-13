@@ -92,13 +92,15 @@ function(_, when, sequence, Backbone, app, TaskAbortedException) {
 
     return {
         execute: function (task) {
-            var tasks = [];
+            return function() {
+                var tasks = [];
 
-            _.each(task.units, function (unit) {
-                tasks.push(createDeployUnitToAgentsTask(task.agents, unit));
-            });
+                _.each(task.units, function (unit) {
+                    tasks.push(createDeployUnitToAgentsTask(task.agents, unit));
+                });
 
-            return sequence(tasks);
+                return sequence(tasks);
+            };
         },
 
         getInfo: function () {
