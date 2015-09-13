@@ -22,50 +22,45 @@ define([
     "../task-aborted-exception"
 ],
 function(_, when, sequence, app, TaskAbortedException) {
-    var createCheckVerifyResultOfUnitOnAgentsTask = function (agents, unit) {
-        return function() {
-            var deferreds = [];
-
-            _.each(agents, function (agentName) {
-                deferreds.push(checkVerifyResultOfUnitOnAgent(agentName, unit.unitName));
-            });
-
-            return when.all(deferreds).delay(1000);
-        };
-    };
-
-    var checkVerifyResultOfUnitOnAgent = function(agentName, unitName) {
+    var checkVerifyResult = function(agents, units) {
         var deferred = when.defer();
 
         var dispose = function () {
             app.vent.off('agent:event:verify-progress', verifyProgress);
+            app.vent.off('autopilot:continue-deploy', continueDeploy);
             app.vent.off('autopilot:abort-deploy', abort);
         };
 
         var failedTests = 0;
+        var completedAgentUnits = 0;
 
         var verifyProgress = function (data) {
-            if (data.agentName === agentName &&
-                data.unitName === unitName &&
+            if (_.contains(agents, data.agentName) &&
+                _.contains(_.pluck(units, 'unitName'), data.unitName) &&
                 data.test) {
                 failedTests += !data.test.pass ? 1 : 0;
             }
 
-            if (data.agentName === agentName &&
-                data.unitName === unitName &&
+            if (_.contains(agents, data.agentName) &&
+                _.contains(_.pluck(units, 'unitName'), data.unitName) &&
                 data.completed) {
+                completedAgentUnits++;
+            }
+
+            if (agents.length * units.length === completedAgentUnits) {
                 if (failedTests > 0) {
-                    dispose();
                     app.vent.trigger('autopilot:pause-deploy');
                 }
                 else {
                     dispose();
-                    deferred.resolve({
-                        agentName: agentName,
-                        unitName: unitName
-                    });
+                    deferred.resolve();
                 }
             }
+        };
+
+        var continueDeploy = function () {
+            dispose();
+            deferred.resolve();
         };
 
         var abort = function () {
@@ -74,6 +69,7 @@ function(_, when, sequence, app, TaskAbortedException) {
         };
 
         app.vent.on('agent:event:verify-progress', verifyProgress);
+        app.vent.on('autopilot:continue-deploy', continueDeploy);
         app.vent.on('autopilot:abort-deploy', abort);
 
         return deferred.promise;
@@ -81,13 +77,9 @@ function(_, when, sequence, app, TaskAbortedException) {
 
     return {
         execute: function (task) {
-            var tasks = [];
-
-            _.each(task.units, function (unit) {
-                tasks.push(createCheckVerifyResultOfUnitOnAgentsTask(task.agents, unit));
-            });
-
-            return sequence(tasks);
+            return function() {
+                return when(checkVerifyResult(task.agents, task.units));
+            };
         },
 
         getInfo: function () {

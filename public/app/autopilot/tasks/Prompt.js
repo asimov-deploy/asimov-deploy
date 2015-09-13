@@ -41,14 +41,18 @@ function(when, app, TaskAbortedException) {
         app.vent.on('autopilot:continue-deploy', continueDeploy);
         app.vent.on('autopilot:abort-deploy', abort);
 
-        app.vent.trigger('autopilot:pause-deploy');
+        if (!app.autopilot.paused) {
+            app.vent.trigger('autopilot:pause-deploy');
+        }
 
         return deferred.promise;
     };
 
     return {
         execute: function () {
-            return when(prompt());
+            return function () {
+                return when(prompt());
+            };
         },
 
         getInfo: function () {
