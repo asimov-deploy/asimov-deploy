@@ -91,7 +91,7 @@ function($, _, Backbone, when, sequence, app, tasks) {
             completedIterations++;
         }
 
-        this._testDeploy = function () {
+        this._executeDeploy = function () {
             var deployIterationTasks = [];
 
             _.each(this.deployIterations, function (round) {
@@ -116,7 +116,7 @@ function($, _, Backbone, when, sequence, app, tasks) {
 
     DeployManager.prototype = {
         deploy: function () {
-            return this._testDeploy();
+            return this._executeDeploy();
         }
     };
 
