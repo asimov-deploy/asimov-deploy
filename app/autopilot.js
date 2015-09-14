@@ -16,6 +16,7 @@
 
 module.exports = function(app, config) {
     var _ = require('underscore');
+    var when = require('when');
     var agentApiClient = require('./services/agent-api-client').create(config);
 
     app.get('/auto-deploy/deployable-unit-sets', app.ensureLoggedIn, function(req, res) {
@@ -25,19 +26,7 @@ module.exports = function(app, config) {
     app.get('/auto-deploy/deployable-unit-sets/:deployableUnitSetId/units', app.ensureLoggedIn, function(req, res) {
         var deployableUnitSet = _.findWhere(config.autopilot.deployableUnitSets, { id: req.params.deployableUnitSetId });
 
-        agentApiClient.getUnitListForAgentGroup(null, function(results) {
-            var agents = [];
-
-            results.forEach(function(item) {
-                agents.push({
-                    name: item.agent.name,
-                    loadBalancerState: item.agent.loadBalancerState,
-                    units: item.units
-                });
-            });
-
-            agents = _.sortBy(agents, 'name');
-
+        when(getUnitListForAgentGroup()).then(function (agents) {
             var agentUnits = _.flatten(_.map(agents, function (agent) {
                 var result = [];
 
@@ -66,40 +55,70 @@ module.exports = function(app, config) {
                 })
                 .value();
 
-            var unitVersions = {};
+            var getUnitVersionPromises = [];
 
             _.each(unitsWithInstances, function (unitWithInstances) {
-                agentApiClient.get(_.first(unitWithInstances.instances), '/versions/' + unitWithInstances.unitName, function(versions) {
-                    var version;
+                getUnitVersionPromises.push(getUnitVersion(_.first(unitWithInstances.instances), unitWithInstances.unitName));
+            });
 
-                    if (config.autopilot.preferredBranch) {
-                        version = _.findWhere(versions, { branch: config.autopilot.preferredBranch });
-                    }
-                    else {
-                        version = _.first(versions);
-                    }
-
-                    unitVersions[unitWithInstances.unitName] = version;
-
-                    if (Object.keys(unitVersions).length === unitsWithInstances.length) {
-                        finish(res, deployableUnitSet, unitsWithInstances, unitVersions);
-                    }
+            when.all(getUnitVersionPromises).then(function (unitVersions) {
+                _.each(unitsWithInstances, function (unitWithInstances) {
+                    unitWithInstances.selectedVersion = _.findWhere(unitVersions, { unitName: unitWithInstances.unitName }).version;
                 });
+
+                var result = [];
+
+                _.each(deployableUnitSet.units, function (unit) {
+                    result.push(_.findWhere(unitsWithInstances, { unitName: unit }));
+                });
+
+                res.json(result);
             });
         });
     });
 
-    var finish = function (res, deployableUnitSet, unitsWithInstances, unitVersions) {
-        _.each(unitsWithInstances, function (unitWithInstances) {
-            unitWithInstances.selectedVersion = unitVersions[unitWithInstances.unitName];
+    var getUnitListForAgentGroup = function () {
+        var deferred = when.defer();
+
+        agentApiClient.getUnitListForAgentGroup(null, function (results) {
+            var agents = [];
+
+            results.forEach(function(item) {
+                agents.push({
+                    name: item.agent.name,
+                    loadBalancerState: item.agent.loadBalancerState,
+                    units: item.units
+                });
+            });
+
+            agents = _.sortBy(agents, 'name');
+
+            deferred.resolve(agents);
         });
 
-        var result = [];
+        return deferred.promise;
+    };
 
-        _.each(deployableUnitSet.units, function (unit) {
-            result.push(_.findWhere(unitsWithInstances, { unitName: unit }));
+    var getUnitVersion = function (agentName, unitName) {
+        var deferred = when.defer();
+
+        agentApiClient.get(agentName, '/versions/' + unitName, function(versions) {
+            var version;
+
+            if (config.autopilot.preferredBranch) {
+                version = _.findWhere(versions, { branch: config.autopilot.preferredBranch });
+            }
+            else {
+                version = _.first(versions);
+            }
+
+            deferred.resolve({
+                agentName: agentName,
+                unitName: unitName,
+                version: version
+            });
         });
 
-        res.json(result);
+        return deferred.promise;
     };
 };
