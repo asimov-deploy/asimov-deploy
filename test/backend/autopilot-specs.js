@@ -69,7 +69,19 @@ describe('Autopilot', function() {
 				},
 
 				getUnitListForAgentGroup: function (groupName, dataCallback) {
-					dataCallback(demoDataGenerator.units);
+					var units = [];
+
+					demoDataGenerator.units.forEach(function (unit) {
+						units.push({
+							agent: {
+								name: unit.name,
+								loadBalancerState: unit.loadBalancerState
+							},
+							units: unit.units
+						});
+					});
+
+					dataCallback(units);
 				}
 			};
 
@@ -135,7 +147,19 @@ describe('Autopilot', function() {
 				},
 
 				getUnitListForAgentGroup: function (groupName, dataCallback) {
-					dataCallback(demoDataGenerator.units);
+					var units = [];
+
+					demoDataGenerator.units.forEach(function (unit) {
+						units.push({
+							agent: {
+								name: unit.name,
+								loadBalancerState: unit.loadBalancerState
+							},
+							units: unit.units
+						});
+					});
+
+					dataCallback(units);
 				}
 			};
 
@@ -201,7 +225,19 @@ describe('Autopilot', function() {
 				},
 
 				getUnitListForAgentGroup: function (groupName, dataCallback) {
-					dataCallback(demoDataGenerator.units);
+					var units = [];
+
+					demoDataGenerator.units.forEach(function (unit) {
+						units.push({
+							agent: {
+								name: unit.name,
+								loadBalancerState: unit.loadBalancerState
+							},
+							units: unit.units
+						});
+					});
+
+					dataCallback(units);
 				}
 			};
 
@@ -266,7 +302,19 @@ describe('Autopilot', function() {
 				},
 
 				getUnitListForAgentGroup: function (groupName, dataCallback) {
-					dataCallback(demoDataGenerator.units);
+					var units = [];
+
+					demoDataGenerator.units.forEach(function (unit) {
+						units.push({
+							agent: {
+								name: unit.name,
+								loadBalancerState: unit.loadBalancerState
+							},
+							units: unit.units
+						});
+					});
+
+					dataCallback(units);
 				}
 			};
 

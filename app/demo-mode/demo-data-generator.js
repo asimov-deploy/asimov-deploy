@@ -164,8 +164,8 @@ var autopilot = {
             "units": [ "api.asimov-demo.com" ],
             "defaultDeployToMaximumAgentsSimultaneously": 2,
             "defaultVerificationIterationCount": 1,
-            "verificationSteps": [ "DisableLoadbalancerForAgents", "Deploy", "Verify", "Prompt", "EnableLoadbalancerForAgents" ],
-            "steps": [ "DisableLoadbalancerForAgents", "Deploy", "Verify", "EnableLoadbalancerForAgents" ]
+            "verificationSteps": [ "DisableLoadBalancerForAgents", "Deploy", "Verify", "Prompt", "EnableLoadBalancerForAgents" ],
+            "steps": [ "DisableLoadBalancerForAgents", "Deploy", "Verify", "EnableLoadBalancerForAgents" ]
         },
         {
             "id": "asimov_demo_com",
@@ -174,8 +174,8 @@ var autopilot = {
             "units": [ "asimov-demo.com" ],
             "defaultDeployToMaximumAgentsSimultaneously": 2,
             "defaultVerificationIterationCount": 1,
-            "verificationSteps": [ "DisableLoadbalancerForAgents", "Deploy", "Prompt", "EnableLoadbalancerForAgents" ],
-            "steps": [ "DisableLoadbalancerForAgents", "Deploy", "EnableLoadbalancerForAgents" ]
+            "verificationSteps": [ "DisableLoadBalancerForAgents", "Deploy", "Prompt", "EnableLoadBalancerForAgents" ],
+            "steps": [ "DisableLoadBalancerForAgents", "Deploy", "EnableLoadBalancerForAgents" ]
         },
         {
             "id": "api_asimov_demo_com_and_asimov_demo_com",
@@ -184,8 +184,8 @@ var autopilot = {
             "units": [ "asimov-demo.com", "api.asimov-demo.com" ],
             "defaultDeployToMaximumAgentsSimultaneously": 2,
             "defaultVerificationIterationCount": 1,
-            "verificationSteps": [ "DisableLoadbalancerForAgents", "Deploy", "Prompt", "EnableLoadbalancerForAgents" ],
-            "steps": [ "DisableLoadbalancerForAgents", "Deploy", "EnableLoadbalancerForAgents" ]
+            "verificationSteps": [ "DisableLoadBalancerForAgents", "Deploy", "Prompt", "EnableLoadBalancerForAgents" ],
+            "steps": [ "DisableLoadBalancerForAgents", "Deploy", "EnableLoadBalancerForAgents" ]
         },
         {
             "id": "backend_member_notification",

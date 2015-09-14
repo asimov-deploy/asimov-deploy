@@ -70,7 +70,7 @@ require('./app/loadbalancer')(app, config);
 require('./app/units')(app, config);
 require('./app/versions')(app, config);
 require('./app/index')(app, config);
-require('./app/autopilot')(app, config);
+require('./app/autopilot').create(app, config);
 
 _.each(config.plugins, function(plugin) {
 	require(plugin.module)(app, plugin, config);
