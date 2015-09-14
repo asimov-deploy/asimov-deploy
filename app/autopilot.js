@@ -14,19 +14,29 @@
  * limitations under the License.
  ******************************************************************************/
 
-module.exports = function(app, config) {
-    var _ = require('underscore');
-    var when = require('when');
-    var agentApiClient = require('./services/agent-api-client').create(config);
+var _ = require('underscore');
+var when = require('when');
 
+var AutopilotController = function (app, config, agentApiClient) {
     app.get('/auto-deploy/deployable-unit-sets', app.ensureLoggedIn, function(req, res) {
-        res.json(config.autopilot.deployableUnitSets);
+        res.json(this.getDeployableUnitSets());
     });
 
     app.get('/auto-deploy/deployable-unit-sets/:deployableUnitSetId/units', app.ensureLoggedIn, function(req, res) {
-        var deployableUnitSet = _.findWhere(config.autopilot.deployableUnitSets, { id: req.params.deployableUnitSetId });
+        when(this.getDeployableUnitSet(req.params.deployableUnitSetId)).then(function (result) {
+            res.json(result);
+        });
+    });
 
-        when(getUnitListForAgentGroup()).then(function (agents) {
+    this.getDeployableUnitSets = function () {
+        return config.autopilot.deployableUnitSets;
+    };
+
+    this.getDeployableUnitSet = function (deployableUnitSetId) {
+        var deferred = when.defer();
+        var deployableUnitSet = _.findWhere(config.autopilot.deployableUnitSets, { id: deployableUnitSetId });
+
+        when(_getUnitListForAgentGroup()).then(function (agents) {
             var agentUnits = _.flatten(_.map(agents, function (agent) {
                 var result = [];
 
@@ -58,7 +68,7 @@ module.exports = function(app, config) {
             var getUnitVersionPromises = [];
 
             _.each(unitsWithInstances, function (unitWithInstances) {
-                getUnitVersionPromises.push(getUnitVersion(_.first(unitWithInstances.instances), unitWithInstances.unitName));
+                getUnitVersionPromises.push(_getUnitVersion(_.first(unitWithInstances.instances), unitWithInstances.unitName));
             });
 
             when.all(getUnitVersionPromises).then(function (unitVersions) {
@@ -72,12 +82,14 @@ module.exports = function(app, config) {
                     result.push(_.findWhere(unitsWithInstances, { unitName: unit }));
                 });
 
-                res.json(result);
+                deferred.resolve(result);
             });
         });
-    });
 
-    var getUnitListForAgentGroup = function () {
+        return deferred.promise;
+    };
+
+    var _getUnitListForAgentGroup = function () {
         var deferred = when.defer();
 
         agentApiClient.getUnitListForAgentGroup(null, function (results) {
@@ -85,8 +97,8 @@ module.exports = function(app, config) {
 
             results.forEach(function(item) {
                 agents.push({
-                    name: item.agent.name,
-                    loadBalancerState: item.agent.loadBalancerState,
+                    name: item.name,
+                    loadBalancerState: item.loadBalancerState,
                     units: item.units
                 });
             });
@@ -99,7 +111,7 @@ module.exports = function(app, config) {
         return deferred.promise;
     };
 
-    var getUnitVersion = function (agentName, unitName) {
+    var _getUnitVersion = function (agentName, unitName) {
         var deferred = when.defer();
 
         agentApiClient.get(agentName, '/versions/' + unitName, function(versions) {
@@ -108,7 +120,8 @@ module.exports = function(app, config) {
             if (config.autopilot.preferredBranch) {
                 version = _.findWhere(versions, { branch: config.autopilot.preferredBranch });
             }
-            else {
+
+            if (!config.autopilot.preferredBranch || !version) {
                 version = _.first(versions);
             }
 
@@ -121,4 +134,14 @@ module.exports = function(app, config) {
 
         return deferred.promise;
     };
+};
+
+module.exports = {
+    create: function(app, config, agentApiClient) {
+        if (!agentApiClient) {
+            agentApiClient = require('./services/agent-api-client').create(config);
+        }
+
+        return new AutopilotController(app, config, agentApiClient);
+    }
 };
