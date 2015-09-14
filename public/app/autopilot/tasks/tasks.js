@@ -19,8 +19,8 @@
 define([
     "require",
     "when/sequence",
-    "./DisableLoadbalancerForAgents",
-    "./EnableLoadbalancerForAgents",
+    "./DisableLoadBalancerForAgents",
+    "./EnableLoadBalancerForAgents",
     "./Deploy",
     "./Prompt",
     "./Verify",
