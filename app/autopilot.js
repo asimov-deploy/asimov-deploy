@@ -18,16 +18,6 @@ var _ = require('underscore');
 var when = require('when');
 
 var AutopilotController = function (app, config, agentApiClient) {
-    app.get('/auto-deploy/deployable-unit-sets', app.ensureLoggedIn, function(req, res) {
-        res.json(this.getDeployableUnitSets());
-    });
-
-    app.get('/auto-deploy/deployable-unit-sets/:deployableUnitSetId/units', app.ensureLoggedIn, function(req, res) {
-        when(this.getDeployableUnitSet(req.params.deployableUnitSetId)).then(function (result) {
-            res.json(result);
-        });
-    });
-
     this.getDeployableUnitSets = function () {
         return config.autopilot.deployableUnitSets;
     };
@@ -97,8 +87,8 @@ var AutopilotController = function (app, config, agentApiClient) {
 
             results.forEach(function(item) {
                 agents.push({
-                    name: item.name,
-                    loadBalancerState: item.loadBalancerState,
+                    name: item.agent.name,
+                    loadBalancerState: item.agent.loadBalancerState,
                     units: item.units
                 });
             });
@@ -142,6 +132,18 @@ module.exports = {
             agentApiClient = require('./services/agent-api-client').create(config);
         }
 
-        return new AutopilotController(app, config, agentApiClient);
+        var autopilotController = new AutopilotController(app, config, agentApiClient);
+
+        app.get('/auto-deploy/deployable-unit-sets', app.ensureLoggedIn, function(req, res) {
+            res.json(autopilotController.getDeployableUnitSets());
+        });
+
+        app.get('/auto-deploy/deployable-unit-sets/:deployableUnitSetId/units', app.ensureLoggedIn, function(req, res) {
+            when(autopilotController.getDeployableUnitSet(req.params.deployableUnitSetId)).then(function (result) {
+                res.json(result);
+            });
+        });
+
+        return autopilotController;
     }
 };
