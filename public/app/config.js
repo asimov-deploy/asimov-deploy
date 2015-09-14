@@ -36,7 +36,7 @@ require.config({
 	},
 
 	packages: [
-		{ name: 'when', location: '../libs/when', main: 'when' }
+		{ name: 'when', location: '../../node_modules/when', main: 'when' }
 	],
 
 	shim: {
