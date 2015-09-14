@@ -1,0 +1,71 @@
+<div class="autopilot-wizard-modal" id="deploy-modal">
+  <div class="modal-header">
+    <button type="button" class="close btn-close">×</button>
+    <h3>Step 3 of 3: Confirm deploy</h3>
+  </div>
+  <div class="modal-body">
+    <div class="deploy-info-wrapper">
+      <div class="input-prepend deploy-read-only-value">
+        <span class="add-on">Deployable unit set</span><br/>
+      </div>
+      <p>{{deployableUnitSet.name}}</p>
+      <div class="input-prepend deploy-read-only-value">
+        <span class="add-on">Deployable units</span><br/>
+      </div>
+      <table class="table version-table table-striped table-bordered deployable-unit-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Instances</th>
+            <th>Version</th>
+          </tr>
+        <thead>
+        <tbody>
+          {{#each deployableUnits}}
+          <tr>
+            <td style="white-space:nowrap;">{{unitName}}</td>
+            <td>{{instances.length}}</td>
+            <td>{{selectedVersion.version}} ({{selectedVersion.branch}})</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <div class="input-prepend deploy-read-only-value">
+        <span class="add-on">Number of verification iterations</span><br/>
+      </div>
+      <p>{{verificationIterationCount}}</p>
+      <div class="input-prepend deploy-read-only-value">
+        <span class="add-on">Maximum number of agents to deploy to simultaneously</span><br/>
+      </div>
+      <p>{{deployToMaximumAgentsSimultaneously}}</p>
+    </div>
+    <div class="deploy-button-wrapper">
+      <button class="btn btn-primary btn-mega btn-deploy pull-right">Deploy</button>
+    </div>
+    <div class="clearfix"></div>
+    <div class="deploy-info-wrapper">
+      <div class="row">
+        <div class="span4">
+          <div class="input-prepend deploy-read-only-value">
+            <span class="add-on">Verification steps</span><br/>
+          </div>
+          <ul>
+            {{#each verificationSteps}}
+            <li title="{{this.description}}">{{this.title}}</li>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="span4">
+          <div class="input-prepend deploy-read-only-value">
+            <span class="add-on">Deployment steps</span><br/>
+          </div>
+          <ul>
+            {{#each steps}}
+            <li title="{{this.description}}">{{this.title}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

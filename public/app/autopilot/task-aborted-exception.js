@@ -14,32 +14,13 @@
 * limitations under the License.
 ******************************************************************************/
 
-require([
-	"jquery",
-	"app",
-	"autopilot/autopilot",
-	"router",
-	"backbone",
-	"socket-con",
-	"livelog/livelog",
-	"bootstrap",
-	"handlebarsHelpers",
-	"current-user",
-	"group-selection"
-],
-function($, app, autopilot, Router, Backbone) {
+define([],
+function() {
+    var TaskAbortedException = function () {
 
-	$(function() {
+    };
 
-		app.initData = JSON.parse($('#init-data').val());
+    TaskAbortedException.prototype = Error.prototype;
 
-		app.on('initialize:after', function() {
-			app.router = new Router();
-			Backbone.history.start();
-		});
-
-
-		app.start();
-	});
-
+    return TaskAbortedException;
 });

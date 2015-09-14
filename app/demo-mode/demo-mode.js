@@ -227,4 +227,55 @@ module.exports = function(app) {
 
 	}, 5000);
 
+
+	app.get('/auto-deploy/deployable-unit-sets', app.ensureLoggedIn, function(req, res) {
+		res.json(demodata.autopilot.deployableUnitSets);
+	});
+
+	app.get('/auto-deploy/deployable-unit-sets/:deployableUnitSetId/units', app.ensureLoggedIn, function(req, res) {
+		var deployableUnitSet = _.findWhere(demodata.autopilot.deployableUnitSets, { id: req.params.deployableUnitSetId });
+
+		var agentUnits = _.flatten(_.map(demodata.units, function (agent) {
+			var result = [];
+
+			_.each(agent.units, function (unit) {
+				result.push({
+					agentName: agent.name,
+					unitName: unit.name
+				});
+			});
+
+			return result;
+		}));
+
+		var unitsWithInstances =
+			_
+			.chain(agentUnits)
+			.groupBy('unitName')
+			.map(function(value, key) {
+				var version = null;
+
+				if (demodata.autopilot.preferredBranch) {
+					version = _.findWhere(demodata.versions[key], { branch: demodata.autopilot.preferredBranch });
+				}
+				else {
+					version = _.first(demodata.versions[key]);
+				}
+
+			    return {
+			        unitName: key,
+			        instances: _.pluck(value, 'agentName'),
+			        selectedVersion: version
+			    };
+			})
+			.value();
+
+		var result = [];
+
+		_.each(deployableUnitSet.units, function (unit) {
+			result.push(_.findWhere(unitsWithInstances, { unitName: unit }));
+		});
+
+		res.json(result);
+	});
 };

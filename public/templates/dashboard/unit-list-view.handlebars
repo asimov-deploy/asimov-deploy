@@ -3,25 +3,36 @@
 		<h1>Dashboard</h1>
 	</div>
 
-	{{#if deployAnnotationsEnabled}}
 	<div class="page-commands">
-		{{#if hasActiveDeploy}}
-		<button class="btn btn-danger btn-cancel-deploy" data-loading-text="Cancelling...">
-			<i class="icon-white icon-stop"></i>
-			Cancel deploy
-		</button>
-		<button class="btn btn-success btn-finish-deploy" data-loading-text="Finishing...">
-			<i class="icon-white icon-stop"></i>
-			Finish deploy
-		</button>
-		{{else}}
-		<button class="btn btn-primary btn-start-deploy" data-loading-text="Starting...">
-			<i class="icon-white icon-play"></i>
-			Init deploy
-		</button>
+		{{#if deployAnnotationsEnabled}}
+			{{#if hasActiveDeploy}}
+			<button class="btn btn-danger btn-cancel-deploy" data-loading-text="Cancelling...">
+				<i class="icon-white icon-stop"></i>
+				Cancel deploy
+			</button>
+			<button class="btn btn-success btn-finish-deploy" data-loading-text="Finishing...">
+				<i class="icon-white icon-stop"></i>
+				Finish deploy
+			</button>
+			{{else}}
+			<button class="btn btn-primary btn-start-deploy" data-loading-text="Starting...">
+				<i class="icon-white icon-play"></i>
+				Init deploy
+			</button>
+			{{/if}}
+		{{/if}}
+
+		{{#if autopilot.enabled}}
+			{{#if autopilot.started}}
+
+			{{else}}
+			<button class="btn btn-primary btn-configure-autopilot">
+				<i class="icon-white icon-plane"></i>
+				Automatic deploy
+			</button>
+			{{/if}}
 		{{/if}}
 	</div>
-	{{/if}}
 
 	<div class="page-controls">
 

@@ -14,32 +14,28 @@
 * limitations under the License.
 ******************************************************************************/
 
-require([
-	"jquery",
-	"app",
-	"autopilot/autopilot",
-	"router",
-	"backbone",
-	"socket-con",
-	"livelog/livelog",
-	"bootstrap",
-	"handlebarsHelpers",
-	"current-user",
-	"group-selection"
+define([
+    "when/parallel",
+    "./Deploy",
+    "./CheckVerifyResult"
 ],
-function($, app, autopilot, Router, Backbone) {
+function(parallel, deployTask, checkVerifyResultTask) {
+    return {
+        execute: function (task) {
+            return function () {
+                var tasks = [];
+                tasks.push(checkVerifyResultTask.execute(task));
+                tasks.push(deployTask.execute(task));
 
-	$(function() {
+                return parallel(tasks);
+            };
+        },
 
-		app.initData = JSON.parse($('#init-data').val());
-
-		app.on('initialize:after', function() {
-			app.router = new Router();
-			Backbone.history.start();
-		});
-
-
-		app.start();
-	});
-
+        getInfo: function () {
+            return {
+                title: 'Deploy and check verify result',
+                description: 'Deploy each unit in set and check result from verify and prompt user if there are failed steps'
+            };
+        }
+    };
 });
