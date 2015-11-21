@@ -17,48 +17,42 @@
 define([
     "jquery",
     "underscore",
-    "marionette",
-    "backbone",
-    "app",
-    "../collections/agent-query-collection"
+    "marionette"
 ],
-function($, _, Marionette, Backbone, app, AgentQueryCollection) {
+function($, _, Marionette) {
 
-    var VersionItemView = Marionette.ItemView.extend({
-        template: "dashboard/version-item-view",
+    var TemplateItemView = Marionette.ItemView.extend({
+        template: "autopilot/deployable-unit-set-item-view",
         tagName: "tr",
 
         events: {
-            "click td": "versionSelected"
+            "click td": "itemSelected"
         },
 
-        versionSelected: function() {
-            this.trigger("versionSelected");
+        itemSelected: function() {
+            this.trigger("itemSelected");
         }
 
     });
 
-	return Marionette.CompositeView.extend({
-        itemView: VersionItemView,
-        template: "dashboard/version-dialog-view",
+    return Marionette.CompositeView.extend({
+        itemView: TemplateItemView,
+        template: "autopilot/deployable-unit-set-dialog-view",
         itemViewContainer: "tbody",
 
         el: $("#asimov-modal"),
 
         events: {
-            "click .btn-close": "close"
+            "click .btn-close": "close",
+            "click .btn-danger": "close"
         },
 
-        initialize: function(options) {
-            this.on("itemview:versionSelected", this.versionSelected, this);
+        initialize: function() {
+            this.on("itemview:itemSelected", this.itemSelected, this);
+        },
 
-            this.collection = new AgentQueryCollection({
-                agentUrl: "/versions/:unitName",
-                agentName: options.agentName,
-                unitName: options.unitName
-            });
-
-            this.collection.fetch();
+        itemSelected: function(view) {
+            this.trigger("deployableUnitSetSelected", view.model.get('id'));
         },
 
         show: function() {
@@ -66,16 +60,10 @@ function($, _, Marionette, Backbone, app, AgentQueryCollection) {
             $(".modal").modal("show");
         },
 
-        versionSelected: function(view) {
-            this.trigger("versionSelected", view.model.get('id'), view.model.get('version'), view.model.get('branch'));
-        },
-
         close: function() {
             $(".modal").modal("hide");
             this.trigger("closed");
             this.undelegateEvents();
         }
-
     });
-
 });

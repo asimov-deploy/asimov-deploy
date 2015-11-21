@@ -1,0 +1,33 @@
+<div class="autopilot-wizard-modal">
+  <form>
+    <div class="modal-header">
+      <button type="button" class="close btn-close">×</button>
+      <h3>Step 2 of 3: Configure deploy</h3>
+      <p>Deployable unit set: {{name}}</p>
+    </div>
+    <div class="modal-body">
+      <table class="table version-table table-striped table-bordered deployable-unit-table">
+        <thead>
+          <tr>
+            <th>Deployable unit</th>
+            <th>Instances</th>
+            <th>Version</th>
+          </tr>
+        <thead>
+        <tbody>
+        </tbody>
+      </table>
+      <section class="text-input">
+        <h5>Number of verification iterations</h5>
+        <input type="text" id="verificationIterationCount" value="{{defaultVerificationIterationCount}}" />
+      </section>
+      <section class="text-input">
+        <h5>Maximum number of agents to deploy to simultaneously</h5>
+        <input type="text" id="deployToMaximumAgentsSimultaneously" value="{{defaultDeployToMaximumAgentsSimultaneously}}" />
+      </section>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger">Cancel</button> <button type="submit" class="btn btn-submit btn-primary">Next step</button>
+    </div>
+  </form>
+</div>

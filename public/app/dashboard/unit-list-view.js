@@ -48,7 +48,8 @@ define([
 				"change .search-query": "filterUpdated",
 				"click .btn-start-deploy": "startDeploy",
 				"click .btn-finish-deploy": "finishDeploy",
-				"click .btn-cancel-deploy": "cancelDeploy"
+				"click .btn-cancel-deploy": "cancelDeploy",
+				"click .btn-configure-autopilot": "configureAutopilot"
 			},
 
 			initialize: function(options) {
@@ -61,6 +62,14 @@ define([
 				if (this.collection.length > 0) {
 					this.applyFilter();
 				}
+
+				app.vent.on('autopilot:deploy-started', function () {
+					this.render();
+				}, this);
+
+				app.vent.on('autopilot:deploy-ended', function () {
+					this.render();
+				}, this);
 			},
 
 			initDeployMode: function() {
@@ -100,6 +109,10 @@ define([
 				new DeployLifecycleCancelCommand().save();
 			},
 
+			configureAutopilot: function() {
+				app.vent.trigger("autopilot:configure");
+			},
+
 			toggleDeployButtons: function(hasActiveDeploy) {
 				this.hasActiveDeploy = hasActiveDeploy;
 				this.render();
@@ -133,7 +146,11 @@ define([
 				return {
 					filterText: this.filterText,
 					hasActiveDeploy: this.hasActiveDeploy,
-					deployAnnotationsEnabled: this.deployAnnotations
+					deployAnnotationsEnabled: this.deployAnnotations,
+					autopilot: {
+						enabled: app.autopilot.enabled,
+						started: app.autopilot.started
+					}
 				};
 			},
 

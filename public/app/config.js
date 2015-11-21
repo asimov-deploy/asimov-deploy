@@ -35,6 +35,10 @@ require.config({
 		'socket.io': '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
 	},
 
+	packages: [
+		{ name: 'when', location: '../../node_modules/when', main: 'when' }
+	],
+
 	shim: {
 		backbone: {
 			deps: ["underscore", "jquery"],
