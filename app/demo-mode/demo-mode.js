@@ -76,7 +76,7 @@ module.exports = function(app) {
 		emitLog(agent.name, enable ? "Load balancer state enabled (accessible)" : "Load balancer state disabled (inaccessible)");
 
 		agent.loadBalancerState.enabled = enable;
-		agent.loadBalancerState.connectionCount = enable ? Math.floor((Math.random()*20)) : 0;
+		agent.loadBalancerState.connectionCount = enable ? Math.floor((Math.random()*20)) : 1;
 
 		emitAgentEvent({
 			agentName: agent.name,
@@ -212,6 +212,12 @@ module.exports = function(app) {
 
 		_.each(demodata.agents, function (agent) {
 			if (!agent.loadBalancerState.enabled) {
+                agent.loadBalancerState.connectionCount = 0;
+                emitAgentEvent({
+                    agentName: agent.name,
+                    state: agent.loadBalancerState,
+                    eventName: "loadBalancerStateChanged"
+                });
 				return;
 			}
 
