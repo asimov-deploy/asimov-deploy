@@ -41,11 +41,12 @@ module.exports = function(app, config) {
 	function handleNewLoadBalancerState(agent, newState) {
 		var prevState = agent.loadBalancerState;
 		agent.loadBalancerState = newState;
-		agent.showAsChanging = !newState.enabled && newState.connectionCount > 0;
 
 		if (!prevState || !newState) {
 			return;
 		}
+
+        agent.showAsChanging = !newState.enabled && newState.connectionCount > 0;
 
 		var stateDiff = newState.enabled !== prevState.enabled;
 		var connDiff = Math.abs(newState.connectionCount - prevState.connectionCount);
