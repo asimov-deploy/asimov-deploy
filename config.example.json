@@ -31,5 +31,9 @@
         "autopilot": {
             "enabled" : true
         }
+    },
+
+    "socket-io": {
+    	"logLevel": 2
     }
 }
