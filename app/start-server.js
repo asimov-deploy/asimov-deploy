@@ -37,6 +37,10 @@ module.exports = function(app, http, config) {
 				io.set('heartbeat timeout', 30);
 				io.set('heartbeat interval', 35);
 				io.set("polling duration", 40);
+
+				if (config['socket-io'] && config['socket-io'].logLevel) {
+					io.set('log level', config['socket-io'].logLevel);
+				}
 			});
 		}
 
