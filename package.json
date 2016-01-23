@@ -41,7 +41,6 @@
     "grunt-notify": "~0.2.3",
     "mocha": "1.20.0",
     "should": "*",
-    "should-promised": "^0.3.1",
     "sinon": "~1.7.3"
   },
   "engines": {

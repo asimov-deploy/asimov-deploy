@@ -1,5 +1,4 @@
 require('should');
-require('should-promised');
 
 describe('Autopilot', function() {
 	describe('when requesting deployable unit sets', function() {
