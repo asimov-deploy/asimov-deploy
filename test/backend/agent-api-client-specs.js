@@ -62,7 +62,7 @@ describe('AgentApiClient', function(){
 
 			var restify = {
 				createJsonClient: function() {
-					return { 
+					return {
 						get: function(url, cb) {
 							cb();
 						}
