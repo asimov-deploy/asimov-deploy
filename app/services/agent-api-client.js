@@ -51,7 +51,7 @@ var AgentApiClient = function(config, restify) {
 			}
 
 			this.get(agent.name, '/units/list', function(units) {
-				result.push({agent: agent, units: units});
+				result.push({agent: agent, units: units || []});
 				done();
 			});
 
