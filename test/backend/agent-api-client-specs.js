@@ -46,4 +46,46 @@ describe('AgentApiClient', function(){
 
 	});
 
+	describe('when agent has empty unit list', function() {
+		var unitListForAgentGroup = [];
+		var fakeAgent = { group: "groupName" };
+
+		before(function() {
+			var fakeConfig = {
+				agents: [
+					fakeAgent
+				],
+				getAgent: function() {
+					return { url: 'agentUrl', apiKey: '12321313213' };
+				}
+			};
+
+			var restify = {
+				createJsonClient: function() {
+					return {
+						get: function(url, cb) {
+							cb();
+						}
+					};
+				}
+			};
+
+			var apiClient = require("../../app/services/agent-api-client").create(fakeConfig, restify);
+
+			apiClient.getUnitListForAgentGroup("groupName", function(results) {
+				unitListForAgentGroup = results;
+			});
+		});
+
+		it('should return empty array (instead of undefined)', function() {
+			unitListForAgentGroup.should.deepEqual([
+				{
+					agent: fakeAgent,
+					units: []
+				}
+			]);
+		});
+
+	});
+
 });
