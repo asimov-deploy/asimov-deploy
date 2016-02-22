@@ -21,8 +21,6 @@ module.exports = function(app, config) {
 	app.get("/units/list", app.ensureLoggedIn, function(req, res) {
 		var group = req.query.group;
 		var agentsResp = [];
-//
-
 		agentApiClient.getUnitListForAgentGroup(group, function(results) {
 
 			results.forEach(function(item) {
@@ -39,10 +37,7 @@ module.exports = function(app, config) {
 	});
 
 	app.get("/units/all", app.ensureLoggedIn, function(req, res) {
-		var group = req.query.group;
-		var agentsResp = [];
 		res.json(config.agents);
-
 	});
 
 };
