@@ -19,10 +19,11 @@ define([
 	"underscore",
 	"backbone",
 	"marionette",
+	"./../app",
 	"./version-dialog-view",
 	"./confirm-deploy-view"
 ],
-function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
+function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView) {
 
 	var AgentActionCommand = Backbone.Model.extend({
 		url: "/agent/action"
@@ -71,6 +72,9 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 		},
 
 		selectVersion: function () {
+			if(!this.verifyDeployIsInProgress()){
+				return;
+			}
 			var instance = this.instances.first();
 			var versionView = new VersionDialogView({ agentName: instance.get('agentName'), unitName: instance.get('unitName') });
 			versionView.on("versionSelected", this.versionSelected, this);
@@ -98,6 +102,9 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 
 		unitAction: function(e) {
 			e.preventDefault();
+			if(!this.verifyDeployIsInProgress()){
+				return;
+			}
 
 			var selectedInstances = this.instances.where({selected: true});
 			var actionName = $(e.currentTarget).data("action-name");
@@ -126,7 +133,20 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 					action: currentState.enabled ? "disable"  : "enable"
 				}).save();
 			});
+		},
+
+		verifyDeployIsInProgress: function(){
+			var deployStatus = app.reqres.request('deploy:get-status');
+			if(deployStatus.isDeploying){
+				return true;
+			}
+			else {
+				app.vent.trigger('deploy:start-requested');
+				return false;
+			}
 		}
+
+
 	});
 
 });

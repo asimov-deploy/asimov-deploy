@@ -70,6 +70,33 @@ define([
 				app.vent.on('autopilot:deploy-ended', function () {
 					this.render();
 				}, this);
+
+				app.vent.on('deploy:started', function(){
+					this.hasActiveDeploy = true;
+				},this);
+
+				app.vent.on('deploy:finished', function(){
+					this.hasActiveDeploy = false;
+				},this);
+
+				app.vent.on('deploy:canceled', function(){
+					this.hasActiveDeploy = false;
+				},this);
+
+				app.reqres.setHandler("deploy:get-status", function(){
+					if(this.deployAnnotationsEnabled === false){
+						return {
+							isDeploying: true
+						};
+					}
+					return {
+						isDeploying: this.hasActiveDeploy
+					};
+				},this);
+
+				app.vent.on('deploy:start-requested', function(){
+					this.startDeploy();
+				},this);
 			},
 
 			initDeployMode: function() {
@@ -97,16 +124,19 @@ define([
 				var command = new DeployLifecycleStartCommand();
 				command.set(data);
 				command.save();
+				app.vent.trigger('deploy:started');
 			},
 
 			finishDeploy: function() {
 				this.toggleDeployButtons(false);
 				new DeployLifecycleCompleteCommand().save();
+				app.vent.trigger('deploy:finished');
 			},
 
 			cancelDeploy: function() {
 				this.toggleDeployButtons(false);
 				new DeployLifecycleCancelCommand().save();
+				app.vent.trigger('deploy:canceled');
 			},
 
 			configureAutopilot: function() {
