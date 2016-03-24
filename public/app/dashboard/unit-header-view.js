@@ -21,9 +21,10 @@ define([
 	"marionette",
 	"./../app",
 	"./version-dialog-view",
-	"./confirm-deploy-view"
+	"./confirm-deploy-view",
+	"../deploy/ensure-active-deploy"
 ],
-function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView) {
+function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView, ensureActiveDeploy) {
 
 	var AgentActionCommand = Backbone.Model.extend({
 		url: "/agent/action"
@@ -71,15 +72,12 @@ function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView) 
 			});
 		},
 
-		selectVersion: function () {
-			if(!this.verifyDeployIsInProgress()){
-				return;
-			}
+		selectVersion: ensureActiveDeploy(function () {
 			var instance = this.instances.first();
 			var versionView = new VersionDialogView({ agentName: instance.get('agentName'), unitName: instance.get('unitName') });
 			versionView.on("versionSelected", this.versionSelected, this);
 			versionView.show();
-		},
+		}),
 
 		versionSelected: function(versionId, version, branch) {
 			var selectedInstances = this.instances.where({selected: true});
@@ -100,11 +98,8 @@ function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView) 
 			confirmView.show();
 		},
 
-		unitAction: function(e) {
+		unitAction: ensureActiveDeploy(function(e) {
 			e.preventDefault();
-			if(!this.verifyDeployIsInProgress()){
-				return;
-			}
 
 			var selectedInstances = this.instances.where({selected: true});
 			var actionName = $(e.currentTarget).data("action-name");
@@ -120,7 +115,7 @@ function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView) 
 					actionName: actionName
 				}).save();
 			});
-		},
+		}),
 
 		toggleLoadBalancer: function() {
 			var selectedInstances = this.instances.where({selected: true});
@@ -133,20 +128,6 @@ function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView) 
 					action: currentState.enabled ? "disable"  : "enable"
 				}).save();
 			});
-		},
-
-		verifyDeployIsInProgress: function(){
-			var deployStatus = app.reqres.request('deploy:get-status');
-			if(deployStatus.isDeploying){
-				return true;
-			}
-			else {
-				app.vent.trigger('deploy:start-requested');
-				return false;
-			}
 		}
-
-
 	});
-
 });

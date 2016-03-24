@@ -71,8 +71,16 @@ define([
 					this.render();
 				}, this);
 
+				app.vent.on('deploy:start-canceled',function(){
+					this.startDeployCallback = null;
+				});
+
 				app.vent.on('deploy:started', function(){
 					this.hasActiveDeploy = true;
+					if(this.startDeployCallback){
+						this.startDeployCallback();
+						this.startDeployCallback = null;
+					}
 				},this);
 
 				app.vent.on('deploy:finished', function(){
@@ -83,19 +91,17 @@ define([
 					this.hasActiveDeploy = false;
 				},this);
 
-				app.reqres.setHandler("deploy:get-status", function(){
+				app.commands.setHandler('deploy:start-with-callback', function(args){
 					if(this.deployAnnotationsEnabled === false){
-						return {
-							isDeploying: true
-						};
+						args.callback();
 					}
-					return {
-						isDeploying: this.hasActiveDeploy
-					};
-				},this);
-
-				app.vent.on('deploy:start-requested', function(){
-					this.startDeploy();
+					else if(this.hasActiveDeploy){
+						args.callback();
+					}
+					else {
+						this.startDeployCallback = args.callback;
+						this.startDeploy();
+					}
 				},this);
 			},
 
@@ -116,7 +122,12 @@ define([
 			startDeploy: function() {
 				var dlc = new DeployLifecycle();
 				dlc.on('submit', this.deployStarted, this);
+				dlc.on('close', this.deployStartCanceled, this);
 				dlc.show();
+			},
+
+			deployStartCanceled: function(){
+				app.vent.trigger('deploy:start-canceled');
 			},
 
 			deployStarted: function(data) {
