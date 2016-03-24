@@ -19,11 +19,12 @@ define([
 		"marionette",
 		"./unit-instance-list-view",
 		"./deploy-lifecycle-view",
+		"../deploy/ensure-active-deploy",
 		"./../app",
 		"backbone",
 		"jquery.cookie"
 	],
-	function($, Marionette, UnitInstanceListView, DeployLifecycle, app, Backbone) {
+	function($, Marionette, UnitInstanceListView, DeployLifecycle, ensureActiveDeploy, app, Backbone) {
 
 		var DeployLifecycleStartCommand = Backbone.Model.extend({
 			url: "/deploy-lifecycle/start"
@@ -150,9 +151,9 @@ define([
 				app.vent.trigger('deploy:canceled');
 			},
 
-			configureAutopilot: function() {
+			configureAutopilot: ensureActiveDeploy(function() {
 				app.vent.trigger("autopilot:configure");
-			},
+			}),
 
 			toggleDeployButtons: function(hasActiveDeploy) {
 				this.hasActiveDeploy = hasActiveDeploy;
@@ -214,5 +215,4 @@ define([
 			}
 
 		});
-
 	});
