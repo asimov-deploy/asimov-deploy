@@ -19,7 +19,7 @@ define([
 		"marionette",
 		"./unit-instance-list-view",
 		"./deploy-lifecycle-view",
-		"../deploy/ensure-active-deploy",
+		"../deploys/ensure-active-deploy",
 		"./../app",
 		"backbone",
 		"jquery.cookie"
