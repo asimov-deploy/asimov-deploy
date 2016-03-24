@@ -21,7 +21,7 @@ define([
 	"marionette",
 	"./../app",
 	"./version-dialog-view",
-	"./confirm-deploy-view",
+	"../deploy/confirm-deploy-view",
 	"../deploy/ensure-active-deploy"
 ],
 function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView, ensureActiveDeploy) {

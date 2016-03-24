@@ -17,12 +17,11 @@
 define([
 	"jquery",
 	"backbone",
-	"./confirm-deploy-view",
 	"./verify-log-view",
 	"./version-dialog-view",
 	"app"
 ],
-function($, Backbone, ConfirmDeployView, VerifyLogView, VersionDialogView, app) {
+function($, Backbone, VerifyLogView, VersionDialogView, app) {
 
 	return Backbone.Marionette.ItemView.extend({
 		template: "dashboard/unit-instance-view",
