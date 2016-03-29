@@ -58,9 +58,6 @@ describe('AgentApiClient', function(){
 				],
 				getAgent: function() {
 					return { url: 'agentUrl', apiKey: '12321313213' };
-				},
-				getAgentByGroup: function() {
-					return { url: 'agentUrl', apiKey: '12321313213' };
 				}
 			};
 
