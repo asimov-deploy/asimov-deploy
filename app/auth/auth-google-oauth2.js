@@ -40,7 +40,7 @@ module.exports = function(app, passport, config) {
 	    clientID: clientID,
 	    clientSecret: clientSecret,
 	    callbackURL: callbackURL,
-	    scope: 'email'
+	    scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
 	},
 
 		function(accessToken, refreshToken, profile, done) {
