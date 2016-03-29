@@ -49,6 +49,7 @@ describe('AgentApiClient', function(){
 	describe('when agent has empty unit list', function() {
 		var unitListForAgentGroup = [];
 		var fakeAgent = { group: "groupName" };
+        var expectedUnitList = [];
 
 		before(function() {
 			var fakeConfig = {
@@ -57,6 +58,9 @@ describe('AgentApiClient', function(){
 				],
 				getAgent: function() {
 					return { url: 'agentUrl', apiKey: '12321313213' };
+				},
+				getAgentByGroup: function() {
+					return { url: 'agentUrl', apiKey: '12321313213' };
 				}
 			};
 
@@ -64,7 +68,7 @@ describe('AgentApiClient', function(){
 				createJsonClient: function() {
 					return {
 						get: function(url, cb) {
-							cb();
+							cb(null,null,null,expectedUnitList);
 						}
 					};
 				}

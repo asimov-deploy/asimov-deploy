@@ -58,6 +58,10 @@ Config.prototype.getAgent = function(name) {
 	return _.find(this.agents, function(agent) { return agent.name === name; });
 };
 
+Config.prototype.getAgentByGroup = function(name, group) {
+	return _.find(this.agents, function(agent) { return agent.name === name && agent.group === group; });
+};
+
 Config.prototype.getAgentList = function() {
 	var agentsResp = [];
 

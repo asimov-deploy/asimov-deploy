@@ -25,7 +25,6 @@ var AgentApiClient = function(config, restify) {
 
 		var agent =  config.getAgent(agentName);
 		var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
-
 		client.get(url, function(err, req, _, data) {
 			if (err) {
 				agent.dead = true;
@@ -49,9 +48,8 @@ var AgentApiClient = function(config, restify) {
 				done();
 				return;
 			}
-
-			this.get(agent.name, '/units/list', function(units) {
-				result.push({agent: agent, units: units || []});
+			this.get(agent.name, '/units/list/' + encodeURIComponent(group), function(units) {
+				result.push({agent: agent, units: units});
 				done();
 			});
 

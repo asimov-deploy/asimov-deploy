@@ -21,13 +21,12 @@ module.exports = function(app, config) {
 	app.get("/units/list", app.ensureLoggedIn, function(req, res) {
 		var group = req.query.group;
 		var agentsResp = [];
-
-
 		agentApiClient.getUnitListForAgentGroup(group, function(results) {
 
 			results.forEach(function(item) {
 				agentsResp.push({
 					name: item.agent.name,
+					group: group,
 					loadBalancerState: item.agent.loadBalancerState,
 					units: item.units
 				});
@@ -35,6 +34,10 @@ module.exports = function(app, config) {
 			res.json(agentsResp);
 		});
 
+	});
+
+	app.get("/units/all", app.ensureLoggedIn, function(req, res) {
+		res.json(config.agents);
 	});
 
 };

@@ -46,8 +46,6 @@ module.exports = function(app, config) {
 			return;
 		}
 
-        agent.showAsChanging = !newState.enabled && newState.connectionCount > 0;
-
 		var stateDiff = newState.enabled !== prevState.enabled;
 		var connDiff = Math.abs(newState.connectionCount - prevState.connectionCount);
 		if (stateDiff || connDiff > 0) {
@@ -59,11 +57,14 @@ module.exports = function(app, config) {
 		}
 	}
 
-	app.post("/agent/heartbeat", function(req, res) {
+	app.post("/agent/heartbeat", function(req,res) {
 
-		var agent = config.getAgent(req.body.name);
+		var agent = config.getAgentByGroup(req.body.name, req.body.group);
 		if (!agent) {
-			agent = { name: req.body.name };
+			agent = {
+                name: req.body.name,
+                group:  req.body.group
+            };
 			config.agents.push(agent);
 		}
 
@@ -73,11 +74,10 @@ module.exports = function(app, config) {
 		agent.dead = false;
 		agent.version = req.body.version;
 		agent.configVersion = req.body.configVersion;
-		agent.group = req.body.group;
 
 		handleNewLoadBalancerState(agent, req.body.loadBalancerState);
-
 		res.json('ok');
+
 	});
 
 	app.post("/agent/event", function(req, res) {
