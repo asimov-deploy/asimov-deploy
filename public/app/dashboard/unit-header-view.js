@@ -19,10 +19,12 @@ define([
 	"underscore",
 	"backbone",
 	"marionette",
+	"./../app",
 	"./version-dialog-view",
-	"./confirm-deploy-view"
+	"../deploys/confirm-deploy-view",
+	"../deploys/ensure-active-deploy"
 ],
-function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
+function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView, ensureActiveDeploy) {
 
 	var AgentActionCommand = Backbone.Model.extend({
 		url: "/agent/action"
@@ -70,12 +72,12 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 			});
 		},
 
-		selectVersion: function () {
+		selectVersion: ensureActiveDeploy(function () {
 			var instance = this.instances.first();
 			var versionView = new VersionDialogView({ agentName: instance.get('agentName'), unitName: instance.get('unitName') });
 			versionView.on("versionSelected", this.versionSelected, this);
 			versionView.show();
-		},
+		}),
 
 		versionSelected: function(versionId, version, branch) {
 			var selectedInstances = this.instances.where({selected: true});
@@ -96,7 +98,7 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 			confirmView.show();
 		},
 
-		unitAction: function(e) {
+		unitAction: ensureActiveDeploy(function(e) {
 			e.preventDefault();
 
 			var selectedInstances = this.instances.where({selected: true});
@@ -113,7 +115,7 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 					actionName: actionName
 				}).save();
 			});
-		},
+		}),
 
 		toggleLoadBalancer: function() {
 			var selectedInstances = this.instances.where({selected: true});
@@ -128,5 +130,4 @@ function($, _, Backbone, Marionette, VersionDialogView, ConfirmDeployView) {
 			});
 		}
 	});
-
 });

@@ -19,11 +19,12 @@ define([
 		"marionette",
 		"./unit-instance-list-view",
 		"./deploy-lifecycle-view",
+		"../deploys/ensure-active-deploy",
 		"./../app",
 		"backbone",
 		"jquery.cookie"
 	],
-	function($, Marionette, UnitInstanceListView, DeployLifecycle, app, Backbone) {
+	function($, Marionette, UnitInstanceListView, DeployLifecycle, ensureActiveDeploy, app, Backbone) {
 
 		var DeployLifecycleStartCommand = Backbone.Model.extend({
 			url: "/deploy-lifecycle/start"
@@ -70,6 +71,39 @@ define([
 				app.vent.on('autopilot:deploy-ended', function () {
 					this.render();
 				}, this);
+
+				app.vent.on('deploy:start-canceled',function(){
+					this.startDeployCallback = null;
+				});
+
+				app.vent.on('deploy:started', function(){
+					this.hasActiveDeploy = true;
+					if(this.startDeployCallback){
+						this.startDeployCallback();
+						this.startDeployCallback = null;
+					}
+				},this);
+
+				app.vent.on('deploy:finished', function(){
+					this.hasActiveDeploy = false;
+				},this);
+
+				app.vent.on('deploy:canceled', function(){
+					this.hasActiveDeploy = false;
+				},this);
+
+				app.commands.setHandler('deploy:start-with-callback', function(args){
+					if(this.deployAnnotationsEnabled === false){
+						args.callback();
+					}
+					else if(this.hasActiveDeploy){
+						args.callback();
+					}
+					else {
+						this.startDeployCallback = args.callback;
+						this.startDeploy();
+					}
+				},this);
 			},
 
 			initDeployMode: function() {
@@ -89,7 +123,12 @@ define([
 			startDeploy: function() {
 				var dlc = new DeployLifecycle();
 				dlc.on('submit', this.deployStarted, this);
+				dlc.on('close', this.deployStartCanceled, this);
 				dlc.show();
+			},
+
+			deployStartCanceled: function(){
+				app.vent.trigger('deploy:start-canceled');
 			},
 
 			deployStarted: function(data) {
@@ -97,21 +136,24 @@ define([
 				var command = new DeployLifecycleStartCommand();
 				command.set(data);
 				command.save();
+				app.vent.trigger('deploy:started');
 			},
 
 			finishDeploy: function() {
 				this.toggleDeployButtons(false);
 				new DeployLifecycleCompleteCommand().save();
+				app.vent.trigger('deploy:finished');
 			},
 
 			cancelDeploy: function() {
 				this.toggleDeployButtons(false);
 				new DeployLifecycleCancelCommand().save();
+				app.vent.trigger('deploy:canceled');
 			},
 
-			configureAutopilot: function() {
+			configureAutopilot: ensureActiveDeploy(function() {
 				app.vent.trigger("autopilot:configure");
-			},
+			}),
 
 			toggleDeployButtons: function(hasActiveDeploy) {
 				this.hasActiveDeploy = hasActiveDeploy;
@@ -173,5 +215,4 @@ define([
 			}
 
 		});
-
 	});

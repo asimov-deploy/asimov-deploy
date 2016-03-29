@@ -15,43 +15,18 @@
 ******************************************************************************/
 
 define([
-	"jquery",
-	"underscore",
-	"marionette"
+	"app"
 ],
-function($, _, Marionette) {
+function(app) {
+	return function ensureActiveDeploy(callback){
+		return function(){
+			var _this = this,
+				_arguments = arguments;
+			app.commands.execute('deploy:start-with-callback',{callback: function(){
+				callback.apply(_this,_arguments);
+			}});
 
-	return Marionette.ItemView.extend({
-		el: $("#asimov-modal"),
-		template: "dashboard/deploy-lifecycle-view",
-		events: {
-			"click .btn-close": "close",
-			"submit" : "submit"
-		},
-
-		initialize: function() {
-			_.bindAll(this, "show");
-		},
-
-		submit: function (e) {
-			e.preventDefault();
-			var form = $(e.target);
-			var title = form.find('#title').val();
-			var body = form.find('#body').val();
-
-			this.close();
-			this.trigger('submit', { description:body, title:title });
-		},
-
-		show: function() {
-			this.render();
-			$(".modal").modal("show");
-		},
-
-		close: function() {
-			$(".modal").modal("hide");
-			this.undelegateEvents();
-		}
-	});
+		};
+	};
 
 });
