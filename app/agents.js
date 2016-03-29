@@ -61,7 +61,10 @@ module.exports = function(app, config) {
 
 		var agent = config.getAgentByGroup(req.body.name, req.body.group);
 		if (!agent) {
-			agent = { name: req.body.name, group:  req.body.group};
+			agent = {
+                name: req.body.name,
+                group:  req.body.group
+            };
 			config.agents.push(agent);
 		}
 
