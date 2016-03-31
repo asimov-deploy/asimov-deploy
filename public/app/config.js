@@ -32,7 +32,7 @@ require.config({
 		"backbone.wreqr": "../libs/backbone.wreqr",
 		"jquery.cookie": "../libs/jquery.cookie",
 
-		'socket.io': '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
+		'socket.io': '../../node_modules/socket.io-client/dist/socket.io'
 	},
 
 	packages: [
