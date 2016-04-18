@@ -60,7 +60,7 @@ app.use('/libs',	express.static(__dirname + '/dist/debug'));
 app.use('/libs',	express.static(__dirname + '/public/libs'));
 
 if (config['enable-demo']) {
-	require('./app/demo-mode/demo-mode')(app);
+	require('./app/demo-mode/demo-mode')(app, config);
 }
 
 require('./app/agents')(app, config);
