@@ -45,7 +45,10 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
     });
 
     autopilot.Models.DeployableUnit = Backbone.Model.extend({
-        idAttribute: "unitName"
+        idAttribute: "unitName",
+        defaults: {
+            "selected":  true
+        }
     });
 
     autopilot.Collections.DeployableUnitCollection = Backbone.Collection.extend({
@@ -121,6 +124,12 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
         showConfigurationDialog();
     };
 
+    var toggleUnitSelection = function (payload) {
+        var model = autopilot.deployableUnits.get(payload.unitName);
+        var selected = model.get('selected');
+        model.set('selected', !selected);
+    };
+
     var changeVersion = function (payload) {
         changeVersionForUnitName = payload.unitName;
         configurationDialogView.close();
@@ -153,6 +162,7 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
             collection: autopilot.deployableUnits
         });
 
+        configurationDialogView.on('toggleUnit', toggleUnitSelection, this);
         configurationDialogView.on('changeVersion', changeVersion, this);
         configurationDialogView.on('submit', configurationStepCompleted, this);
         configurationDialogView.show();
@@ -168,19 +178,23 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
             return tasks.getTaskInformation(taskName);
         });
 
+        var selectedDeployableUnits = new autopilot.Collections.DeployableUnitCollection(autopilot.deployableUnits.where({selected: true})).toJSON();
+
+        if (selectedDeployableUnits.length === 0) {
+            return;
+        }
+
         var autopilotConfiguration = new Backbone.Model({
             deployableUnitSet: autopilot.selectedDeployableUnitSet.toJSON(),
-            deployableUnits: autopilot.deployableUnits.toJSON(),
+            deployableUnits: selectedDeployableUnits,
             deployToMaximumAgentsSimultaneously: payload.deployToMaximumAgentsSimultaneously,
             verificationIterationCount: payload.verificationIterationCount,
             verificationSteps: verificationSteps,
             steps: steps
         });
 
-        var deployableUnits = autopilot.deployableUnits.toJSON();
-
-        if (deployableUnits.length > 1) {
-            var deployableUnitsOfInstances = _.pluck(deployableUnits, 'instances');
+        if (selectedDeployableUnits.length > 1) {
+            var deployableUnitsOfInstances = _.pluck(selectedDeployableUnits, 'instances');
 
             if (!allArraysAlike(deployableUnitsOfInstances)) {
                 console.log('The number of instances between deployable units must be the same!');
