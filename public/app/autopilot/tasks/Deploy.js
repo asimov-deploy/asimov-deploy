@@ -40,6 +40,7 @@ function(_, when, sequence, Backbone, app, TaskAbortedException) {
     };
 
     var deployUnitForAgent = function(agentName, unitName, versionId) {
+        var retries = 0;
         var deferred = when.defer();
 
         new DeployCommand({
@@ -51,6 +52,7 @@ function(_, when, sequence, Backbone, app, TaskAbortedException) {
         var dispose = function () {
             app.vent.off('agent:event:deployCompleted', deployCompleted);
             app.vent.off('agent:event:deployFailed', deployFailed);
+            app.vent.off('autopilot:continue-deploy', continueDeploy);
             app.vent.off('autopilot:abort-deploy', abort);
         };
 
@@ -69,13 +71,26 @@ function(_, when, sequence, Backbone, app, TaskAbortedException) {
         var deployFailed = function (data) {
             if (data.agentName === agentName &&
                 data.unitName === unitName) {
-                dispose();
-                deferred.reject({
-                    agentName: agentName,
-                    unitName: unitName,
-                    versionId: versionId
-                });
+
+                if (retries < 3) {
+                    retries++;
+                    new DeployCommand({
+                        agentName: agentName,
+                        unitName: unitName,
+                        versionId: versionId
+                    }).save();
+                }
+                else {
+                    if (!app.autopilot.paused) {
+                        app.vent.trigger('autopilot:pause-deploy');
+                    }
+                }
             }
+        };
+
+        var continueDeploy = function () {
+            dispose();
+            deferred.resolve();
         };
 
         var abort = function () {
@@ -85,6 +100,7 @@ function(_, when, sequence, Backbone, app, TaskAbortedException) {
 
         app.vent.on('agent:event:deployCompleted', deployCompleted);
         app.vent.on('agent:event:deployFailed', deployFailed);
+        app.vent.on('autopilot:continue-deploy', continueDeploy);
         app.vent.on('autopilot:abort-deploy', abort);
 
         return deferred.promise;
