@@ -225,6 +225,10 @@ module.exports = function(app, config) {
 
 			agent.loadBalancerState.connectionCount += Math.floor((Math.random()*40)) - 20;
 
+			if (agent.loadBalancerState.connectionCount <= 0) {
+				agent.loadBalancerState.connectionCount = agent.loadBalancerState.connectionCount * -1;
+			}
+
 			emitAgentEvent({
 				agentName: agent.name,
 				state: agent.loadBalancerState,
