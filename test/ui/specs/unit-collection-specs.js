@@ -1,8 +1,9 @@
+"use strict";
 define([
+	'jquery',
 	'dashboard/unit-collection',
-	'./testdata/unit-list-response-1'
-], function (UnitCollection, unitListResponse1) {
-
+	'../testdata/unit-list-response-1.js'
+], function ($, UnitCollection, unitListResponse1) {
 	describe("UnitCollection", function() {
 
 		describe("After fetching unit list", function() {
@@ -10,8 +11,10 @@ define([
 			var collection = new UnitCollection();
 
 			beforeAll(function() {
-				spyOn($, 'getJSON').andCallFake(function(url, callback) {
-					callback(unitListResponse1);
+				spyOn($, 'ajax').andCallFake(function (req) {
+				    var d = $.Deferred();
+				    d.resolve(unitListResponse1);
+				    return d.promise();
 				});
 
 				collection.fetch();
