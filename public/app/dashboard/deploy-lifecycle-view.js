@@ -50,6 +50,7 @@ function($, _, Marionette) {
 
 		close: function() {
 			$(".modal").modal("hide");
+			this.trigger('close');
 			this.undelegateEvents();
 		}
 	});

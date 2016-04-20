@@ -73,11 +73,16 @@ define([
 				}, this);
 
 				app.vent.on('deploy:start-canceled',function(){
-					this.startDeployCallback = null;
-				});
+					this.initDeployOptOut = true;
+					if(this.startDeployCallback){
+						this.startDeployCallback();
+						this.startDeployCallback = null;
+					}
+				},this);
 
 				app.vent.on('deploy:started', function(){
 					this.hasActiveDeploy = true;
+					this.initDeployOptOut = false;
 					if(this.startDeployCallback){
 						this.startDeployCallback();
 						this.startDeployCallback = null;
@@ -85,6 +90,7 @@ define([
 				},this);
 
 				app.vent.on('deploy:finished', function(){
+					this.initDeployOptOut = false;
 					this.hasActiveDeploy = false;
 				},this);
 
@@ -97,6 +103,9 @@ define([
 						args.callback();
 					}
 					else if(this.hasActiveDeploy){
+						args.callback();
+					}
+					else if(this.initDeployOptOut === true){
 						args.callback();
 					}
 					else {
@@ -118,6 +127,7 @@ define([
 
 				var deployIdCookie = $.cookie(annotationConfig.deployIdCookie);
 				this.hasActiveDeploy = deployIdCookie !== undefined;
+				this.initDeployOptOut = false;
 			},
 
 			startDeploy: function() {
