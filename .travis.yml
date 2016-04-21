@@ -8,7 +8,7 @@ deploy:
   email: asimov.deploy@gmail.com
   skip_cleanup: true
   api_key:
-    secure: cTX2VFayB+Y11THJUeNuh5P/QIl8HdtExETazPce7gBIVcszxLlx1ETVvOgjN7pSGDJrvW8l00wH8zDq7v7H48HKkDLu/DMmrtzhdlOqsuiWORjZc6oCSL81Y7N6lTRFhD9QazVM3wSbvZ4bFgqZz7vdKE+XshtFWgtFNKrlaMA=
+    secure: LKC9vElJGcZTTblwbFamkX2EATbpgjO4wghNAivzIYtn5Mho6h46Vlyw3u6UtobcCT9XS+nzklzFYdFSyT0NkhrCmZwrYw4nytjieyFyru/JRHkr8tIhNL0cbqsRYoqPXgpaRvDxX46iAHYAHB9wvt9UZ+HHPQCekq/aZGNrS5M=
   on:
     repo: asimov-deploy/asimov-deploy
     branch: master
