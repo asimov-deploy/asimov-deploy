@@ -6,6 +6,7 @@ before_script:
 deploy:
   provider: npm
   email: asimov.deploy@gmail.com
+  skip_cleanup: true
   api_key:
     secure: cTX2VFayB+Y11THJUeNuh5P/QIl8HdtExETazPce7gBIVcszxLlx1ETVvOgjN7pSGDJrvW8l00wH8zDq7v7H48HKkDLu/DMmrtzhdlOqsuiWORjZc6oCSL81Y7N6lTRFhD9QazVM3wSbvZ4bFgqZz7vdKE+XshtFWgtFNKrlaMA=
   on:
