@@ -25,6 +25,7 @@ PublishProfiles/
 *.log
 node_modules/
 config.json
+dist/
 
 #Tooling
 _ReSharper*/
