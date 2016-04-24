@@ -38,7 +38,7 @@ function(_, when, sequence, Backbone, TaskAbortedException) {
                     deferreds.push(_disableLoadBalancerForAgent(agentName));
                 });
 
-                return when.all(deferreds);
+                return when.all(deferreds).delay(config.disableLoadBalancerPostDelay);
             };
         };
 
@@ -55,7 +55,7 @@ function(_, when, sequence, Backbone, TaskAbortedException) {
                     agentName: agentName,
                     reason: 'timeout'
                 });
-            }, 10000);
+            }, config.loadBalancerTimeout);
 
             var dispose = function () {
                 eventAggregator.off("agent:event:loadBalancerStateChanged", loadBalancerStateChanged);
@@ -83,10 +83,10 @@ function(_, when, sequence, Backbone, TaskAbortedException) {
             return deferred.promise;
         };
 
-        this.execute = function (task) {
+        this.execute = function (taskData) {
             return function () {
                 var tasks = [];
-                tasks.push(_createDisableLoadBalancerForAgentsTask(task.agents));
+                tasks.push(_createDisableLoadBalancerForAgentsTask(taskData.agents));
 
                 return sequence(tasks);
             };
