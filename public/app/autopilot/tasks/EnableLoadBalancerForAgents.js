@@ -38,7 +38,7 @@ function(_, when, sequence, Backbone, TaskAbortedException) {
                     deferreds.push(_enableLoadBalancerForAgent(agentName));
                 });
 
-                return when.all(deferreds).delay(1000);
+                return when.all(deferreds).delay(config.enableLoadBalancerPostDelay);
             };
         };
 
@@ -55,7 +55,7 @@ function(_, when, sequence, Backbone, TaskAbortedException) {
                     agentName: agentName,
                     reason: 'timeout'
                 });
-            }, 10000);
+            }, config.loadBalancerTimeout);
 
             var dispose = function () {
                 eventAggregator.off("agent:event:loadBalancerStateChanged", loadBalancerStateChanged);
