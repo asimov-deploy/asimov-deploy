@@ -17,76 +17,76 @@
 define([
     "underscore",
     "when",
-    "when/sequence",
-    "app",
     "../task-aborted-exception"
 ],
-function(_, when, sequence, app, TaskAbortedException) {
-    var checkVerifyResult = function(agents, units) {
-        var deferred = when.defer();
+function(_, when, TaskAbortedException) {
+    var CheckVerifyResultTask = function (config, eventAggregator) {
+        var _checkVerifyResult = function(agents, units) {
+            var deferred = when.defer();
 
-        var dispose = function () {
-            app.vent.off('agent:event:verify-progress', verifyProgress);
-            app.vent.off('autopilot:continue-deploy', continueDeploy);
-            app.vent.off('autopilot:abort-deploy', abort);
-        };
+            var dispose = function () {
+                eventAggregator.off('agent:event:verify-progress', verifyProgress);
+                eventAggregator.off('autopilot:continue-deploy', continueDeploy);
+                eventAggregator.off('autopilot:abort-deploy', abort);
+            };
 
-        var failedTests = 0;
-        var completedAgentUnits = 0;
+            var failedTests = 0;
+            var completedAgentUnits = 0;
 
-        var verifyProgress = function (data) {
-            if (_.contains(agents, data.agentName) &&
-                _.contains(_.pluck(units, 'unitName'), data.unitName) &&
-                data.test) {
-                failedTests += !data.test.pass ? 1 : 0;
-            }
-
-            if (_.contains(agents, data.agentName) &&
-                _.contains(_.pluck(units, 'unitName'), data.unitName) &&
-                data.completed) {
-                completedAgentUnits++;
-            }
-
-            if (agents.length * units.length === completedAgentUnits) {
-                if (failedTests > 0) {
-                    app.vent.trigger('autopilot:pause-deploy');
+            var verifyProgress = function (data) {
+                if (_.contains(agents, data.agentName) &&
+                    _.contains(_.pluck(units, 'unitName'), data.unitName) &&
+                    data.test) {
+                    failedTests += !data.test.pass ? 1 : 0;
                 }
-                else {
-                    dispose();
-                    deferred.resolve();
+
+                if (_.contains(agents, data.agentName) &&
+                    _.contains(_.pluck(units, 'unitName'), data.unitName) &&
+                    data.completed) {
+                    completedAgentUnits++;
                 }
-            }
+
+                if (agents.length * units.length === completedAgentUnits) {
+                    if (failedTests > 0) {
+                        eventAggregator.trigger('autopilot:pause-deploy');
+                    }
+                    else {
+                        dispose();
+                        deferred.resolve();
+                    }
+                }
+            };
+
+            var continueDeploy = function () {
+                dispose();
+                deferred.resolve();
+            };
+
+            var abort = function () {
+                dispose();
+                deferred.reject(new TaskAbortedException());
+            };
+
+            eventAggregator.on('agent:event:verify-progress', verifyProgress);
+            eventAggregator.on('autopilot:continue-deploy', continueDeploy);
+            eventAggregator.on('autopilot:abort-deploy', abort);
+
+            return deferred.promise;
         };
 
-        var continueDeploy = function () {
-            dispose();
-            deferred.resolve();
-        };
-
-        var abort = function () {
-            dispose();
-            deferred.reject(new TaskAbortedException());
-        };
-
-        app.vent.on('agent:event:verify-progress', verifyProgress);
-        app.vent.on('autopilot:continue-deploy', continueDeploy);
-        app.vent.on('autopilot:abort-deploy', abort);
-
-        return deferred.promise;
-    };
-
-    return {
-        execute: function (task) {
+        this.execute = function (task) {
             return function() {
-                return when(checkVerifyResult(task.agents, task.units));
+                return when(_checkVerifyResult(task.agents, task.units));
             };
-        },
-
-        getInfo: function () {
-            return {
-                title: 'Check verify result',
-                description: 'Checks result from verify and prompts user if there are failed steps'
-            };
-        }
+        };
     };
+
+    CheckVerifyResultTask.getInfo = function () {
+        return {
+            title: 'Check verify result',
+            description: 'Checks result from verify and prompts user if there are failed steps'
+        };
+    };
+
+    return CheckVerifyResultTask;
 });

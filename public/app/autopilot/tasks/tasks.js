@@ -19,6 +19,7 @@
 define([
     "require",
     "when/sequence",
+    "../../app",
     "./DisableLoadBalancerForAgents",
     "./EnableLoadBalancerForAgents",
     "./Deploy",
@@ -28,17 +29,18 @@ define([
     "./DeployAndCheckVerifyResult",
     "./VerifyAndCheckResult"
 ],
-function(require, sequence) {
+function(require, sequence, app) {
     var _getTask = function (taskName) {
         return require('./' + taskName);
     };
 
     var tasks = {
-        createTask: function (data) {
+        createTask: function (config, taskData) {
             return function() {
                 var tasks = [];
-                var task = _getTask(data.name);
-                tasks.push(task.execute(data));
+                var AutopilotTask = _getTask(taskData.name);
+                var task = new AutopilotTask(config, app.vent);
+                tasks.push(task.execute(taskData));
                 return sequence(tasks);
             };
         },

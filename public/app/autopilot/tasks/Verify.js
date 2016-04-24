@@ -19,83 +19,84 @@ define([
     "when",
     "when/sequence",
     "backbone",
-    "app",
     "../task-aborted-exception"
 ],
-function(_, when, sequence, Backbone, app, TaskAbortedException) {
-    var VerifyCommand = Backbone.Model.extend({
-        defaults: {
-            'actionName': 'Verify'
-        },
-        url: "/agent/action"
-    });
+function(_, when, sequence, Backbone, TaskAbortedException) {
+    var VerifyTask = function (config, eventAggregator) {
+        var VerifyCommand = Backbone.Model.extend({
+            defaults: {
+                'actionName': 'Verify'
+            },
+            url: "/agent/action"
+        });
 
-    var createVerifyUnitOnAgentsTask = function (agents, unit) {
-        return function() {
-            var deferreds = [];
+        var _createVerifyUnitOnAgentsTask = function (agents, unit) {
+            return function() {
+                var deferreds = [];
 
-            _.each(agents, function (agentName) {
-                deferreds.push(verifyUnitOnAgent(agentName, unit.unitName));
-            });
-
-            return when.all(deferreds).delay(1000);
-        };
-    };
-
-    var verifyUnitOnAgent = function(agentName, unitName) {
-        var deferred = when.defer();
-
-        new VerifyCommand({
-            agentName: agentName,
-            unitName: unitName
-        }).save();
-
-        var dispose = function () {
-            app.vent.off('agent:event:verify-progress', verifyProgress);
-            app.vent.off('autopilot:abort-deploy', abort);
-        };
-
-        var verifyProgress = function (data) {
-            if (data.agentName === agentName &&
-                data.unitName === unitName &&
-                data.completed) {
-                dispose();
-                deferred.resolve({
-                    agentName: agentName,
-                    unitName: unitName
+                _.each(agents, function (agentName) {
+                    deferreds.push(_verifyUnitOnAgent(agentName, unit.unitName));
                 });
-            }
+
+                return when.all(deferreds).delay(1000);
+            };
         };
 
-        var abort = function () {
-            dispose();
-            deferred.reject(new TaskAbortedException());
+        var _verifyUnitOnAgent = function(agentName, unitName) {
+            var deferred = when.defer();
+
+            new VerifyCommand({
+                agentName: agentName,
+                unitName: unitName
+            }).save();
+
+            var dispose = function () {
+                eventAggregator.off('agent:event:verify-progress', verifyProgress);
+                eventAggregator.off('autopilot:abort-deploy', abort);
+            };
+
+            var verifyProgress = function (data) {
+                if (data.agentName === agentName &&
+                    data.unitName === unitName &&
+                    data.completed) {
+                    dispose();
+                    deferred.resolve({
+                        agentName: agentName,
+                        unitName: unitName
+                    });
+                }
+            };
+
+            var abort = function () {
+                dispose();
+                deferred.reject(new TaskAbortedException());
+            };
+
+            eventAggregator.on('agent:event:verify-progress', verifyProgress);
+            eventAggregator.on('autopilot:abort-deploy', abort);
+
+            return deferred.promise;
         };
 
-        app.vent.on('agent:event:verify-progress', verifyProgress);
-        app.vent.on('autopilot:abort-deploy', abort);
-
-        return deferred.promise;
-    };
-
-    return {
-        execute: function (task) {
+        this.execute = function (task) {
             return function() {
                 var tasks = [];
 
                 _.each(task.units, function (unit) {
-                    tasks.push(createVerifyUnitOnAgentsTask(task.agents, unit));
+                    tasks.push(_createVerifyUnitOnAgentsTask(task.agents, unit));
                 });
 
                 return sequence(tasks);
             };
-        },
-
-        getInfo: function () {
-            return {
-                title: 'Verify',
-                description: 'Execute the action Verify for each unit in set'
-            };
-        }
+        };
     };
+
+    VerifyTask.getInfo = function () {
+        return {
+            title: 'Verify',
+            description: 'Execute the action Verify for each unit in set'
+        };
+    };
+
+    return VerifyTask;
 });
