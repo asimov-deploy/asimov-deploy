@@ -27,6 +27,15 @@ define([
     "./tasks/tasks"
 ],
 function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, ConfigurationDialogView, ConfirmDialogView, AutopilotDeploy, VersionDialogView, tasks) {
+    var defaultLoadBalancerTimeout = 10000;
+    var defaultEnableLoadBalancerPostDelay = 1000;
+    var defaultDisableLoadBalancerPostDelay = 1000;
+    var defaultDeployRetryOnFailure = true;
+    var defaultDeployFailureRetries = 3;
+    var defaultVerifyPostDelay = 1000;
+    var defaultVerifyRetryOnFailure = true;
+    var defaultVerifyFailureRetries = 3;
+
     var autopilot = {
         Models: {},
         Collections: {},
@@ -75,6 +84,19 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
         }
 
         autopilot.enabled = featureToggles.autopilot.enabled === true;
+
+        if (autopilot.enabled) {
+            var s = app.initData.autopilot || {};
+
+            autopilot.loadBalancerTimeout = s.loadBalancerTimeout || defaultLoadBalancerTimeout;
+            autopilot.enableLoadBalancerPostDelay = s.enableLoadBalancerPostDelay || defaultEnableLoadBalancerPostDelay;
+            autopilot.disableLoadBalancerPostDelay = s.disableLoadBalancerPostDelay || defaultDisableLoadBalancerPostDelay;
+            autopilot.deployRetryOnFailure = s.deployRetryOnFailure || defaultDeployRetryOnFailure;
+            autopilot.deployFailureRetries = s.deployFailureRetries || defaultDeployFailureRetries;
+            autopilot.verifyPostDelay = s.verifyPostDelay || defaultVerifyPostDelay;
+            autopilot.verifyRetryOnFailure = s.verifyRetryOnFailure || defaultVerifyRetryOnFailure;
+            autopilot.verifyFailureRetries = s.verifyFailureRetries || defaultVerifyFailureRetries;
+        }
     });
 
     app.vent.on("autopilot:configure", function() {
