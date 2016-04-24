@@ -67,15 +67,7 @@ function(_, when, sequence, DeployCommand, TaskAbortedException) {
             var deployFailed = function (data) {
                 if (data.agentName === agentName &&
                     data.unitName === unitName) {
-                    if (!config.deployRetryOnFailure) {
-                        dispose();
-                        deferred.reject({
-                            agentName: agentName,
-                            unitName: unitName,
-                            versionId: versionId
-                        });
-                    }
-                    else if (retries < config.deployFailureRetries) {
+                    if (config.deployRetryOnFailure && retries < config.deployFailureRetries) {
                         retries++;
                         new DeployCommand({
                             agentName: agentName,
@@ -84,16 +76,18 @@ function(_, when, sequence, DeployCommand, TaskAbortedException) {
                         }).save();
                     }
                     else {
-                        if (!config.paused) {
-                            eventAggregator.trigger('autopilot:pause-deploy');
-                        }
+                        eventAggregator.trigger('autopilot:pause-deploy');
                     }
                 }
             };
 
             var continueDeploy = function () {
                 dispose();
-                deferred.resolve();
+                deferred.resolve({
+                    agentName: agentName,
+                    unitName: unitName,
+                    versionId: versionId
+                });
             };
 
             var abort = function () {
