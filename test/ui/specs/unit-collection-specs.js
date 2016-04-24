@@ -1,9 +1,10 @@
 "use strict";
 define([
+	'app',
 	'jquery',
 	'dashboard/unit-collection',
 	'../testdata/unit-list-response-1.js'
-], function ($, UnitCollection, unitListResponse1) {
+], function (app, $, UnitCollection, unitListResponse1) {
 	describe("UnitCollection", function() {
 
 		describe("After fetching unit list", function() {

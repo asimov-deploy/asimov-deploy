@@ -4,7 +4,7 @@ module.exports = function(config) {
     config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: '../../public',
+    basePath: '../../',
 
 
     // frameworks to use
@@ -13,21 +13,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        {pattern: '../test/ui/assets/jquery.js', included: true},
-        {pattern: '../test/ui/assets/jasmine-jquery.js', included: true},
-        {pattern: 'app/**/*.js', included: false},
-        {pattern: 'libs/**/*.js', included: false},
-        {pattern: '../test/ui/specs/*.js', included: false},
-        {pattern: '../test/ui/testdata/*.js', included: false},
-        {pattern: '../test/ui/runner-config.js', included: true}
+        {pattern: 'test/ui/assets/jquery.js', included: true},
+        {pattern: 'test/ui/assets/jasmine-jquery.js', included: true},
+        {pattern: 'public/app/**/*.js', included: false},
+        {pattern: 'public/libs/**/*.js', included: false},
+        {pattern: 'node_modules/when/**/*.js', included: false},
+        {pattern: 'test/ui/specs/**/*.js', included: false},
+        {pattern: 'test/ui/testdata/*.js', included: false},
+        {pattern: 'test/ui/runner-config.js', included: true}
     ],
 
 
     // list of files to exclude
     exclude: [
-         'libs/require.js',
-         'app/main.js',
-         'app/config.js'
+         'public/libs/require.js',
+         'public/app/main.js',
+         'public/app/config.js'
     ],
 
 
