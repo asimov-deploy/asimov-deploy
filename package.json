@@ -4,6 +4,7 @@
   "author": "Ebay Inc",
   "version": "0.8.1",
   "homepage": "https://github.com/asimov-deploy/asimov-deploy",
+  "license": "Apache-2.0",
   "dependencies": {
     "async": ">= 0.1.22",
     "connect-flash": "~0.1.1",
