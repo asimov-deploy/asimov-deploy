@@ -25,9 +25,7 @@ define([
     "./Deploy",
     "./Prompt",
     "./Verify",
-    "./CheckVerifyResult",
-    "./DeployAndCheckVerifyResult",
-    "./VerifyAndCheckResult"
+    "./DeployAndCheckVerifyResult"
 ],
 function(require, sequence, app) {
     var _getTask = function (taskName) {
