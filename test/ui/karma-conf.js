@@ -13,22 +13,21 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        {pattern: 'test/ui/assets/jquery.js', included: true},
-        {pattern: 'test/ui/assets/jasmine-jquery.js', included: true},
-        {pattern: 'public/app/**/*.js', included: false},
         {pattern: 'public/libs/**/*.js', included: false},
         {pattern: 'node_modules/when/**/*.js', included: false},
-        {pattern: 'test/ui/specs/**/*.js', included: false},
+        {pattern: 'public/app/**/*.js', included: false},
         {pattern: 'test/ui/testdata/*.js', included: false},
-        {pattern: 'test/ui/runner-config.js', included: true}
+        {pattern: 'test/ui/specs/**/*.js', included: false},
+
+        'test/ui/test-main.js',
     ],
 
 
     // list of files to exclude
     exclude: [
-         'public/libs/require.js',
-         'public/app/main.js',
-         'public/app/config.js'
+        'public/libs/require.js',
+        'public/app/main.js',
+        'public/app/config.js'
     ],
 
 
@@ -38,7 +37,6 @@ module.exports = function(config) {
     mochaReporter: {
       output: 'autowatch'
     },
-    transports: ['websocket', 'htmlfile', 'xhr-polling', 'jsonp-polling'],
 
     // web server port
     port: 9876,
@@ -80,6 +78,7 @@ module.exports = function(config) {
         'karma-jasmine',
         'karma-requirejs',
         'karma-phantomjs-launcher',
+        'karma-chrome-launcher',
         'karma-mocha-reporter'
     ]
     });

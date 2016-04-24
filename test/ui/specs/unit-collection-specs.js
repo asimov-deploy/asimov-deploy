@@ -12,7 +12,7 @@ define([
 			var collection = new UnitCollection();
 
 			beforeAll(function() {
-				spyOn($, 'ajax').andCallFake(function (req) {
+				spyOn($, 'ajax').and.callFake(function (req) {
 				    var d = $.Deferred();
 				    d.resolve(unitListResponse1);
 				    return d.promise();

@@ -1,25 +1,13 @@
-/* beforeAll monkeyPatch */
-var beforeAll = function (func) {
-    var beforeAllCalled = false;
+var deps = [];
 
-    jasmine.getEnv().currentSuite.beforeEach(function () {
-        if (!beforeAllCalled) {
-            beforeAllCalled = true;
-            func.call(this);
-        }
-    });
-};
-
-var tests = [];
-for (var file in window.__karma__.files) {
-    if (window.__karma__.files.hasOwnProperty(file)) {
-        if (/specs\.js$/.test(file)) {
-            tests.push(file);
-        }
+// Get a list of all the test files to include
+Object.keys(window.__karma__.files).forEach(function (file) {
+    if (/(specs)\.js$/i.test(file)) {
+        deps.push(file);
     }
-}
+});
 
-requirejs.config({
+require.config({
     baseUrl: '/base/public/app',
 
     paths: {
@@ -55,8 +43,8 @@ requirejs.config({
 
     },
 
-    // start test run, once Require.js is done
-    callback: function () {
-        require(tests, window.__karma__.start)
-    }
+    deps: deps,
+
+    // we have to kickoff jasmine, as it is asynchronous
+    callback: window.__karma__.start
 });
