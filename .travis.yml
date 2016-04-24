@@ -1,5 +1,14 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
 before_script:
-  - npm install -g grunt-cli
+- npm install -g grunt-cli
+deploy:
+  provider: npm
+  email: asimov.deploy@gmail.com
+  skip_cleanup: true
+  api_key:
+    secure: LKC9vElJGcZTTblwbFamkX2EATbpgjO4wghNAivzIYtn5Mho6h46Vlyw3u6UtobcCT9XS+nzklzFYdFSyT0NkhrCmZwrYw4nytjieyFyru/JRHkr8tIhNL0cbqsRYoqPXgpaRvDxX46iAHYAHB9wvt9UZ+HHPQCekq/aZGNrS5M=
+  on:
+    repo: asimov-deploy/asimov-deploy
+    branch: master
