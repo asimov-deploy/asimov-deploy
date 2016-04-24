@@ -1,5 +1,3 @@
-// Karma configuration
-
 module.exports = function(config) {
     config.set({
 
@@ -78,7 +76,6 @@ module.exports = function(config) {
         'karma-jasmine',
         'karma-requirejs',
         'karma-phantomjs-launcher',
-        'karma-chrome-launcher',
         'karma-mocha-reporter'
     ]
     });
