@@ -15,27 +15,10 @@
 ******************************************************************************/
 
 define([
-    "when/parallel",
-    "./Verify",
-    "./CheckVerifyResult"
+	"backbone"
 ],
-function(parallel, verifyTask, checkVerifyResultTask) {
-    return {
-        execute: function (task) {
-            return function () {
-                var tasks = [];
-                tasks.push(checkVerifyResultTask.execute(task));
-                tasks.push(verifyTask.execute(task));
-
-                return parallel(tasks);
-            };
-        },
-
-        getInfo: function () {
-            return {
-                title: 'Verify and check result',
-                description: 'Verify each unit in set and check result from verify and prompt user if there are failed steps'
-            };
-        }
-    };
+function(Backbone) {
+	return Backbone.Model.extend({
+		url: "/deploy/deploy"
+	});
 });

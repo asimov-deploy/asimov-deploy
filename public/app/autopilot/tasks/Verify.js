@@ -19,83 +19,127 @@ define([
     "when",
     "when/sequence",
     "backbone",
-    "app",
     "../task-aborted-exception"
 ],
-function(_, when, sequence, Backbone, app, TaskAbortedException) {
-    var VerifyCommand = Backbone.Model.extend({
-        defaults: {
-            'actionName': 'Verify'
-        },
-        url: "/agent/action"
-    });
+function(_, when, sequence, Backbone, TaskAbortedException) {
+    var VerifyTask = function (config, eventAggregator) {
+        var VerifyCommand = Backbone.Model.extend({
+            defaults: {
+                'actionName': 'Verify'
+            },
+            url: "/agent/action"
+        });
 
-    var createVerifyUnitOnAgentsTask = function (agents, unit) {
-        return function() {
-            var deferreds = [];
+        var _createVerifyUnitOnAgentsTask = function (agents, unit, skipInitialVerifyStep) {
+            return function() {
+                var deferreds = [];
 
-            _.each(agents, function (agentName) {
-                deferreds.push(verifyUnitOnAgent(agentName, unit.unitName));
-            });
+                _.each(agents, function (agentName) {
+                    deferreds.push(_verifyUnitOnAgent(skipInitialVerifyStep, agentName, unit.unitName));
+                });
 
-            return when.all(deferreds).delay(1000);
-        };
-    };
-
-    var verifyUnitOnAgent = function(agentName, unitName) {
-        var deferred = when.defer();
-
-        new VerifyCommand({
-            agentName: agentName,
-            unitName: unitName
-        }).save();
-
-        var dispose = function () {
-            app.vent.off('agent:event:verify-progress', verifyProgress);
-            app.vent.off('autopilot:abort-deploy', abort);
+                return when.all(deferreds).delay(config.verifyPostDelay);
+            };
         };
 
-        var verifyProgress = function (data) {
-            if (data.agentName === agentName &&
-                data.unitName === unitName &&
-                data.completed) {
+        var _verifyUnitOnAgent = function(skipInitialVerifyStep, agentName, unitName) {
+            var deferred = when.defer();
+
+            if (!skipInitialVerifyStep) {
+                new VerifyCommand({
+                    agentName: agentName,
+                    unitName: unitName
+                }).save();
+            }
+
+            var dispose = function () {
+                eventAggregator.off('agent:event:verify-progress', verifyProgress);
+                eventAggregator.off('autopilot:continue-deploy', continueDeploy);
+                eventAggregator.off('autopilot:abort-deploy', abort);
+            };
+
+            var failedTests = 0;
+            var retries = 0;
+
+            var verifyProgress = function (data) {
+                if (data.agentName === agentName &&
+                    data.unitName === unitName &&
+                    data.test) {
+                    failedTests += !data.test.pass ? 1 : 0;
+                }
+
+                if (data.agentName === agentName &&
+                    data.unitName === unitName &&
+                    data.completed) {
+                    if (failedTests === 0) {
+                        dispose();
+                        deferred.resolve();
+                    }
+                    else if (config.verifyRetryOnFailure && retries < config.verifyFailureRetries) {
+                        failedTests = 0;
+                        retries++;
+                        new VerifyCommand({
+                            agentName: agentName,
+                            unitName: unitName
+                        }).save();
+                    }
+                    else {
+                        eventAggregator.trigger('autopilot:pause-deploy');
+                    }
+                }
+            };
+
+            var continueDeploy = function () {
                 dispose();
                 deferred.resolve({
                     agentName: agentName,
                     unitName: unitName
                 });
-            }
+            };
+
+            var abort = function () {
+                dispose();
+                deferred.reject(new TaskAbortedException());
+            };
+
+            eventAggregator.on('agent:event:verify-progress', verifyProgress);
+            eventAggregator.on('autopilot:continue-deploy', continueDeploy);
+            eventAggregator.on('autopilot:abort-deploy', abort);
+
+            return deferred.promise;
         };
 
-        var abort = function () {
-            dispose();
-            deferred.reject(new TaskAbortedException());
-        };
-
-        app.vent.on('agent:event:verify-progress', verifyProgress);
-        app.vent.on('autopilot:abort-deploy', abort);
-
-        return deferred.promise;
-    };
-
-    return {
-        execute: function (task) {
+        this.execute = function (task) {
             return function() {
                 var tasks = [];
 
                 _.each(task.units, function (unit) {
-                    tasks.push(createVerifyUnitOnAgentsTask(task.agents, unit));
+                    tasks.push(_createVerifyUnitOnAgentsTask(task.agents, unit, false));
                 });
 
                 return sequence(tasks);
             };
-        },
+        };
 
-        getInfo: function () {
-            return {
-                title: 'Verify',
-                description: 'Execute the action Verify for each unit in set'
+        this.executeAndSkipInitialVerifyStep = function (task) {
+            return function() {
+                var tasks = [];
+
+                _.each(task.units, function (unit) {
+                    tasks.push(_createVerifyUnitOnAgentsTask(task.agents, unit, true));
+                });
+
+                return sequence(tasks);
             };
-        }
+        };
     };
+
+    VerifyTask.getInfo = function () {
+        return {
+            title: 'Verify',
+            description: 'Verify each unit in set and check result from verify and prompt user if there are failed steps'
+        };
+    };
+
+    return VerifyTask;
 });
