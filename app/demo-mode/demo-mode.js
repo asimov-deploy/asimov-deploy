@@ -14,13 +14,13 @@
 * limitations under the License.
 ******************************************************************************/
 
-
-module.exports = function(app) {
-
+module.exports = function(app, config) {
 	var demodata = require('./demo-data-generator.js');
 	var demoUtils = require('./demo-utils.js');
 
 	var _ = require('underscore');
+
+	config.agents = demodata.agents;
 
 	function emitLog(agentName, message) {
 
@@ -45,7 +45,9 @@ module.exports = function(app) {
 	});
 
 	app.get('/units/list', app.ensureLoggedIn, function(req, res) {
-		res.json(demodata.units);
+		var group = req.query.group;
+
+		res.json(_.where(demodata.units, { group: group }));
 	});
 
 	app.get("/agent/query", app.ensureLoggedIn, function(req, res) {
@@ -222,6 +224,10 @@ module.exports = function(app) {
 			}
 
 			agent.loadBalancerState.connectionCount += Math.floor((Math.random()*40)) - 20;
+
+			if (agent.loadBalancerState.connectionCount <= 0) {
+				agent.loadBalancerState.connectionCount = agent.loadBalancerState.connectionCount * -1;
+			}
 
 			emitAgentEvent({
 				agentName: agent.name,

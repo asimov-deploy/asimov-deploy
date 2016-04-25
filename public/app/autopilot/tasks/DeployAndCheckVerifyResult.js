@@ -17,25 +17,27 @@
 define([
     "when/parallel",
     "./Deploy",
-    "./CheckVerifyResult"
+    "./Verify"
 ],
-function(parallel, deployTask, checkVerifyResultTask) {
-    return {
-        execute: function (task) {
+function(parallel, DeployTask, VerifyTask) {
+    var DeployAndCheckVerifyResultTask = function (config, eventAggregator) {
+        this.execute = function (taskData) {
             return function () {
                 var tasks = [];
-                tasks.push(checkVerifyResultTask.execute(task));
-                tasks.push(deployTask.execute(task));
+                tasks.push(new VerifyTask(config, eventAggregator).executeAndSkipInitialVerifyStep(taskData));
+                tasks.push(new DeployTask(config, eventAggregator).execute(taskData));
 
                 return parallel(tasks);
             };
-        },
-
-        getInfo: function () {
-            return {
-                title: 'Deploy and check verify result',
-                description: 'Deploy each unit in set and check result from verify and prompt user if there are failed steps'
-            };
-        }
+        };
     };
+
+    DeployAndCheckVerifyResultTask.getInfo = function () {
+        return {
+            title: 'Deploy and check verify result',
+            description: 'Deploy each unit in set and check result from verify and prompt user if there are failed steps'
+        };
+    };
+
+    return DeployAndCheckVerifyResultTask;
 });

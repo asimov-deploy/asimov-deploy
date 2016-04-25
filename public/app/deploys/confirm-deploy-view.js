@@ -19,14 +19,10 @@ define([
 	"underscore",
 	"backbone",
 	"marionette",
-	"../collections/agent-query-collection"
+	"../collections/agent-query-collection",
+	"./deploy-command"
 ],
-function($, _, Backbone, Marionette, AgentQueryCollection) {
-
-	var DeployCommand = Backbone.Model.extend({
-		url: "/deploy/deploy"
-	});
-
+function($, _, Backbone, Marionette, AgentQueryCollection, DeployCommand) {
 	return Marionette.ItemView.extend({
 		el: $("#asimov-modal"),
 		template: "dashboard/confirm-deploy-view",

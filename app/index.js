@@ -56,6 +56,10 @@ module.exports = function(app, config) {
 			viewModel.initData.user = user;
 		}
 
+		if (featureToggles.getActiveFeature('autopilot') && config.autopilot && config.autopilot.settings) {
+			viewModel.initData.autopilot = config.autopilot.settings;
+		}
+
 		res.render('index', viewModel);
 	});
 

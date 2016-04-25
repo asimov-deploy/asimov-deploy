@@ -106,7 +106,7 @@ function($, _, Backbone, when, sequence, app, tasks) {
                 var deployIterationStepTasks = [];
 
                 _.each(deployIteration.steps, function (step) {
-                    deployIterationStepTasks.push(tasks.createTask(step));
+                    deployIterationStepTasks.push(tasks.createTask(app.autopilot, step));
                 });
 
                 return sequence(deployIterationStepTasks);

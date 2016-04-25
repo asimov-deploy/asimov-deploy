@@ -19,85 +19,86 @@ define([
     "when",
     "when/sequence",
     "backbone",
-    "app",
     "../task-aborted-exception"
 ],
-function(_, when, sequence, Backbone, app, TaskAbortedException) {
-    var EnableLoadBalancerCommand = Backbone.Model.extend({
-        defaults: {
-            'action': 'enable'
-        },
-        url: "/loadbalancer/change"
-    });
+function(_, when, sequence, Backbone, TaskAbortedException) {
+    var EnableLoadBalancerForAgentsTask = function (config, eventAggregator) {
+        var EnableLoadBalancerCommand = Backbone.Model.extend({
+            defaults: {
+                'action': 'enable'
+            },
+            url: "/loadbalancer/change"
+        });
 
-    var createEnableLoadBalancerForAgentsTask = function (agents) {
-        return function() {
-            var deferreds = [];
+        var _createEnableLoadBalancerForAgentsTask = function (agents) {
+            return function() {
+                var deferreds = [];
 
-            _.each(agents, function (agentName) {
-                deferreds.push(enableLoadBalancerForAgent(agentName));
-            });
+                _.each(agents, function (agentName) {
+                    deferreds.push(_enableLoadBalancerForAgent(agentName));
+                });
 
-            return when.all(deferreds).delay(1000);
-        };
-    };
-
-    var enableLoadBalancerForAgent = function(agentName) {
-        var deferred = when.defer();
-
-        new EnableLoadBalancerCommand({
-            agentName: agentName
-        }).save();
-
-        var timeout = setTimeout(function() {
-            dispose();
-            deferred.reject({
-                agentName: agentName,
-                reason: 'timeout'
-            });
-        }, 10000);
-
-        var dispose = function () {
-            app.vent.off("agent:event:loadBalancerStateChanged", loadBalancerStateChanged);
-            app.vent.off('autopilot:abort-deploy', abort);
-            clearTimeout(timeout);
+                return when.all(deferreds).delay(config.enableLoadBalancerPostDelay);
+            };
         };
 
-        var loadBalancerStateChanged = function (data) {
-            if (data.agentName === agentName &&
-                data.state.enabled === true &&
-                data.state.connectionCount > 0) {
+        var _enableLoadBalancerForAgent = function(agentName) {
+            var deferred = when.defer();
+
+            new EnableLoadBalancerCommand({
+                agentName: agentName
+            }).save();
+
+            var timeout = setTimeout(function() {
                 dispose();
-                deferred.resolve(agentName);
-            }
+                deferred.reject({
+                    agentName: agentName,
+                    reason: 'timeout'
+                });
+            }, config.loadBalancerTimeout);
+
+            var dispose = function () {
+                eventAggregator.off("agent:event:loadBalancerStateChanged", loadBalancerStateChanged);
+                eventAggregator.off('autopilot:abort-deploy', abort);
+                clearTimeout(timeout);
+            };
+
+            var loadBalancerStateChanged = function (data) {
+                if (data.agentName === agentName &&
+                    data.state.enabled === true &&
+                    data.state.connectionCount > 0) {
+                    dispose();
+                    deferred.resolve(agentName);
+                }
+            };
+
+            var abort = function () {
+                dispose();
+                deferred.reject(new TaskAbortedException());
+            };
+
+            eventAggregator.on("agent:event:loadBalancerStateChanged", loadBalancerStateChanged);
+            eventAggregator.on('autopilot:abort-deploy', abort);
+
+            return deferred.promise;
         };
 
-        var abort = function () {
-            dispose();
-            deferred.reject(new TaskAbortedException());
-        };
-
-        app.vent.on("agent:event:loadBalancerStateChanged", loadBalancerStateChanged);
-        app.vent.on('autopilot:abort-deploy', abort);
-
-        return deferred.promise;
-    };
-
-    return {
-        execute: function (task) {
+        this.execute = function (task) {
             return function () {
                 var tasks = [];
-                tasks.push(createEnableLoadBalancerForAgentsTask(task.agents));
+                tasks.push(_createEnableLoadBalancerForAgentsTask(task.agents));
 
                 return sequence(tasks);
             };
-        },
-
-        getInfo: function () {
-            return {
-                title: 'Enable load balancer for agents',
-                description: 'Puts agents back into load'
-            };
-        }
+        };
     };
+
+    EnableLoadBalancerForAgentsTask.getInfo = function () {
+        return {
+            title: 'Enable load balancer for agents',
+            description: 'Puts agents back into load'
+        };
+    };
+
+    return EnableLoadBalancerForAgentsTask;
 });

@@ -26,13 +26,21 @@ function($, _, Backbone, Marionette) {
         tagName: "tr",
 
         events: {
-            "click td": "changeVersion"
+            "click td": "changeVersion",
+            "click input:checkbox": "toggleUnit"
         },
 
         changeVersion: function() {
             this.trigger("changeVersion", {
                 unitName: this.model.get('unitName'),
                 agentName: _.first(this.model.get('instances'))
+            });
+        },
+
+        toggleUnit: function (evt) {
+            evt.stopPropagation();
+            this.trigger("toggleUnit", {
+                unitName: this.model.get('unitName')
             });
         }
     });
@@ -52,6 +60,7 @@ function($, _, Backbone, Marionette) {
 
         initialize: function() {
             this.on("itemview:changeVersion", this.changeVersion, this);
+            this.on("itemview:toggleUnit", this.toggleUnit, this);
         },
 
         submit: function (e) {
@@ -75,6 +84,10 @@ function($, _, Backbone, Marionette) {
         changeVersion: function(evt, payload) {
             this.close();
             this.trigger("changeVersion", payload);
+        },
+
+        toggleUnit: function(evt, payload) {
+            this.trigger("toggleUnit", payload);
         },
 
         close: function() {

@@ -22,6 +22,7 @@ var versions = {};
 for(var i = 1; i <= 5; i++) {
 	agents.push({
 		name: "SE1-WEBFRONT-0" + i,
+        group: 'Web servers',
 		dead: false,
 		version: "0.6.12",
 		configVersion: 43,
@@ -36,13 +37,14 @@ for(var i = 1; i <= 5; i++) {
 for(var i = 1; i <= 3; i++) {
 	agents.push({
 		name: "SE1-APPSRV-0" + i,
+        group: 'Application servers',
 		dead: false,
 		version: "0.6.12",
 		configVersion: 43,
 		loadBalancerState: {
 			enabled: true,
 			connectionCount: Math.floor((Math.random()*580)),
-			serverId: "SE1-WEBFRONT-0" + i
+			serverId: "SE1-APPSRV-0" + i
 		}
 	});
 }
@@ -52,6 +54,7 @@ agents.forEach(function(agent) {
 	if (agent.name.indexOf('WEBFRONT') !== -1) {
 		units.push({
 			name: agent.name,
+            group: agent.group,
 			loadBalancerState: agent.loadBalancerState,
 			units: [
 				{
@@ -89,6 +92,7 @@ agents.forEach(function(agent) {
 	if (agent.name.indexOf('SE1-APPSRV') !== -1) {
 		units.push({
 			name: agent.name,
+            group: agent.group,
 			loadBalancerId: agent.loadBalancerId,
 			loadBalancerState: agent.loadBalancerState,
 			units: [
