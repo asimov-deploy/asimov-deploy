@@ -50,7 +50,7 @@ var AutopilotController = function (app, config, agentApiClient) {
                 .map(function(agents, unitName) {
                     return {
                         unitName: unitName,
-                        instances: _.pluck(agents, 'agentName')
+                        instances: _.uniq(_.pluck(agents, 'agentName'))
                     };
                 })
                 .value();

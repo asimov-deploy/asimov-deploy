@@ -38,9 +38,11 @@ var AgentApiClient = function(config, restify) {
 	this.getUnitListForAgentGroup = function(group, dataCallback) {
 		var result = [];
 		var agents = config.agents;
+		var encodedGroup = '';
 
 		if (group) {
 			agents = _.where(agents, { group: group });
+			encodedGroup = '/' + encodeURIComponent(group);
 		}
 
 		async.forEach(agents, function(agent, done) {
@@ -48,7 +50,7 @@ var AgentApiClient = function(config, restify) {
 				done();
 				return;
 			}
-			this.get(agent.name, '/units/list/' + encodeURIComponent(group), function(units) {
+			this.get(agent.name, '/units/list' + encodedGroup, function(units) {
 				result.push({agent: agent, units: units});
 				done();
 			});
