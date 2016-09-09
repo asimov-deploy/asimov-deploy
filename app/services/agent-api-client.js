@@ -38,11 +38,24 @@ var AgentApiClient = function(config, restify) {
 	this.getUnitListForAgentGroup = function(group, dataCallback) {
 		var result = [];
 		var agents = config.agents;
+
 		var encodedGroup = '';
 
 		if (group) {
 			agents = _.where(agents, { group: group });
 			encodedGroup = '/' + encodeURIComponent(group);
+		}
+		else {
+			var distinctAgents = [];
+
+			_.forEach(agents, function (agent) {
+				if (_.findWhere(distinctAgents, { name: agent.name }) === undefined) {
+					agent.group = '';
+					distinctAgents.push(agent);
+				}
+			});
+
+			agents = distinctAgents;
 		}
 
 		async.forEach(agents, function(agent, done) {
