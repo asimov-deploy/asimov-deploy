@@ -83,13 +83,15 @@ function($, _, Backbone, app, UnitInstance) {
 				dataType: 'json'
 			}).done(function(agents) {
 				agents.forEach(function(agent) {
-					agent.units.forEach(function(instance) {
-						var unit = self.addOrGetUnit(instance.name, instance.actions, tempList);
-						var unitInstance = self.createUnitInstance(agent, instance);
+					if (agent.units) {
+						agent.units.forEach(function(instance) {
+							var unit = self.addOrGetUnit(instance.name, instance.actions, tempList);
+							var unitInstance = self.createUnitInstance(agent, instance);
 
-						unit.instances.add(unitInstance);
-						self.addInstanceToIndex(unitInstance);
-					});
+							unit.instances.add(unitInstance);
+							self.addInstanceToIndex(unitInstance);
+						});
+					}
 				});
 
 				tempList.sort(function(a, b) {
