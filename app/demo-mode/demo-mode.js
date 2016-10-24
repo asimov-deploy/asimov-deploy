@@ -41,7 +41,7 @@ module.exports = function(app, config) {
 	}
 
 	app.get('/agents/list', app.ensureLoggedIn, function(req, res) {
-		res.json(demodata.agents);
+		res.json(_.sortBy(demodata.agents, 'name'));
 	});
 
 	app.get('/units/list', app.ensureLoggedIn, function(req, res) {
