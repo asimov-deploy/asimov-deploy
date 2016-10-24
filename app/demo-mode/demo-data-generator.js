@@ -20,18 +20,18 @@ var units = [];
 var versions = {};
 
 for(var i = 1; i <= 5; i++) {
-	agents.push({
-		name: "SE1-WEBFRONT-0" + i,
+    agents.push({
+        name: "SE1-WEBFRONT-0" + i,
         group: 'Web servers',
-		dead: false,
-		version: "0.6.12",
-		configVersion: 43,
-		loadBalancerState: {
-			enabled: true,
-			connectionCount: Math.floor((Math.random()*580)),
-			serverId: "SE1-WEBFRONT-0" + i
-		}
-	});
+        dead: false,
+        version: "0.6.12",
+        configVersion: 43,
+        loadBalancerState: {
+            enabled: true,
+            connectionCount: Math.floor((Math.random()*580)),
+            serverId: "SE1-WEBFRONT-0" + i
+        }
+    });
 }
 
 for(var i = 1; i <= 3; i++) {
