@@ -19,7 +19,7 @@ module.exports = function(app, config) {
 	var lifecycleClient = require('./services/deploy-lifecycle-client').create(config);
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
 	var featureToggle = require('./feature-toggle').create(config);
-	var uuid = require('node-uuid');
+	var uuid = require('uuid');
 
 	var annotationsConfig = featureToggle.getActiveFeature('deployAnnotations');
 
