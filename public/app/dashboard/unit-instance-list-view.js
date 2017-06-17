@@ -66,7 +66,7 @@ function($, Backbone, Marionette, UnitInstanceView, UnitHeaderView) {
 			}
 
 			var value = localStorage.getItem('deploy-unit-collapsed-state-' + this.model.get('name'));
-			return value ? value === "true" : false;
+			return value ? value === "true" : true;
 		},
 
 		toggleExpand: function(e) {
