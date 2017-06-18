@@ -118,6 +118,7 @@ define([
 
 			onClose: function() {
 				this.$el.find(".js-example-basic-single").select2("destroy");
+				app.vent.off('keyboard:ctrl:f', this.openDropDown, this);
 			},
 
 			onRender: function() {
@@ -148,6 +149,11 @@ define([
 				// Hack to get the placeholder to show up on load
 				this.$el.find('.select2-search__field').css('width', 'auto');
 
+				app.vent.on('keyboard:ctrl:f', this.openDropDown, this);
+			},
+
+			openDropDown: function () {
+				this.$el.find(".js-example-basic-single").select2("open");
 			},
 
 			initDeployMode: function() {

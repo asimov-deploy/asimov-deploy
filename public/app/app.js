@@ -33,6 +33,23 @@ function($, Backbone, Marionette) {
 		}
 	});
 
+	var isCtrl = false;
+	$(document)
+		.keydown(function(e) {
+			if (e.ctrlKey) {
+				isCtrl = true;
+			}
+
+			if (e.key === 'f' && isCtrl) {
+				app.vent.trigger('keyboard:ctrl:f');
+				return false;
+			}
+		})
+		.keyup(function(e) {
+			if (e.ctrlKey) {
+				isCtrl = false;
+			}
+		});
 
 	$(function() {
 		var windowHeight = $(window).height() - 181 - 60 - 41;
