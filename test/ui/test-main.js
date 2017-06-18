@@ -23,6 +23,7 @@ require.config({
         "backbone.babysitter": "../libs/backbone.babysitter",
         "backbone.wreqr": "../libs/backbone.wreqr",
         "jquery.cookie": "../libs/jquery.cookie",
+        "select2": "../libs/select2",
 
         'socket.io': '../../node_modules/socket.io-client/dist/socket.io'
     },
