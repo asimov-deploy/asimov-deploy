@@ -22,7 +22,8 @@ define([
 		"../deploys/ensure-active-deploy",
 		"./../app",
 		"backbone",
-		"jquery.cookie"
+		"jquery.cookie",
+		"select2"
 	],
 	function($, Marionette, UnitInstanceListView, DeployLifecycle, ensureActiveDeploy, app, Backbone) {
 
@@ -113,6 +114,40 @@ define([
 						this.startDeploy();
 					}
 				},this);
+			},
+
+			onClose: function() {
+				this.$el.find(".js-example-basic-single").select2("destroy");
+			},
+
+			onRender: function() {
+				this.$el.find(".js-example-basic-single").select2({
+					//tags: true,
+					placeholder: "Filter...",
+					templateSelection: function (data) {
+						return data.selectionText;
+					},
+					allowClear: true,
+					ajax: {
+						url: "/auto-complete",
+						dataType: 'json',
+						delay: 100,
+						data: function (params) {
+							return {
+								q: params.term
+							};
+						},
+						processResults: function (data) {
+							return {
+								results: data
+							};
+						}
+					}
+				});
+
+				// Hack to get the placeholder to show up on load
+				this.$el.find('.select2-search__field').css('width', 'auto');
+
 			},
 
 			initDeployMode: function() {
