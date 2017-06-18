@@ -63,9 +63,12 @@ module.exports = function(app, config) {
 		if (!agent) {
 			agent = {
                 name: req.body.name,
-                group:  req.body.group
+                group:  req.body.group,
+				unitGroups: req.body.unitGroups,
+				unitTypes: req.body.unitTypes,
+				tags: req.body.tags
             };
-			config.agents.push(agent);
+			config.registerAgent(agent);
 		}
 
 		agent.url = req.body.url;
