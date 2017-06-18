@@ -35,7 +35,7 @@ function($, Backbone, Marionette) {
 
 
 	$(function() {
-		var windowHeight = $(window).height() - 181 - 60 - 41 - 20;
+		var windowHeight = $(window).height() - 181 - 60 - 41;
 		$("head").append("<style type='text/css'>.page-content { max-height: " + windowHeight + "px; overflow-y: auto; } </style>");
 	});
 

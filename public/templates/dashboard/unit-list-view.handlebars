@@ -37,11 +37,10 @@
 	<div class="page-controls">
 		<select class="js-example-basic-single" multiple="multiple" style="width: 500px">
 		</select>
+		<label style="margin-right: 2px; display: none;">Filter: </label>
+		<input type="text" class="input-large search-query" value="{{filterText}}" style="display: none;" />
 
-		<label style="margin-right: 2px">Filter: </label>
-		<input type="text" class="input-large search-query" value="{{filterText}}" />
-
-		<button style="margin-left: 20px" class="btn btn-success btn-refresh" data-loading-text="Refreshing...">
+		<button style="margin-left: 10px;" class="btn btn-success btn-refresh" data-loading-text="Refreshing...">
 			<i class="icon-white icon-refresh"></i>
 			Refresh
 		</button>
