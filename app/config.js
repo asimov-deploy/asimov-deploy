@@ -21,6 +21,11 @@ var fs = require('fs');
 function Config(configOverrides) {
 	this._loadConfigFromFile(configOverrides);
 	this.agents = [];
+	this.agentGroups = [];
+	this.unitGroups = [];
+	this.unitTypes = [];
+	this.unitTags = [];
+	this.unitStatuses = [];
 }
 
 Config.prototype.defaults = {
@@ -54,6 +59,11 @@ Config.prototype._loadConfigFromFile = function(configOverrides) {
 	}
 };
 
+Config.prototype.registerAgent = function (agent) {
+	this.agents.push(agent);
+	this.addAgentGroup(agent.group);
+};
+
 Config.prototype.getAgent = function(name) {
 	return _.find(this.agents, function(agent) { return agent.name === name; });
 };
@@ -76,6 +86,92 @@ Config.prototype.getAgentList = function() {
 		});
 	});
 	return _.sortBy(agentsResp, 'name');
+};
+
+Config.prototype.addAgentGroup = function (agentGroup) {
+	var existing = _.find(this.agentGroups, function (g) {
+		return g === agentGroup;
+	});
+
+	if (!existing) {
+		this.agentGroups.push(agentGroup);
+	}
+};
+
+Config.prototype.getAgentGroups = function () {
+	return _.sortBy(this.agentGroups, function (value) { return value; });
+};
+
+Config.prototype.addUnitGroups = function (unitGroups) {
+	unitGroups = unitGroups || [];
+
+	unitGroups.forEach(function (unitGroup) {
+		var existing = _.find(this.unitGroups, function (g) {
+			return g === unitGroup;
+		});
+
+		if (!existing) {
+			this.unitGroups.push(unitGroup);
+		}
+	}, this);
+};
+
+Config.prototype.getUnitGroups = function () {
+	return _.sortBy(this.unitGroups, function (value) { return value; });
+};
+
+Config.prototype.addUnitTypes = function (unitTypes) {
+	unitTypes = unitTypes || [];
+
+	unitTypes.forEach(function (unitType) {
+		var existing = _.find(this.unitTypes, function (u) {
+			return u === unitType;
+		});
+
+		if (!existing) {
+			this.unitTypes.push(unitType);
+		}
+	}, this);
+};
+
+Config.prototype.getUnitTypes = function () {
+	return _.sortBy(this.unitTypes, function (value) { return value; });
+};
+
+Config.prototype.addUnitTags = function (tags) {
+	tags = tags || [];
+
+	tags.forEach(function (tag) {
+		var existing = _.find(this.unitTags, function (t) {
+			return t === tag;
+		});
+
+		if (!existing) {
+			this.unitTags.push(tag);
+		}
+	}, this);
+};
+
+Config.prototype.getUnitTags = function () {
+	return _.sortBy(this.unitTags, function (value) { return value; });
+};
+
+Config.prototype.addUnitStatuses = function (unitStatuses) {
+	unitStatuses = unitStatuses || [];
+
+	unitStatuses.forEach(function (unitStatus) {
+		var existing = _.find(this.unitStatuses, function (s) {
+			return s === unitStatus;
+		});
+
+		if (!existing) {
+			this.unitStatuses.push(unitStatus);
+		}
+	}, this);
+};
+
+Config.prototype.getUnitStatuses = function () {
+	return _.sortBy(this.unitStatuses, function (value) { return value; });
 };
 
 module.exports = {

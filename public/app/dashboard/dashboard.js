@@ -25,10 +25,30 @@ function(_, app, UnitListView, UnitCollection) {
 	var unitCollection = new UnitCollection();
 	var dashboard = {};
 
-	// events
-	app.vent.on("group-changed", function() {
-		unitCollection.fetch();
-	});
+	var loadUnits = function (filtersObj) {
+		var filters = {};
+		_.forEach(Object.keys(filtersObj), function (group) {
+			filters[group] = _.map(filtersObj[group], function (f) {
+				return f.text;
+			});
+		});
+		unitCollection.fetch(filters);
+	};
+
+	var getCurrentFilter = function () {
+		var filtersStr = localStorage.getItem('Dashboard:current-filter');
+		var filtersObj = {};
+
+		if (filtersStr) {
+			filtersObj = JSON.parse(filtersStr);
+		}
+
+		return filtersObj;
+	};
+
+	var setCurrentFilter = function (filters) {
+		localStorage.setItem('Dashboard:current-filter', JSON.stringify(filters));
+	};
 
 	app.vent.on("agent:event:deployStarted", function(data) {
 		var unit = unitCollection.getUnitInstance(data.unitName, data.agentName);
@@ -74,12 +94,52 @@ function(_, app, UnitListView, UnitCollection) {
 	});
 
 	app.vent.on("dashboard:show", function() {
-		var view = new UnitListView({ collection: unitCollection });
+		var initialFilters = getCurrentFilter();
+		var view = new UnitListView({
+			collection: unitCollection,
+			filters: initialFilters
+		});
 		app.mainRegion.show(view);
 
 		if (unitCollection.length === 0) {
-			unitCollection.fetch();
+			loadUnits(initialFilters);
 		}
+
+		view.on('refresh', function () {
+			loadUnits(getCurrentFilter());
+		});
+
+		view.on("filter-selection:added", function (payload) {
+			var currentFilterObj = getCurrentFilter();
+
+			if (Object.keys(currentFilterObj).indexOf(payload.group) === -1) {
+				currentFilterObj[payload.group] = [];
+			}
+
+			currentFilterObj[payload.group].push({
+				id: payload.id,
+				text: payload.text,
+				selectionText: payload.selectionText
+			});
+
+			loadUnits(currentFilterObj);
+			setCurrentFilter(currentFilterObj);
+		});
+
+		view.on("filter-selection:removed", function (payload) {
+			var currentFilterObj = getCurrentFilter();
+
+			if (Object.keys(currentFilterObj).indexOf(payload.group) === -1) {
+				currentFilterObj[payload.group] = [];
+			}
+
+			currentFilterObj[payload.group] = _.filter(currentFilterObj[payload.group], function(item) {
+				return item.id !== payload.id;
+			});
+
+			loadUnits(currentFilterObj);
+			setCurrentFilter(currentFilterObj);
+		});
 
 		app.router.showRoute("dashboard");
 	});

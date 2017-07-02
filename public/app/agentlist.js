@@ -41,7 +41,7 @@ function($, _, Backbone, Marionette, app) {
 			var agentGroups = _.groupBy(agentList, 'name');
 
 			var data = _.map(agentGroups, function(group){
-				var sortedGroups = _.sortBy(_.pluck(group, 'group'));
+				var sortedGroups = _.sortBy(_.pluck(group, 'agentGroup'));
 				var groupString = _.reduce(sortedGroups, function (memo, val) {
 					if (memo) {
 						return memo + ', ' + val;

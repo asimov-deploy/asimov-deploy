@@ -59,8 +59,16 @@ function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView, 
 			var showLoadBalancerToggle = this.instances.some(function(instance) {
 				return instance.get('loadBalancerState') ? true : false;
 			});
+			var group = this.instances.at(0).get('group');
+			var type = this.instances.at(0).get('type');
 
-			this.model.set({showActions: anySelected, allSelected: allSelected, showLoadBalancerToggle: showLoadBalancerToggle});
+			this.model.set({
+				group: group,
+				type: type,
+				showActions: anySelected,
+				allSelected: allSelected,
+				showLoadBalancerToggle: showLoadBalancerToggle
+			});
 		},
 
 		toggleSelectAll: function() {

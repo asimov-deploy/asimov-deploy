@@ -25,7 +25,7 @@ require([
 	"bootstrap",
 	"handlebarsHelpers",
 	"current-user",
-	"group-selection"
+	"keyboardShortcuts"
 ],
 function($, app, autopilot, Router, Backbone) {
 
