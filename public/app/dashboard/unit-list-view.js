@@ -40,6 +40,10 @@ define([
 			url: "/deploy-lifecycle/cancel"
 		});
 
+		var _openDropDown = function () {
+			this.$el.find("#deploy-unit-filter").select2("open");
+		};
+
 		return Marionette.CompositeView.extend({
 			itemView: UnitInstanceListView,
 			itemViewContainer: "table",
@@ -120,20 +124,29 @@ define([
 			},
 
 			onClose: function() {
-				this.$el.find(".js-example-basic-single").select2("destroy");
-				app.vent.off('keyboard:ctrl:f', this.openDropDown, this);
+				this.$el.find("#deploy-unit-filter").select2("destroy");
+				app.vent.off('keyboard:ctrl:f', _openDropDown, this);
 			},
 
 			onRender: function() {
-				this.$el.find(".js-example-basic-single").select2({
-					//tags: true,
-					placeholder: "Filter...",
+				var initialData = [];
+				_.each(Object.keys(this.initialFilters), function (group) {
+					_.each(this.initialFilters[group], function (f) {
+						f.group = group;
+						f.selected = true;
+						initialData.push(f);
+					});
+				}, this);
+
+				this.$el.find("#deploy-unit-filter").select2({
+					placeholder: "Filter deploy units...",
 					templateSelection: function (data) {
 						return data.selectionText;
 					},
 					allowClear: true,
+					data: initialData,
 					ajax: {
-						url: "/auto-complete",
+						url: "/units/auto-complete",
 						dataType: 'json',
 						delay: 100,
 						data: function (params) {
@@ -147,16 +160,28 @@ define([
 							};
 						}
 					}
-				});
+				})
+				.on("select2:select", function (e) {
+					this.trigger('filter-selection:added', {
+						group: e.params.data.group,
+						id: e.params.data.id,
+						text: e.params.data.text,
+						selectionText: e.params.data.selectionText
+					});
+				}.bind(this))
+				.on("select2:unselect", function(e) {
+					this.trigger('filter-selection:removed', {
+						group: e.params.data.group,
+						id: e.params.data.id,
+						text: e.params.data.text,
+						selectionText: e.params.data.selectionText
+					});
+				}.bind(this));
 
 				// Hack to get the placeholder to show up on load
 				this.$el.find('.select2-search__field').css('width', 'auto');
 
-				app.vent.on('keyboard:ctrl:f', this.openDropDown, this);
-			},
-
-			openDropDown: function () {
-				this.$el.find(".js-example-basic-single").select2("open");
+				app.vent.on('keyboard:ctrl:f', _openDropDown, this);
 			},
 
 			initDeployMode: function() {

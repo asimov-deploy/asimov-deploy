@@ -62,7 +62,7 @@ module.exports = function(app, config) {
 		UNIT_PREFIX
 	];
 
-	app.get("/auto-complete", app.ensureLoggedIn, function(req, res) {
+	app.get("/units/auto-complete", app.ensureLoggedIn, function(req, res) {
 		/*jshint maxcomplexity:10 */
 		var q = req.query.q;
 		var hasModifier = false;
@@ -82,19 +82,24 @@ module.exports = function(app, config) {
 
 		var response = [];
 
-		if (q && q.toLowerCase().startsWith('unit:') && q.length > 5) {
-			var arr = q.toLowerCase().split(":");
-			res.json([
-				{
-					text: 'Units',
-					children: [{
-						id: 'unit:' + arr[1],
+		if (q && q.toLowerCase().startsWith(UNIT_PREFIX + DELIMITER)) {
+			var unitResponse = {
+				text: 'Units',
+				children: []
+			};
+
+			if (q.length > 5) {
+				var arr = q.toLowerCase().split(DELIMITER);
+				unitResponse.children.push(
+					{
+						id: UNIT_PREFIX + DELIMITER + arr[1],
 						text: arr[1],
 						selectionText: 'Unit: ' + arr[1],
-						group: UNIT_PREFIX
-					}]
-				}
-			]);
+						group: 'units'
+					}
+				);
+			}
+			res.json([unitResponse]);
 			return;
 		}
 
@@ -106,7 +111,7 @@ module.exports = function(app, config) {
 					text: agentGroup,
 					prefix: AGENT_GROUP_PREFIX,
 					selectionText: 'Agent Group: ' + agentGroup,
-					group: AGENT_GROUP_PREFIX
+					group: 'agentGroups'
 				};
 			})
 		};
@@ -121,7 +126,7 @@ module.exports = function(app, config) {
 					text: unitGroup,
 					prefix: UNIT_GROUP_PREFIX,
 					selectionText: 'Unit Group: ' + unitGroup,
-					group: UNIT_GROUP_PREFIX
+					group: 'unitGroups'
 				};
 			})
 		};
@@ -136,7 +141,7 @@ module.exports = function(app, config) {
 					text: unitType,
 					prefix: UNIT_TYPE_PREFIX,
 					selectionText: 'Unit Type: ' + unitType,
-					group: UNIT_TYPE_PREFIX
+					group: 'unitTypes'
 				};
 			})
 		};
@@ -151,12 +156,29 @@ module.exports = function(app, config) {
 					text: tag,
 					prefix: TAG_PREFIX,
 					selectionText: 'Tag: ' + tag,
-					group: TAG_PREFIX
+					group: 'unitTags'
 				};
 			})
 		};
 
 		response.push(unitTags);
+
+		if (q && !hasModifier) {
+			var unitGroup = {
+				text: 'Units (unit:)',
+				children: [
+					{
+						id: UNIT_PREFIX + DELIMITER + q,
+						text: q,
+						prefix: UNIT_PREFIX,
+						selectionText: 'Unit: ' + q,
+						group: 'units'
+					}
+				]
+			};
+
+			response.push(unitGroup);
+		}
 
 		if (q) {
 			response = _.map(response, function (group) {
@@ -177,10 +199,10 @@ module.exports = function(app, config) {
 			});
 		}
 
-		if (!hasModifier) {
+		if (!hasModifier && (!q || q.length > 0)) {
 			response = _.map(response, function (group) {
 				if (group.children.length > 5) {
-					group.children = group.children.slice(0, 5);
+					group.children = group.children.slice(0, 3);
 				}
 
 				return group;
