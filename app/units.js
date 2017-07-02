@@ -27,7 +27,8 @@ module.exports = function(app, config) {
 			unitGroups: req.query.unitGroups,
 			unitTypes: req.query.unitTypes,
 			tags: req.query.unitTags,
-			units: req.query.units
+			units: req.query.units,
+			unitStatus: req.query.unitStatuses
 		};
 
 		agentApiClient.getUnits(filters, function(results) {
@@ -54,12 +55,14 @@ module.exports = function(app, config) {
 	var UNIT_TYPE_PREFIX = 'ut';
 	var TAG_PREFIX = 'tag';
 	var UNIT_PREFIX = 'unit';
+	var UNIT_STATUS_PREFIX = 'us';
 	var PREFIXES = [
 		AGENT_GROUP_PREFIX,
 		UNIT_GROUP_PREFIX,
 		UNIT_TYPE_PREFIX,
 		TAG_PREFIX,
-		UNIT_PREFIX
+		UNIT_PREFIX,
+		UNIT_STATUS_PREFIX
 	];
 
 	app.get("/units/auto-complete", app.ensureLoggedIn, function(req, res) {
@@ -147,6 +150,21 @@ module.exports = function(app, config) {
 		};
 
 		response.push(unitTypes);
+
+		var unitStatuses = {
+			text: 'Unit Statuses (us:)',
+			children: config.getUnitStatuses().map(function (status) {
+				return {
+					id: UNIT_STATUS_PREFIX + DELIMITER + status,
+					text: status,
+					prefix: UNIT_STATUS_PREFIX,
+					selectionText: 'Status: ' + status,
+					group: 'unitStatuses'
+				};
+			})
+		};
+
+		response.push(unitStatuses);
 
 		var unitTags = {
 			text: 'Tags (tag:)',

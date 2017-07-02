@@ -92,8 +92,11 @@ module.exports = function(app, config) {
 					agentApiClient.getAgentUnitTags(agent.name, function (unitTags) {
 						config.addUnitTags(unitTags);
 
+						agentApiClient.getAgentUnitStatuses(agent.name, function (unitStatuses) {
+							config.addUnitStatuses(unitStatuses);
 
-						res.json('ok');
+							res.json('ok');
+						});
 					});
 				});
 			});

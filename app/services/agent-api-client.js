@@ -110,6 +110,10 @@ var AgentApiClient = function(config, restify) {
 		this.get(agentName, '/unit-tags', dataCallback);
 	};
 
+	this.getAgentUnitStatuses = function (agentName, dataCallback) {
+		this.get(agentName, '/unit-statuses', dataCallback);
+	};
+
 	this.test = function(agentName) {
 		return config.getAgent(agentName);
 	};

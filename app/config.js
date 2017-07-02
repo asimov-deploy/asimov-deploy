@@ -25,6 +25,7 @@ function Config(configOverrides) {
 	this.unitGroups = [];
 	this.unitTypes = [];
 	this.unitTags = [];
+	this.unitStatuses = [];
 }
 
 Config.prototype.defaults = {
@@ -153,6 +154,24 @@ Config.prototype.addUnitTags = function (tags) {
 
 Config.prototype.getUnitTags = function () {
 	return _.sortBy(this.unitTags, function (value) { return value; });
+};
+
+Config.prototype.addUnitStatuses = function (unitStatuses) {
+	unitStatuses = unitStatuses || [];
+
+	unitStatuses.forEach(function (unitStatus) {
+		var existing = _.find(this.unitStatuses, function (s) {
+			return s === unitStatus;
+		});
+
+		if (!existing) {
+			this.unitStatuses.push(unitStatus);
+		}
+	}, this);
+};
+
+Config.prototype.getUnitStatuses = function () {
+	return _.sortBy(this.unitStatuses, function (value) { return value; });
 };
 
 module.exports = {
