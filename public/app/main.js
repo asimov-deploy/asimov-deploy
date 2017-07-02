@@ -24,7 +24,8 @@ require([
 	"livelog/livelog",
 	"bootstrap",
 	"handlebarsHelpers",
-	"current-user"
+	"current-user",
+	"keyboardShortcuts"
 ],
 function($, app, autopilot, Router, Backbone) {
 

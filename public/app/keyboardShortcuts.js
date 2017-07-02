@@ -16,28 +16,47 @@
 
 define([
 	"jquery",
-	"backbone",
-	"marionette"
+	"app"
 ],
-function($, Backbone, Marionette) {
+function($, app) {
 
-	var app = new Marionette.Application();
+	var aPressed = false;
+	var lastKey = '';
+	var isCtrl = false;
 
-	app.addRegions({
-		mainRegion: "#main-region"
-	});
+	$(document)
+		.keydown(function(e) {
+			if (e.ctrlKey) {
+				isCtrl = true;
+			}
 
-	$(document).ajaxError(function(event, jqxhr) {
-		if (jqxhr.status === 401) {
-			app.vent.trigger('login:show');
-		}
-	});
+			if (e.key === 'a') {
+				aPressed = true;
+			}
 
-	$(function() {
-		var windowHeight = $(window).height() - 181 - 60 - 41;
-		$("head").append("<style type='text/css'>.page-content { max-height: " + windowHeight + "px; overflow-y: auto; } </style>");
-	});
+			if ((e.key === 'f' && isCtrl) ||
+				(aPressed || lastKey === 'a') && e.key === 's') {
+				app.vent.trigger('focus-search-field');
+				return false;
+			}
 
-	return app;
+			if ((aPressed || lastKey === 'a') && e.key === 'c') {
+				app.vent.trigger('units:collapse');
+			}
 
+			if ((aPressed || lastKey === 'a') && e.key === 'e') {
+				app.vent.trigger('units:expand');
+			}
+		})
+		.keyup(function(e) {
+			if (e.ctrlKey) {
+				isCtrl = false;
+			}
+
+			if (e.key === 'a') {
+				aPressed = false;
+			}
+
+			lastKey = e.key;
+		});
 });

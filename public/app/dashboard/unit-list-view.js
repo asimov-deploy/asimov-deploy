@@ -127,7 +127,7 @@ define([
 
 			onClose: function() {
 				this.$el.find("#deploy-unit-filter").select2("destroy");
-				app.vent.off('keyboard:ctrl:f', _openDropDown, this);
+				app.vent.off('focus-search-field', _openDropDown, this);
 			},
 
 			onRender: function() {
@@ -183,7 +183,7 @@ define([
 				// Hack to get the placeholder to show up on load
 				this.$el.find('.select2-search__field').css('width', 'auto');
 
-				app.vent.on('keyboard:ctrl:f', _openDropDown, this);
+				app.vent.on('focus-search-field', _openDropDown, this);
 			},
 
 			initDeployMode: function() {
