@@ -24,8 +24,7 @@ require([
 	"livelog/livelog",
 	"bootstrap",
 	"handlebarsHelpers",
-	"current-user",
-	"group-selection"
+	"current-user"
 ],
 function($, app, autopilot, Router, Backbone) {
 

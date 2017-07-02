@@ -67,7 +67,7 @@ describe('Autopilot', function() {
 					}
 				},
 
-				getUnitListForAgentGroup: function (groupName, dataCallback) {
+				getUnits: function (filters, dataCallback) {
 					var units = [];
 
 					demoDataGenerator.units.forEach(function (unit) {
@@ -145,7 +145,7 @@ describe('Autopilot', function() {
 					}
 				},
 
-				getUnitListForAgentGroup: function (groupName, dataCallback) {
+				getUnits: function (filters, dataCallback) {
 					var units = [];
 
 					demoDataGenerator.units.forEach(function (unit) {
@@ -223,7 +223,7 @@ describe('Autopilot', function() {
 					}
 				},
 
-				getUnitListForAgentGroup: function (groupName, dataCallback) {
+				getUnits: function (filters, dataCallback) {
 					var units = [];
 
 					demoDataGenerator.units.forEach(function (unit) {
@@ -300,7 +300,7 @@ describe('Autopilot', function() {
 					}
 				},
 
-				getUnitListForAgentGroup: function (groupName, dataCallback) {
+				getUnits: function (filters, dataCallback) {
 					var units = [];
 
 					demoDataGenerator.units.forEach(function (unit) {

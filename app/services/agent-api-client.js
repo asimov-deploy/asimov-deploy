@@ -22,7 +22,6 @@ var AgentApiClient = function(config, restify) {
 	restify = restify || require("restify");
 
 	this.get = function(agentName, url, dataCallback) {
-
 		var agent =  config.getAgent(agentName);
 		var client = restify.createJsonClient({ url: agent.url, connectTimeout: 200 });
 		client.get(url, function(err, req, _, data) {
@@ -35,19 +34,39 @@ var AgentApiClient = function(config, restify) {
 
 	};
 
-	this.getUnitListForAgentGroup = function(group, dataCallback) {
+	var _getUnitListUrl = function (filters) {
+		var url = '/units/list';
+		var queryStrings = [];
+
+		_.forEach(Object.keys(filters), function (key) {
+			var values = filters[key];
+
+			if (values && values.length > 0) {
+				queryStrings.push((key + '=') + _.map(values, function (v) {
+					return encodeURIComponent(v);
+				}).join('&' + key + '='));
+			}
+		});
+
+		if (queryStrings.length > 0) {
+			url += '?';
+		}
+
+		return url + queryStrings.join('&');
+	};
+
+	this.getUnits = function(filters, dataCallback) {
+		filters = filters || {};
 		var result = [];
 		var agents = config.agents;
+		var distinctAgents = [];
 
-		var encodedGroup = '';
-
-		if (group) {
-			agents = _.where(agents, { group: group });
-			encodedGroup = '/' + encodeURIComponent(group);
+		if (filters.agentGroups) {
+			agents = _.filter(agents, function (agent) {
+				return filters.agentGroups.indexOf(agent.group) !== -1;
+			});
 		}
 		else {
-			var distinctAgents = [];
-
 			_.forEach(agents, function (agent) {
 				if (_.findWhere(distinctAgents, { name: agent.name }) === undefined) {
 					agent.group = '';
@@ -58,12 +77,14 @@ var AgentApiClient = function(config, restify) {
 			agents = distinctAgents;
 		}
 
+		var url = _getUnitListUrl(filters);
+
 		async.forEach(agents, function(agent, done) {
 			if (agent.dead) {
 				done();
 				return;
 			}
-			this.get(agent.name, '/units/list' + encodedGroup, function(units) {
+			this.get(agent.name, url, function(units) {
 				result.push({agent: agent, units: units});
 				done();
 			});

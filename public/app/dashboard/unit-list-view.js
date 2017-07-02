@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 define([
+		"underscore",
 		"jquery",
 		"marionette",
 		"./unit-instance-list-view",
@@ -25,7 +26,7 @@ define([
 		"jquery.cookie",
 		"select2"
 	],
-	function($, Marionette, UnitInstanceListView, DeployLifecycle, ensureActiveDeploy, app, Backbone) {
+	function(_, $, Marionette, UnitInstanceListView, DeployLifecycle, ensureActiveDeploy, app, Backbone) {
 
 		var DeployLifecycleStartCommand = Backbone.Model.extend({
 			url: "/deploy-lifecycle/start"
@@ -57,6 +58,8 @@ define([
 			initialize: function(options) {
 				this.unfiltered = options.collection;
 				this.collection = new this.collection.constructor(this.collection.models, this.collection.options);
+				this.initialFilters = options.filters || {};
+
 				this.listenTo(this.unfiltered, "reset", this.applyFilter, this);
 				this.loadFilterText();
 				this.initDeployMode();
@@ -211,13 +214,8 @@ define([
 				this.render();
 			},
 
-			refresh: function(e) {
-				$(e.target).button("loading");
-
-				this.unfiltered.fetch()
-					.always(function() {
-						$(e.target).button("reset");
-					});
+			refresh: function () {
+				this.trigger('refresh');
 			},
 
 			applyFilter: function() {

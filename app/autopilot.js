@@ -26,7 +26,7 @@ var AutopilotController = function (app, config, agentApiClient) {
         var deferred = when.defer();
         var deployableUnitSet = _.findWhere(config.autopilot.deployableUnitSets, { id: deployableUnitSetId });
 
-        when(_getUnitListForAgentGroup()).then(function (agents) {
+        when(_getUnits()).then(function (agents) {
             var agentUnits = _.flatten(_.map(agents, function (agent) {
                 var result = [];
 
@@ -79,10 +79,10 @@ var AutopilotController = function (app, config, agentApiClient) {
         return deferred.promise;
     };
 
-    var _getUnitListForAgentGroup = function () {
+    var _getUnits = function () {
         var deferred = when.defer();
 
-        agentApiClient.getUnitListForAgentGroup(null, function (results) {
+        agentApiClient.getUnits(null, function (results) {
             var agents = [];
 
             results.forEach(function(item) {

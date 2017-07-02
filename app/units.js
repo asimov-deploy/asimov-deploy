@@ -20,14 +20,21 @@ module.exports = function(app, config) {
 	var agentApiClient = require('./services/agent-api-client').create(config);
 
 	app.get("/units/list", app.ensureLoggedIn, function(req, res) {
-		var group = req.query.group;
 		var agentsResp = [];
-		agentApiClient.getUnitListForAgentGroup(group, function(results) {
 
+		var filters = {
+			agentGroups: req.query.agentGroups,
+			unitGroups: req.query.unitGroups,
+			unitTypes: req.query.unitTypes,
+			tags: req.query.unitTags,
+			units: req.query.units
+		};
+
+		agentApiClient.getUnits(filters, function(results) {
 			results.forEach(function(item) {
 				agentsResp.push({
 					name: item.agent.name,
-					group: group,
+					group: item.agent.agentGroup,
 					loadBalancerState: item.agent.loadBalancerState,
 					units: item.units
 				});
