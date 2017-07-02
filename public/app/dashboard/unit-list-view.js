@@ -56,7 +56,9 @@ define([
 				"click .btn-start-deploy": "startDeploy",
 				"click .btn-finish-deploy": "finishDeploy",
 				"click .btn-cancel-deploy": "cancelDeploy",
-				"click .btn-configure-autopilot": "configureAutopilot"
+				"click .btn-configure-autopilot": "configureAutopilot",
+				"click .btn-collapse": "collapseUnits",
+				"click .btn-expand": "expandUnits"
 			},
 
 			initialize: function(options) {
@@ -286,7 +288,14 @@ define([
 					}
 				}
 
-			}
+			},
 
+			collapseUnits: function () {
+				app.vent.trigger('units:collapse');
+			},
+
+			expandUnits: function () {
+				app.vent.trigger('units:expand');
+			}
 		});
 	});

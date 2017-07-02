@@ -19,9 +19,10 @@ define([
     "backbone",
     "marionette",
     "./unit-instance-view",
-    "./unit-header-view"
+    "./unit-header-view",
+	"./../app"
 ],
-function($, Backbone, Marionette, UnitInstanceView, UnitHeaderView) {
+function($, Backbone, Marionette, UnitInstanceView, UnitHeaderView, app) {
 
 
 	return Marionette.CompositeView.extend({
@@ -38,6 +39,14 @@ function($, Backbone, Marionette, UnitInstanceView, UnitHeaderView) {
 			this.collection =  this.model.get("instances");
 			this.on("composite:model:rendered", this.createUnitHeaderView, this);
 			this.$el.toggleClass("deploy-unit-collapsed", this.getToggleState());
+
+			app.vent.on('units:collapse', function () {
+				this.collapse();
+			}, this);
+
+			app.vent.on('units:expand', function () {
+				this.expand();
+			}, this);
 		},
 
 		onClose: function() {
@@ -79,8 +88,17 @@ function($, Backbone, Marionette, UnitInstanceView, UnitHeaderView) {
 			if (localStorage) {
 				localStorage.setItem('deploy-unit-collapsed-state-' + this.model.get('name'), this.$el.hasClass("deploy-unit-collapsed"));
 			}
-		}
+		},
 
+		collapse: function () {
+			this.$el.addClass("deploy-unit-collapsed");
+			this.saveToggleState();
+		},
+
+		expand: function () {
+			this.$el.removeClass("deploy-unit-collapsed");
+			this.saveToggleState();
+		}
 	});
 
 
