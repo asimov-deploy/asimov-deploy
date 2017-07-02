@@ -1,4 +1,5 @@
 require('should');
+var config = new (require('../../app/config').Config)();
 
 describe('Autopilot', function() {
 	describe('when requesting deployable unit sets', function() {
@@ -7,7 +8,7 @@ describe('Autopilot', function() {
 		before(function() {
 			var fakeConfig = {
 				autopilot: {
-					deployableUnitSets: require('../../app/demo-mode/demo-data-generator').autopilot.deployableUnitSets
+					deployableUnitSets: require('../../app/demo-mode/demo-data-generator')(config).autopilot.deployableUnitSets
 				}
 			};
 
@@ -43,7 +44,7 @@ describe('Autopilot', function() {
 		var unitsOfDeployableUnitSet;
 
 		before(function() {
-			var demoDataGenerator = require('../../app/demo-mode/demo-data-generator');
+			var demoDataGenerator = require('../../app/demo-mode/demo-data-generator')(config);
 
 			var fakeConfig = {
 				autopilot: {
@@ -121,7 +122,7 @@ describe('Autopilot', function() {
 		var unitsOfDeployableUnitSet;
 
 		before(function() {
-			var demoDataGenerator = require('../../app/demo-mode/demo-data-generator');
+			var demoDataGenerator = require('../../app/demo-mode/demo-data-generator')(config);
 
 			var fakeConfig = {
 				autopilot: {
@@ -199,7 +200,7 @@ describe('Autopilot', function() {
 		var unitsOfDeployableUnitSet;
 
 		before(function() {
-			var demoDataGenerator = require('../../app/demo-mode/demo-data-generator');
+			var demoDataGenerator = require('../../app/demo-mode/demo-data-generator')(config);
 
 			var fakeConfig = {
 				autopilot: {
@@ -277,7 +278,7 @@ describe('Autopilot', function() {
 		var unitsOfDeployableUnitSet;
 
 		before(function() {
-			var demoDataGenerator = require('../../app/demo-mode/demo-data-generator');
+			var demoDataGenerator = require('../../app/demo-mode/demo-data-generator')(config);
 
 			var fakeConfig = {
 				autopilot: {

@@ -15,12 +15,11 @@
 ******************************************************************************/
 
 module.exports = function(app, config) {
-	var demodata = require('./demo-data-generator.js');
+	var _ = require('underscore');
+	var demoDataGenerator = require('./demo-data-generator.js');
 	var demoUtils = require('./demo-utils.js');
 
-	var _ = require('underscore');
-
-	config.agents = demodata.agents;
+	var demodata = demoDataGenerator(config);
 
 	function emitLog(agentName, message) {
 
@@ -40,14 +39,17 @@ module.exports = function(app, config) {
 		clientSockets.sockets.emit('agent:event', data);
 	}
 
-	app.get('/agents/list', app.ensureLoggedIn, function(req, res) {
-		res.json(_.sortBy(demodata.agents, 'name'));
-	});
-
 	app.get('/units/list', app.ensureLoggedIn, function(req, res) {
-		var group = req.query.group;
+		var filters = {
+			agentGroups: req.query.agentGroups,
+			unitGroups: req.query.unitGroups,
+			unitTypes: req.query.unitTypes,
+			tags: req.query.unitTags,
+			units: req.query.units,
+			unitStatus: req.query.unitStatuses
+		};
 
-		res.json(_.where(demodata.units, { group: group }));
+		res.json(demodata.getUnits(filters));
 	});
 
 	app.get("/agent/query", app.ensureLoggedIn, function(req, res) {
@@ -69,7 +71,7 @@ module.exports = function(app, config) {
 	app.post("/loadbalancer/change", app.ensureLoggedIn, function(req, res) {
 		res.json("ok");
 
-		var agent = _.find(demodata.agents, function(agent) {
+		var agent = _.find(config.agents, function(agent) {
 			return agent.name === req.body.agentName;
 		});
 
@@ -89,7 +91,7 @@ module.exports = function(app, config) {
 	});
 
 	app.get("/loadbalancer/servers", app.ensureLoggedIn, function(req, res) {
-		var hosts = _.map(demodata.agents, function(agent) {
+		var hosts = _.map(config.agents, function(agent) {
 			return {
 				name: agent.name,
 				loadBalancerState: agent.loadBalancerState
@@ -113,6 +115,8 @@ module.exports = function(app, config) {
 			branch: version.branch
 		});
 
+		demodata.updateUnitStatus(req.body.agentName, req.body.unitName, 'Deploying');
+
 		emitLog(req.body.agentName, "Starting deploy... (just demo text, the actual deploy agent will output meaningfull deploy info)");
 
 		setTimeout(function() {
@@ -124,6 +128,8 @@ module.exports = function(app, config) {
 				branch: version.branch,
 				status: "Running"
 			});
+
+			demodata.updateUnitStatus(req.body.agentName, req.body.unitName, 'Running');
 		}, 3000);
 
 		res.json('ok');
@@ -180,6 +186,8 @@ module.exports = function(app, config) {
 				status: "Stopping"
 			});
 
+			demodata.updateUnitStatus(req.body.agentName, req.body.unitName, 'Stopping');
+
 			setTimeout(function() {
 				emitAgentEvent({
 					eventName: "unitStatusChanged",
@@ -187,6 +195,8 @@ module.exports = function(app, config) {
 					unitName: req.body.unitName,
 					status: "Stopped"
 				});
+
+				demodata.updateUnitStatus(req.body.agentName, req.body.unitName, 'Stopped');
 			}, 3000);
 		}
 
@@ -198,6 +208,8 @@ module.exports = function(app, config) {
 				status: "Starting"
 			});
 
+			demodata.updateUnitStatus(req.body.agentName, req.body.unitName, 'Starting');
+
 			setTimeout(function() {
 				emitAgentEvent({
 					eventName: "unitStatusChanged",
@@ -205,6 +217,8 @@ module.exports = function(app, config) {
 					unitName: req.body.unitName,
 					status: "Running"
 				});
+
+				demodata.updateUnitStatus(req.body.agentName, req.body.unitName, 'Running');
 			}, 3000);
 		}
 
@@ -212,7 +226,7 @@ module.exports = function(app, config) {
 
 	setInterval(function () {
 
-		_.each(demodata.agents, function (agent) {
+		_.each(config.agents, function (agent) {
 			if (!agent.loadBalancerState.enabled) {
                 agent.loadBalancerState.connectionCount = 0;
                 emitAgentEvent({
