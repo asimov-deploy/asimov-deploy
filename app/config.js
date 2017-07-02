@@ -25,7 +25,6 @@ function Config(configOverrides) {
 	this.unitGroups = [];
 	this.unitTypes = [];
 	this.unitTags = [];
-	this.units = [];
 }
 
 Config.prototype.defaults = {
@@ -62,9 +61,6 @@ Config.prototype._loadConfigFromFile = function(configOverrides) {
 Config.prototype.registerAgent = function (agent) {
 	this.agents.push(agent);
 	this.addAgentGroup(agent.group);
-	this.addUnitGroups(agent.unitGroups);
-	this.addUnitTypes(agent.unitTypes);
-	this.addUnitTags(agent.tags);
 };
 
 Config.prototype.getAgent = function(name) {

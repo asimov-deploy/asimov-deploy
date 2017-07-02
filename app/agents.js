@@ -26,7 +26,10 @@ module.exports = function(app, config) {
 		config.agents.forEach(function(agent) {
 			agentsResp.push({
 				name: agent.name,
-				group: agent.group,
+				agentGroup: agent.group,
+				unitGroup: agent.unitGroup,
+				unitType: agent.unitTypes,
+				tags: agent.tags,
 				dead: agent.dead,
 				version: agent.version,
 				configVersion: agent.configVersion,
@@ -58,16 +61,15 @@ module.exports = function(app, config) {
 	}
 
 	app.post("/agent/heartbeat", function(req,res) {
-
+		var existing = true;
 		var agent = config.getAgentByGroup(req.body.name, req.body.group);
 		if (!agent) {
+			existing = false;
 			agent = {
                 name: req.body.name,
-                group:  req.body.group,
-				unitGroups: req.body.unitGroups,
-				unitTypes: req.body.unitTypes,
-				tags: req.body.tags
+                group:  req.body.group
             };
+
 			config.registerAgent(agent);
 		}
 
@@ -79,8 +81,26 @@ module.exports = function(app, config) {
 		agent.configVersion = req.body.configVersion;
 
 		handleNewLoadBalancerState(agent, req.body.loadBalancerState);
-		res.json('ok');
 
+		if (!existing) {
+			agentApiClient.getAgentUnitGroups(agent.name, function (unitGroups) {
+				config.addUnitGroups(unitGroups);
+
+				agentApiClient.getAgentUnitTypes(agent.name, function (unitTypes) {
+					config.addUnitTypes(unitTypes);
+
+					agentApiClient.getAgentUnitTags(agent.name, function (unitTags) {
+						config.addUnitTags(unitTags);
+
+
+						res.json('ok');
+					});
+				});
+			});
+		}
+		else {
+			res.json('ok');
+		}
 	});
 
 	app.post("/agent/event", function(req, res) {

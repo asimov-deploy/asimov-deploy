@@ -94,6 +94,22 @@ var AgentApiClient = function(config, restify) {
 		});
 	};
 
+	this.getAgentGroups = function (agentName, dataCallback) {
+		this.get(agentName, '/agent-groups', dataCallback);
+	};
+
+	this.getAgentUnitGroups = function (agentName, dataCallback) {
+		this.get(agentName, '/unit-groups', dataCallback);
+	};
+
+	this.getAgentUnitTypes = function (agentName, dataCallback) {
+		this.get(agentName, '/unit-types', dataCallback);
+	};
+
+	this.getAgentUnitTags = function (agentName, dataCallback) {
+		this.get(agentName, '/unit-tags', dataCallback);
+	};
+
 	this.test = function(agentName) {
 		return config.getAgent(agentName);
 	};
