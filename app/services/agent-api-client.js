@@ -66,16 +66,15 @@ var AgentApiClient = function(config, restify) {
 				return filters.agentGroups.indexOf(agent.group) !== -1;
 			});
 		}
-		else {
-			_.forEach(agents, function (agent) {
-				if (_.findWhere(distinctAgents, { name: agent.name }) === undefined) {
-					agent.group = '';
-					distinctAgents.push(agent);
-				}
-			});
 
-			agents = distinctAgents;
-		}
+		_.forEach(agents, function (agent) {
+			if (_.findWhere(distinctAgents, { name: agent.name }) === undefined) {
+				agent.group = '';
+				distinctAgents.push(agent);
+			}
+		});
+
+		agents = distinctAgents;
 
 		var url = _getUnitListUrl(filters);
 
