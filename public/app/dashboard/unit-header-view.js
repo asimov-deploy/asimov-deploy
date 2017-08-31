@@ -40,7 +40,6 @@ function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView, 
 			"click .btn-select": "toggleSelectAll",
 			"click .btn-select-version": "selectVersion",
 			"click .btn-unit-action": "unitAction",
-			"click .btn-toggle-loadbalancer":  "toggleLoadBalancer",
 			"click .btn-set-loadbalancer-in":  "setLoadBalancerIn",
 			"click .btn-set-loadbalancer-out":  "setLoadBalancerOut"
 		},
@@ -119,28 +118,21 @@ function($, _, Backbone, Marionette, app, VersionDialogView, ConfirmDeployView, 
 			});
 		}),
 
-		toggleLoadBalancer: function() {
-			this.setLoadBalancer(function(instance) {
-				var currentState = instance.get('loadBalancerState');
-				return currentState && !currentState.enabled;
-			});
-		},
-
 		setLoadBalancerIn: function() {
-			this.setLoadBalancer(function() { return true; });
+			this.setLoadBalancer(true);
 		},
 
 		setLoadBalancerOut: function() {
-			this.setLoadBalancer(function() { return false; });
+			this.setLoadBalancer(false);
 		},
 
-		setLoadBalancer: function(shouldBeEnabledFunction) {
+		setLoadBalancer: function(enable) {
 			var selectedInstances = this.instances.where({selected: true});
 			_.each(selectedInstances, function (instance) {
 				instance.set({ showAsChanging: true });
 				new ChangeLoadBalancerStatusCommand({
 					agentName: instance.get('agentName'),
-					action: shouldBeEnabledFunction(instance) ? "enable" : "disable"
+					action: enable ? "enable" : "disable"
 				}).save();
 			});
 		}
