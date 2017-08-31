@@ -2,7 +2,7 @@
   "name": "asimov-deploy-ui",
   "description": "Web UI For Asimov Deploy (distributed deploy system)",
   "author": "Ebay Inc",
-  "version": "0.8.3-alpha.1",
+  "version": "0.8.3-alpha.2",
   "homepage": "https://github.com/asimov-deploy/asimov-deploy",
   "dependencies": {
     "async": ">= 0.1.22",
