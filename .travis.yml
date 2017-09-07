@@ -1,12 +1,8 @@
-sudo: required
-
-services:
-  - docker
-
-script:
-- docker build -t asimov-deploy/asimov-deploy:build . -f Dockerfile.build
-- docker run -it --rm --name test asimov-deploy/asimov-deploy:build
-
+language: node_js
+node_js:
+- '5.4'
+before_script:
+- npm install -g grunt-cli
 deploy:
   provider: npm
   email: asimov.deploy@gmail.com
