@@ -44,3 +44,4 @@ Site/eo_web.ashx
 build_artifacts/
 config_overrides.js
 active-deploys/*
+docker-build

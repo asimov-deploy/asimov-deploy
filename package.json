@@ -63,7 +63,6 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "prepublish": "grunt release",
     "test": "grunt release"
   },
   "keywords": [
