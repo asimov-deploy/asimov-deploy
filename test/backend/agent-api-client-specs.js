@@ -73,7 +73,7 @@ describe('AgentApiClient', function(){
 
 			var apiClient = require("../../app/services/agent-api-client").create(fakeConfig, restify);
 
-			apiClient.getUnits({agentGroups: ['groupName']}, function(results) {
+			apiClient.getUnits({agentGroups: ['groupName']}, false, function(results) {
 				unitListForAgentGroup = results;
 			});
 		});
