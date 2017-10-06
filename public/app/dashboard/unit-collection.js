@@ -61,7 +61,10 @@ function($, _, Backbone, app, UnitInstance) {
 				version: instance.version,
 				branch: instance.branch,
 				actions: instance.actions,
-				hasDeployParameters: instance.hasDeployParameters
+				hasDeployParameters: instance.hasDeployParameters,
+				group: instance.group,
+				type: instance.type,
+				tags: instance.tags
 			});
 		},
 
@@ -71,7 +74,7 @@ function($, _, Backbone, app, UnitInstance) {
 			this.instanceIndex[key] = unitInstance;
 		},
 
-		fetch: function() {
+		fetch: function (filters) {
 			var tempList = [];
 			var self = this;
 			var defered = $.Deferred();
@@ -79,17 +82,19 @@ function($, _, Backbone, app, UnitInstance) {
 			$.ajax({
 				type: 'GET',
 				url: "/units/list",
-				data: $.param({group: app.currentGroup}),
+				data: $.param(filters || {}),
 				dataType: 'json'
 			}).done(function(agents) {
 				agents.forEach(function(agent) {
-					agent.units.forEach(function(instance) {
-						var unit = self.addOrGetUnit(instance.name, instance.actions, tempList);
-						var unitInstance = self.createUnitInstance(agent, instance);
+					if (agent.units) {
+						agent.units.forEach(function(instance) {
+							var unit = self.addOrGetUnit(instance.name, instance.actions, tempList);
+							var unitInstance = self.createUnitInstance(agent, instance);
 
-						unit.instances.add(unitInstance);
-						self.addInstanceToIndex(unitInstance);
-					});
+							unit.instances.add(unitInstance);
+							self.addInstanceToIndex(unitInstance);
+						});
+					}
 				});
 
 				tempList.sort(function(a, b) {

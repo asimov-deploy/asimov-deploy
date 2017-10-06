@@ -16,50 +16,51 @@
 
 define([
     "when",
-    "app",
     "../task-aborted-exception"
 ],
-function(when, app, TaskAbortedException) {
-    var prompt = function() {
-        var deferred = when.defer();
+function(when, TaskAbortedException) {
+    var PromptTask = function (config, eventAggregator) {
+        var _prompt = function () {
+            var deferred = when.defer();
 
-        var dispose = function () {
-            app.vent.off('autopilot:continue-deploy', continueDeploy);
-            app.vent.off('autopilot:abort-deploy', abort);
+            var dispose = function () {
+                eventAggregator.off('autopilot:continue-deploy', continueDeploy);
+                eventAggregator.off('autopilot:abort-deploy', abort);
+            };
+
+            var continueDeploy = function () {
+                dispose();
+                deferred.resolve();
+            };
+
+            var abort = function () {
+                dispose();
+                deferred.reject(new TaskAbortedException());
+            };
+
+            eventAggregator.on('autopilot:continue-deploy', continueDeploy);
+            eventAggregator.on('autopilot:abort-deploy', abort);
+
+            if (!config.paused) {
+                eventAggregator.trigger('autopilot:pause-deploy');
+            }
+
+            return deferred.promise;
         };
 
-        var continueDeploy = function () {
-            dispose();
-            deferred.resolve();
-        };
-
-        var abort = function () {
-            dispose();
-            deferred.reject(new TaskAbortedException());
-        };
-
-        app.vent.on('autopilot:continue-deploy', continueDeploy);
-        app.vent.on('autopilot:abort-deploy', abort);
-
-        if (!app.autopilot.paused) {
-            app.vent.trigger('autopilot:pause-deploy');
-        }
-
-        return deferred.promise;
-    };
-
-    return {
-        execute: function () {
+        this.execute = function () {
             return function () {
-                return when(prompt());
+                return when(_prompt());
             };
-        },
-
-        getInfo: function () {
-            return {
-                title: 'Prompt',
-                description: 'Pause execution and waits for user input'
-            };
-        }
+        };
     };
+
+    PromptTask.getInfo = function () {
+        return {
+            title: 'Prompt',
+            description: 'Pause execution and waits for user input'
+        };
+    };
+
+    return PromptTask;
 });

@@ -1,7 +1,7 @@
 <td colspan="4">
 	<a href="deploy-unit" data-bypass="1" class="deploy-unit-link">{{name}}</a>
 </td>
-<td>
+<td class="deploy-unit-header-toggle">
 	<button class="btn-hover btn-select {{#if allSelected}}selected{{/if}}">
 		<i class="icon-white icon-ok"></i>
 	</button>
@@ -35,4 +35,10 @@
 			</span>
 		{{/if}}
 	{{/if}}
+	<div class="pull-right" style="height: 25px;">
+		{{#if group }}
+		<span class="label label-small" title="Group">{{group}}</span>&nbsp;
+		{{/if}}
+		<span class="label label-small" title="Type">{{type}}</span>
+	</div>
 </td>

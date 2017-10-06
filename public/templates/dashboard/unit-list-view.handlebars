@@ -35,13 +35,20 @@
 	</div>
 
 	<div class="page-controls">
+		<select id="deploy-unit-filter" multiple="multiple" style="width: 500px"></select>
+		<label style="margin-right: 2px; display: none;">Filter: </label>
+		<input type="text" class="input-large search-query" value="{{filterText}}" style="display: none;" />
 
-		<label style="margin-right: 2px">Filter: </label>
-		<input type="text" class="input-large search-query" value="{{filterText}}" />
-
-		<button style="margin-left: 20px" class="btn btn-success btn-refresh" data-loading-text="Refreshing...">
+		<button style="margin-left: 10px;" class="btn btn-success btn-refresh" data-loading-text="Refreshing...">
 			<i class="icon-white icon-refresh"></i>
 			Refresh
+		</button>
+
+		<button style="margin-left: 5px;" class="btn btn-small btn-link btn-collapse">
+			<i class="icon-white icon-chevron-up"></i>
+		</button>
+		<button class="btn btn-small btn-link btn-expand">
+			<i class="icon-white icon-chevron-down"></i>
 		</button>
 	</div>
 

@@ -1,3 +1,10 @@
-<td style="white-space:nowrap;">{{unitName}}</td>
+<td style="white-space:nowrap;">
+    {{#selected}}
+        <input type="checkbox" name="deployable-unit" value="{{unitName}}" checked="checked" />
+    {{/selected}}
+    {{^selected}}
+        <input type="checkbox" name="deployable-unit" value="{{unitName}}" />
+    {{/selected}}
+    {{unitName}}</td>
 <td>{{instances.length}}</td>
 <td>{{selectedVersion.version}} ({{selectedVersion.branch}})</td>

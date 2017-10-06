@@ -18,96 +18,110 @@ define([
     "underscore",
     "when",
     "when/sequence",
-    "backbone",
-    "app",
+    "../../deploys/deploy-command",
     "../task-aborted-exception"
 ],
-function(_, when, sequence, Backbone, app, TaskAbortedException) {
-    var DeployCommand = Backbone.Model.extend({
-        url: "/deploy/deploy"
-    });
+function(_, when, sequence, DeployCommand, TaskAbortedException) {
+    var DeployTask = function (config, eventAggregator) {
+        var _createDeployUnitToAgentsTask = function (agents, unit) {
+            return function() {
+                var deferreds = [];
 
-    var createDeployUnitToAgentsTask = function (agents, unit) {
-        return function() {
-            var deferreds = [];
+                _.each(agents, function (agentName) {
+                    deferreds.push(_deployUnitForAgent(agentName, unit.unitName, unit.versionId));
+                });
 
-            _.each(agents, function (agentName) {
-                deferreds.push(deployUnitForAgent(agentName, unit.unitName, unit.versionId));
-            });
-
-            return when.all(deferreds).delay(1000);
-        };
-    };
-
-    var deployUnitForAgent = function(agentName, unitName, versionId) {
-        var deferred = when.defer();
-
-        new DeployCommand({
-            agentName: agentName,
-            unitName: unitName,
-            versionId: versionId
-        }).save();
-
-        var dispose = function () {
-            app.vent.off('agent:event:deployCompleted', deployCompleted);
-            app.vent.off('agent:event:deployFailed', deployFailed);
-            app.vent.off('autopilot:abort-deploy', abort);
+                return when.all(deferreds).delay(config.deployPostDelay);
+            };
         };
 
-        var deployCompleted = function (data) {
-            if (data.agentName === agentName &&
-                data.unitName === unitName) {
+        var _deployUnitForAgent = function(agentName, unitName, versionId) {
+            var retries = 0;
+            var deferred = when.defer();
+
+            new DeployCommand({
+                agentName: agentName,
+                unitName: unitName,
+                versionId: versionId
+            }).save();
+
+            var dispose = function () {
+                eventAggregator.off('agent:event:deployCompleted', deployCompleted);
+                eventAggregator.off('agent:event:deployFailed', deployFailed);
+                eventAggregator.off('autopilot:continue-deploy', continueDeploy);
+                eventAggregator.off('autopilot:abort-deploy', abort);
+            };
+
+            var deployCompleted = function (data) {
+                if (data.agentName === agentName &&
+                    data.unitName === unitName) {
+                    dispose();
+                    deferred.resolve({
+                        agentName: agentName,
+                        unitName: unitName,
+                        versionId: versionId
+                    });
+                }
+            };
+
+            var deployFailed = function (data) {
+                if (data.agentName === agentName &&
+                    data.unitName === unitName) {
+                    if (config.deployRetryOnFailure && retries < config.deployFailureRetries) {
+                        retries++;
+                        new DeployCommand({
+                            agentName: agentName,
+                            unitName: unitName,
+                            versionId: versionId
+                        }).save();
+                    }
+                    else {
+                        eventAggregator.trigger('autopilot:pause-deploy');
+                    }
+                }
+            };
+
+            var continueDeploy = function () {
                 dispose();
                 deferred.resolve({
                     agentName: agentName,
                     unitName: unitName,
                     versionId: versionId
                 });
-            }
-        };
+            };
 
-        var deployFailed = function (data) {
-            if (data.agentName === agentName &&
-                data.unitName === unitName) {
+            var abort = function () {
                 dispose();
-                deferred.reject({
-                    agentName: agentName,
-                    unitName: unitName,
-                    versionId: versionId
-                });
-            }
+                deferred.reject(new TaskAbortedException());
+            };
+
+            eventAggregator.on('agent:event:deployCompleted', deployCompleted);
+            eventAggregator.on('agent:event:deployFailed', deployFailed);
+            eventAggregator.on('autopilot:continue-deploy', continueDeploy);
+            eventAggregator.on('autopilot:abort-deploy', abort);
+
+            return deferred.promise;
         };
 
-        var abort = function () {
-            dispose();
-            deferred.reject(new TaskAbortedException());
-        };
-
-        app.vent.on('agent:event:deployCompleted', deployCompleted);
-        app.vent.on('agent:event:deployFailed', deployFailed);
-        app.vent.on('autopilot:abort-deploy', abort);
-
-        return deferred.promise;
-    };
-
-    return {
-        execute: function (task) {
+        this.execute = function (taskData) {
             return function() {
                 var tasks = [];
 
-                _.each(task.units, function (unit) {
-                    tasks.push(createDeployUnitToAgentsTask(task.agents, unit));
+                _.each(taskData.units, function (unit) {
+                    tasks.push(_createDeployUnitToAgentsTask(taskData.agents, unit));
                 });
 
                 return sequence(tasks);
             };
-        },
-
-        getInfo: function () {
-            return {
-                title: 'Deploy unit set',
-                description: 'Deploys version for each unit in set'
-            };
-        }
+        };
     };
+
+    DeployTask.getInfo = function () {
+        return {
+            title: 'Deploy unit set',
+            description: 'Deploys version for each unit in set'
+        };
+    };
+
+    return DeployTask;
 });

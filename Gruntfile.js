@@ -66,7 +66,7 @@ module.exports = function(grunt) {
 			},
 
 			ui_src: {
-				files: ["public/**/*.js", "public/templates/**/*" ],
+				files: ["public/**/*.js", "public/templates/**/*", "test/ui/**/*.js" ],
 				tasks: ["default"]
 			},
 
@@ -92,11 +92,24 @@ module.exports = function(grunt) {
 				options: { reporter: 'spec' },
 				src: ['test/backend/**/*.js']
 			}
-		}
+		},
 
+		karma: {
+	        options: {
+	            configFile: 'test/ui/karma-conf.js'
+	        },
+	        dev: {
+	            autoWatch: true,
+	            singleRun: false
+	        },
+	        prod: {
+	            autoWatch: false,
+	            singleRun: true,
+	            reporters: ['dots']
+	        }
+	    }
 	});
 
-	// Load the plugin that provides the "uglify" task.
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-handlebars');
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -108,10 +121,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-mocha-test');
 	grunt.loadNpmTasks('grunt-notify');
+	grunt.loadNpmTasks('grunt-karma');
 
 	// Default task(s).
-	grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'less', 'handlebars', 'concat', 'mochaTest']);
+	grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'less', 'handlebars', 'concat', 'mochaTest', 'karma:prod']);
 
-	grunt.registerTask("release", ['default', 'cssmin', 'uglify', 'mochaTest']);
+	grunt.registerTask("release", ['default', 'cssmin', 'uglify']);
 
 };

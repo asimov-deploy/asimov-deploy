@@ -1,5 +1,5 @@
-define([], function() {
-
+"use strict";
+define([], function($) {
 	return [
 		{
 			"name": "TIME-MACHINE",
