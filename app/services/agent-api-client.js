@@ -34,7 +34,7 @@ var AgentApiClient = function(config, restify) {
 
 	};
 
-	var _getUnitListUrl = function (filters) {
+	var _getUnitListUrl = function (filters, skipStatusRefresh) {
 		var url = '/units/list';
 		var queryStrings = [];
 
@@ -48,6 +48,10 @@ var AgentApiClient = function(config, restify) {
 			}
 		});
 
+		if (skipStatusRefresh === true) {
+			queryStrings.push('skipStatusRefresh=true');
+		}
+
 		if (queryStrings.length > 0) {
 			url += '?';
 		}
@@ -55,7 +59,7 @@ var AgentApiClient = function(config, restify) {
 		return url + queryStrings.join('&');
 	};
 
-	this.getUnits = function(filters, dataCallback) {
+	this.getUnits = function(filters, skipStatusRefresh, dataCallback) {
 		filters = filters || {};
 		var result = [];
 		var agents = config.agents;
@@ -76,7 +80,7 @@ var AgentApiClient = function(config, restify) {
 
 		agents = distinctAgents;
 
-		var url = _getUnitListUrl(filters);
+		var url = _getUnitListUrl(filters, skipStatusRefresh);
 
 		async.forEach(agents, function(agent, done) {
 			if (agent.dead) {

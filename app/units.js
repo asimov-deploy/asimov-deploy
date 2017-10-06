@@ -31,7 +31,9 @@ module.exports = function(app, config) {
 			unitStatus: req.query.unitStatuses
 		};
 
-		agentApiClient.getUnits(filters, function(results) {
+		var skipStatusRefresh = (req.query.skipStatusRefresh || 'false') === 'true' ? true: false;
+
+		agentApiClient.getUnits(filters, skipStatusRefresh, function(results) {
 			results.forEach(function(item) {
 				agentsResp.push({
 					name: item.agent.name,

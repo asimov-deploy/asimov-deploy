@@ -25,13 +25,16 @@ function(_, app, UnitListView, UnitCollection) {
 	var unitCollection = new UnitCollection();
 	var dashboard = {};
 
-	var loadUnits = function (filtersObj) {
+	var loadUnits = function (filtersObj, skipStatusRefresh) {
 		var filters = {};
 		_.forEach(Object.keys(filtersObj), function (group) {
 			filters[group] = _.map(filtersObj[group], function (f) {
 				return f.text;
 			});
 		});
+
+		filters.skipStatusRefresh = skipStatusRefresh;
+
 		unitCollection.fetch(filters);
 	};
 
@@ -102,11 +105,11 @@ function(_, app, UnitListView, UnitCollection) {
 		app.mainRegion.show(view);
 
 		if (unitCollection.length === 0) {
-			loadUnits(initialFilters);
+			loadUnits(initialFilters, false);
 		}
 
 		view.on('refresh', function () {
-			loadUnits(getCurrentFilter());
+			loadUnits(getCurrentFilter(), false);
 		});
 
 		view.on("filter-selection:added", function (payload) {
@@ -122,7 +125,7 @@ function(_, app, UnitListView, UnitCollection) {
 				selectionText: payload.selectionText
 			});
 
-			loadUnits(currentFilterObj);
+			loadUnits(currentFilterObj, true);
 			setCurrentFilter(currentFilterObj);
 		});
 
@@ -137,7 +140,7 @@ function(_, app, UnitListView, UnitCollection) {
 				return item.id !== payload.id;
 			});
 
-			loadUnits(currentFilterObj);
+			loadUnits(currentFilterObj, true);
 			setCurrentFilter(currentFilterObj);
 		});
 
