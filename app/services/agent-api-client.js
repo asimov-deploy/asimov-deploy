@@ -63,22 +63,14 @@ var AgentApiClient = function(config, restify) {
 		filters = filters || {};
 		var result = [];
 		var agents = config.agents;
-		var distinctAgents = [];
 
 		if (filters.agentGroups) {
 			agents = _.filter(agents, function (agent) {
-				return filters.agentGroups.indexOf(agent.group) !== -1;
+				return _.filter(agent.groups, function (g) {
+					return filters.agentGroups.indexOf(g) !== -1;
+				});
 			});
 		}
-
-		_.forEach(agents, function (agent) {
-			if (_.findWhere(distinctAgents, { name: agent.name }) === undefined) {
-				agent.group = '';
-				distinctAgents.push(agent);
-			}
-		});
-
-		agents = distinctAgents;
 
 		var url = _getUnitListUrl(filters, skipStatusRefresh);
 

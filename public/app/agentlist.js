@@ -38,10 +38,8 @@ function($, _, Backbone, Marionette, app) {
 		url: "/agents/list",
 
 		parse: function (agentList) {
-			var agentGroups = _.groupBy(agentList, 'name');
-
-			var data = _.map(agentGroups, function(group){
-				var sortedGroups = _.sortBy(_.pluck(group, 'agentGroup'));
+			return _.map(agentList, function (agent) {
+				var sortedGroups = agent.agentGroups.sort();
 				var groupString = _.reduce(sortedGroups, function (memo, val) {
 					if (memo) {
 						return memo + ', ' + val;
@@ -51,16 +49,14 @@ function($, _, Backbone, Marionette, app) {
 				}, null);
 
 				return {
-					name: group[0].name,
+					name: agent.name,
 					groups: groupString,
-					dead: group[0].dead,
-					version: group[0].version,
-					configVersion: group[0].configVersion,
-					loadBalancerState: group[0].loadBalancerState
+					dead: agent.dead,
+					version: agent.version,
+					configVersion: agent.configVersion,
+					loadBalancerState: agent.loadBalancerState
 				};
 			});
-
-			return data;
 		}
 	});
 

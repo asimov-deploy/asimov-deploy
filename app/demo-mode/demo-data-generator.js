@@ -21,7 +21,7 @@ var registerWebfrontAgents = function (config) {
 	for (var i = 1; i <= 5; i++) {
 		var agent = {
 			name: "SE1-WEBFRONT-0" + i,
-			group: 'Web servers',
+			groups: [ 'Web servers' ],
 			dead: false,
 			version: "0.6.12",
 			configVersion: 43,
@@ -40,7 +40,7 @@ var registerAppServerAgents = function (config) {
 	for (var i = 1; i <= 5; i++) {
 		var agent = {
 			name: "SE1-APPSRV-0" + i,
-			group: 'Application servers',
+			groups: [ 'Application servers' ],
 			dead: false,
 			version: "0.6.12",
 			configVersion: 43,
@@ -63,7 +63,7 @@ var registerUnits = function (config) {
 		if (agent.name.indexOf('WEBFRONT') !== -1) {
 			units.push({
 				name: agent.name,
-				group: agent.group,
+				group: agent.groups[0],
 				loadBalancerState: agent.loadBalancerState,
 				units: [
 					{
@@ -107,7 +107,7 @@ var registerUnits = function (config) {
 		if (agent.name.indexOf('SE1-APPSRV') !== -1) {
 			units.push({
 				name: agent.name,
-				group: agent.group,
+				group: agent.groups[0],
 				loadBalancerId: agent.loadBalancerId,
 				loadBalancerState: agent.loadBalancerState,
 				units: [

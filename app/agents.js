@@ -26,10 +26,7 @@ module.exports = function(app, config) {
 		config.agents.forEach(function(agent) {
 			agentsResp.push({
 				name: agent.name,
-				agentGroup: agent.group,
-				unitGroup: agent.unitGroup,
-				unitType: agent.unitTypes,
-				tags: agent.tags,
+				agentGroups: agent.groups,
 				dead: agent.dead,
 				version: agent.version,
 				configVersion: agent.configVersion,
@@ -62,12 +59,13 @@ module.exports = function(app, config) {
 
 	app.post("/agent/heartbeat", function(req,res) {
 		var existing = true;
-		var agent = config.getAgentByGroup(req.body.name, req.body.group);
+		var agent = config.getAgent(req.body.name);
+
 		if (!agent) {
 			existing = false;
 			agent = {
                 name: req.body.name,
-                group:  req.body.group
+                groups:  req.body.groups || [ req.body.group ]
             };
 
 			config.registerAgent(agent);

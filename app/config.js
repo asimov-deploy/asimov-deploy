@@ -61,15 +61,14 @@ Config.prototype._loadConfigFromFile = function(configOverrides) {
 
 Config.prototype.registerAgent = function (agent) {
 	this.agents.push(agent);
-	this.addAgentGroup(agent.group);
+
+	agent.groups.forEach(function(g) {
+		this.addAgentGroup(g);
+	}, this);
 };
 
 Config.prototype.getAgent = function(name) {
 	return _.find(this.agents, function(agent) { return agent.name === name; });
-};
-
-Config.prototype.getAgentByGroup = function(name, group) {
-	return _.find(this.agents, function(agent) { return agent.name === name && agent.group === group; });
 };
 
 Config.prototype.getAgentList = function() {

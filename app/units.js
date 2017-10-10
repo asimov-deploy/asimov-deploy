@@ -35,13 +35,16 @@ module.exports = function(app, config) {
 
 		agentApiClient.getUnits(filters, skipStatusRefresh, function(results) {
 			results.forEach(function(item) {
-				agentsResp.push({
-					name: item.agent.name,
-					group: item.agent.agentGroup,
-					loadBalancerState: item.agent.loadBalancerState,
-					units: item.units
+				item.agent.groups.forEach(function (g) {
+					agentsResp.push({
+						name: item.agent.name,
+						group: g,
+						loadBalancerState: item.agent.loadBalancerState,
+						units: item.units
+					});
 				});
 			});
+
 			res.json(agentsResp);
 		});
 
