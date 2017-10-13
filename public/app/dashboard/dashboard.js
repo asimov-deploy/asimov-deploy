@@ -105,11 +105,11 @@ function(_, app, UnitListView, UnitCollection) {
 		app.mainRegion.show(view);
 
 		if (unitCollection.length === 0) {
-			loadUnits(initialFilters, true);
+			loadUnits(initialFilters, false);
 		}
 
 		view.on('refresh', function () {
-			loadUnits(getCurrentFilter(), true);
+			loadUnits(getCurrentFilter(), false);
 		});
 
 		view.on("filter-selection:added", function (payload) {
