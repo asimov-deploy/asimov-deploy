@@ -52,7 +52,6 @@ define([
 
 			events: {
 				"click .btn-refresh": "refresh",
-				"change .search-query": "filterUpdated",
 				"click .btn-start-deploy": "startDeploy",
 				"click .btn-finish-deploy": "finishDeploy",
 				"click .btn-cancel-deploy": "cancelDeploy",
@@ -62,17 +61,10 @@ define([
 			},
 
 			initialize: function(options) {
-				this.unfiltered = options.collection;
-				this.collection = new this.collection.constructor(this.collection.models, this.collection.options);
+				this.collection = options.collection;
 				this.initialFilters = options.filters || {};
 
-				this.listenTo(this.unfiltered, "reset", this.applyFilter, this);
-				this.loadFilterText();
 				this.initDeployMode();
-
-				if (this.collection.length > 0) {
-					this.applyFilter();
-				}
 
 				app.vent.on('autopilot:deploy-started', function () {
 					this.render();
@@ -246,23 +238,11 @@ define([
 			},
 
 			applyFilter: function() {
-
-				var regEx = new RegExp(this.filterText, 'i');
-
-				this.collection.reset(this.unfiltered.filter(function(item) {
-					return regEx.exec(item.get('name')) !== null;
-				}));
-			},
-
-			filterUpdated: function(e) {
-				this.filterText = $(e.target).val();
-				this.saveLoadFilterText();
-				this.applyFilter();
+				this.collection.reset(this.unfiltered);
 			},
 
 			serializeData: function() {
 				return {
-					filterText: this.filterText,
 					hasActiveDeploy: this.hasActiveDeploy,
 					deployAnnotationsEnabled: this.deployAnnotations,
 					autopilot: {
@@ -270,24 +250,6 @@ define([
 						started: app.autopilot.started
 					}
 				};
-			},
-
-			saveLoadFilterText: function() {
-				if (localStorage) {
-					localStorage.setItem('DeployUnitView:filter', this.filterText);
-				}
-			},
-
-			loadFilterText: function() {
-				this.filterText = "";
-
-				if (localStorage) {
-					var storedFilter = localStorage.getItem('DeployUnitView:filter');
-					if (storedFilter) {
-						this.filterText = storedFilter;
-					}
-				}
-
 			},
 
 			collapseUnits: function () {
