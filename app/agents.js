@@ -65,7 +65,9 @@ module.exports = function(app, config) {
 			existing = false;
 			agent = {
                 name: req.body.name,
-                groups:  req.body.groups || [ req.body.group ]
+				groups:  req.body.groups || [ req.body.group ],
+				supportsFiltering: req.body.group ? false : true,
+				isLegacyNodeAgent: req.body.version === '1.0.0' && req.body.configVersion === '0.0.1' ? true : false
             };
 
 			config.registerAgent(agent);
@@ -80,7 +82,7 @@ module.exports = function(app, config) {
 
 		handleNewLoadBalancerState(agent, req.body.loadBalancerState);
 
-		if (!existing) {
+		if (!existing && agent.supportsFiltering) {
 			agentApiClient.getAgentUnitGroups(agent.name, function (unitGroups) {
 				config.addUnitGroups(unitGroups);
 

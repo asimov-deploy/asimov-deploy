@@ -72,6 +72,12 @@ var AgentApiClient = function(config, restify) {
 			});
 		}
 
+		if (filters.unitGroups || filters.unitTypes || filters.tags || filters.units || filters.unitStatus) {
+			agents = _.filter(agents, function (agent) {
+				return agent.supportsFiltering;
+			});
+		}
+
 		var url = _getUnitListUrl(filters, skipStatusRefresh);
 
 		async.forEach(agents, function(agent, done) {
@@ -79,10 +85,19 @@ var AgentApiClient = function(config, restify) {
 				done();
 				return;
 			}
-			this.get(agent.name, url, function(units) {
-				result.push({agent: agent, units: units});
-				done();
-			});
+
+			if (agent.isLegacyNodeAgent) {
+				this.get(agent.name, '/units/list', function(units) {
+					result.push({agent: agent, units: units});
+					done();
+				});
+			}
+			else {
+				this.get(agent.name, url, function(units) {
+					result.push({agent: agent, units: units});
+					done();
+				});
+			}
 
 		}.bind(this), function() {
 			dataCallback(result);
