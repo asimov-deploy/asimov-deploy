@@ -66,7 +66,7 @@ var AgentApiClient = function(config, restify) {
 
 		if (filters.agentGroups) {
 			agents = _.filter(agents, function (agent) {
-				return _.filter(agent.groups, function (g) {
+				return _.find(agent.groups, function (g) {
 					return filters.agentGroups.indexOf(g) !== -1;
 				});
 			});

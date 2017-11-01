@@ -239,4 +239,57 @@ describe('AgentApiClient', function(){
 			unitList.should.deepEqual([]);
 		});
 	});
+
+	describe('when multiple agents registered', function() {
+		var unitListForAgentGroupOne = [
+			{
+				name: "test"
+			}
+		];
+		var fakeAgentOne = { groups: ["group1", "group2"] };
+		var fakeAgentTwo = { groups: ["group3"] };
+        var expectedUnitList = [
+			{
+				agent: fakeAgentOne,
+				units: [
+					{
+						name: "test"
+					}
+				]
+			}
+		];
+
+		before(function() {
+			var fakeConfig = {
+				agents: [
+					fakeAgentOne,
+					fakeAgentTwo
+				],
+				getAgent: function() {
+					return { url: 'agentUrl', apiKey: '12321313213' };
+				}
+			};
+
+			var restify = {
+				createJsonClient: function() {
+					return {
+						get: function(url, cb) {
+							cb(null,null,null,unitListForAgentGroupOne);
+						}
+					};
+				}
+			};
+
+			var apiClient = require("../../app/services/agent-api-client").create(fakeConfig, restify);
+
+			apiClient.getUnits({agentGroups: ['group1']}, false, function(results) {
+				unitListForAgentGroupOne = results;
+			});
+		});
+
+		it('should return units for agent one)', function() {
+			unitListForAgentGroupOne.should.deepEqual(expectedUnitList);
+		});
+
+	});
 });
