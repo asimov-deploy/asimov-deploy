@@ -48,7 +48,7 @@ describe('AgentApiClient', function(){
 
 	describe('when agent has empty unit list', function() {
 		var unitListForAgentGroup = [];
-		var fakeAgent = { group: "groupName" };
+		var fakeAgent = { groups: [ "groupName" ] };
         var expectedUnitList = [];
 
 		before(function() {
@@ -91,7 +91,7 @@ describe('AgentApiClient', function(){
 
 	describe('when agent is not a legacy node agent', function() {
 		var unitList = [];
-		var fakeAgent = { group: "groupName", isLegacyNodeAgent: false };
+		var fakeAgent = { groups: ["groupName"], isLegacyNodeAgent: false };
 		var jsonClientOptions;
 		var jsonClientGetSpy;
 
@@ -128,7 +128,7 @@ describe('AgentApiClient', function(){
 
 	describe('when agent is a legacy node agent', function() {
 		var unitList = [];
-		var fakeAgent = { group: "groupName", isLegacyNodeAgent: true };
+		var fakeAgent = { groups: ["groupName"], isLegacyNodeAgent: true };
 		var jsonClientOptions;
 		var jsonClientGetSpy;
 
@@ -165,7 +165,7 @@ describe('AgentApiClient', function(){
 
 	describe('when agent supports extended filtering and filtering units on agent groups and unit groups', function() {
 		var unitList = [];
-		var fakeAgent = { group: "groupName", supportsFiltering: true };
+		var fakeAgent = { groups: ["groupName"], supportsFiltering: true };
 		var jsonClientOptions;
 		var jsonClientGetSpy;
 
@@ -202,7 +202,7 @@ describe('AgentApiClient', function(){
 
 	describe('when agent not supports extended filtering and filtering units on agent groups and unit groups', function() {
 		var unitList = [];
-		var fakeAgent = { group: "groupName", supportsFiltering: false };
+		var fakeAgent = { groups: ["groupName"], supportsFiltering: false };
 		var jsonClientOptions;
 		var jsonClientGetSpy;
 
