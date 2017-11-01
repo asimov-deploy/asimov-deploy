@@ -26,6 +26,11 @@ function($, app) {
 
 	$(document)
 		.keydown(function(e) {
+			/*jshint maxcomplexity:7 */
+			if ($('#asimov-modal').is(":visible")) {
+				return;
+			}
+
 			if (e.ctrlKey) {
 				isCtrl = true;
 			}
@@ -49,6 +54,10 @@ function($, app) {
 			}
 		})
 		.keyup(function(e) {
+			if ($('#asimov-modal').is(":visible")) {
+				return;
+			}
+
 			if (e.ctrlKey) {
 				isCtrl = false;
 			}
