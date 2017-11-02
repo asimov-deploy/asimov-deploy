@@ -2,8 +2,8 @@
 rm -rf docker-build
 
 docker build -f Dockerfile.build -t asimov-deploy/asimov-deploy:build .
-docker run --rm asimov-deploy/asimov-deploy:build
 docker create --name extract asimov-deploy/asimov-deploy:build
+docker start -i extract
 
 mkdir -p docker-build/dist/release
 docker cp extract:/asimov-deploy/dist/release ./docker-build/dist
