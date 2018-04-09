@@ -80,21 +80,18 @@ function(Marionette) {
 	});
 
 	Handlebars.registerHelper('iconForUnitAction', function(object) {
-		switch (object)
-		{
-		case "Apply":
-			return "icon-check";
-		case "Stop":
-			return "icon-off";
-		case "Start":
-			return "icon-play-circle";
-		case "Verify":
-			return "icon-heart";
-		case "Rollback":
-			return "icon-repeat";
-		default:
-			return "";
+		var iconMap = {
+			'Apply': 'icon-check',
+			'Stop': 'icon-off',
+			'Start': 'icon-play-circle',
+			'Verify': 'icon-heart',
+			'Rollback': 'icon-repeat',
+			'Kill': 'icon-remove'
+		};
+		if (iconMap.hasOwnProperty(object)) {
+			return iconMap[object];
 		}
+		return '';
 	});
 
 	return {};
