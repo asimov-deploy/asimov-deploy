@@ -17,13 +17,11 @@
 var _ = require('underscore');
 var packageInfo = require('../package.json');
 var crypto = require('crypto');
-var iapUtils = require('./auth/iap-utils');
 
 module.exports = function(app, config) {
 
     var featureToggles = require('./feature-toggle').create(config);
     app.get('/', function(req, res) {
-
         var agents = _.where(config.agents, { dead: false });
         var groups = _.uniq(_.pluck(agents, ["group"])).sort();
 
@@ -36,7 +34,7 @@ module.exports = function(app, config) {
             initData: {
                 groups: groups,
                 agents: agents,
-                authUsingGoogleIap: config['auth-google-iap'] === true,
+                authUsingGoogleIap: config['auth-google-iap'] !== undefined,
                 authUsingLocal: config['auth-local'] !== undefined,
                 authUsingGoogle: config['auth-google'] !== undefined,
                 flashError: req.flash('error'),
@@ -56,10 +54,6 @@ module.exports = function(app, config) {
             }
 
             viewModel.initData.user = user;
-        }
-
-        if (!req.user && viewModel.initData.authUsingGoogleIap) {
-            viewModel.initData.user = iapUtils.getUserFromRequest(req);
         }
 
         if (featureToggles.getActiveFeature('autopilot') && config.autopilot && config.autopilot.settings) {

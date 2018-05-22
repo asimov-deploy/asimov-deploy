@@ -18,14 +18,17 @@
         ]
     },
     
-    "auth-google-iap": true,
-
     "auth-google": {
         "emails": [ "some_user_email_change_this@gmail.com" ],
         "clientID": "clientID from https://console.developers.google.com",
         "clientSecret": "clientSecret from https://console.developers.google.com",
         "callbackURL": "callbackURL entered in https://console.developers.google.com, example http://your-host.com/auth/google/callback"
     },
+
+    "auth-google-iap": {
+        "audience": "Expected audience. See https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_jwt_payload"
+    },
+
 
     "featureToggles": {
         "lifecycleControls": {
@@ -47,6 +50,7 @@
             "logServerUrl": "http://localhost:9195",
             "enabled" : true
         },
+        
         "autopilot": {
             "enabled" : true
         },
