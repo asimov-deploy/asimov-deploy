@@ -32,7 +32,11 @@
 		},
         "autopilot": {
             "enabled" : true
-        }
+		},
+		"Slack": {
+			"urlToken": "T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+			"enabled" : false
+		}
     },
 
     "socket-io": {
