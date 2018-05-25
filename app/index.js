@@ -26,7 +26,7 @@ module.exports = function(app, config) {
 		viewModel.initData.iap = {
 			headers: req.headers,
 			user: req.user
-		}
+		};
 
 		if (req.user || !viewModel.initData.authUsingGoogleIap) { return; }
 
