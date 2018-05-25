@@ -50,3 +50,7 @@ html(lang="en")
 		.autopilot-control.hide#asimov-autopilot-control
 
 		input(type="hidden", id="init-data", value="#{JSON.stringify(initData)}")
+
+		if initData.authUsingGoogleIap 
+			<iframe src="/_gcp_iap/session_refresher" style="width:0;height:0;border:0; border:none;"></iframe>
+		
