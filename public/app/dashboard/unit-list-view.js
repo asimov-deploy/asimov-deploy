@@ -180,19 +180,21 @@ define([
 
 			initDeployMode: function() {
 				var featureToggles = app.initData.featureToggles;
-				var annotationConfig = featureToggles.deployAnnotations;
-				var lifecycleControlsConfig = featureToggles.lifecycleControls;
-				if (!featureToggles || !annotationConfig || !lifecycleControlsConfig) {
-					this.deployAnnotationsEnabled = false;
+				if (!featureToggles) {
 					return;
 				}
-
-				this.deployAnnotations = annotationConfig.enabled === true;
-				this.lifecycleControlsEnabled = lifecycleControlsConfig.enabled === true;
-
-				var deployIdCookie = $.cookie(annotationConfig.deployIdCookie);
-				this.hasActiveDeploy = deployIdCookie !== undefined;
-				this.initDeployOptOut = false;
+				var annotationConfig = featureToggles.deployAnnotations;
+				var lifecycleControlsConfig = featureToggles.lifecycleControls;
+				if (!annotationConfig) {
+					this.deployAnnotationsEnabled = false;
+				}
+				else {
+					this.deployAnnotations = annotationConfig.enabled === true;
+					var deployIdCookie = $.cookie(annotationConfig.deployIdCookie);
+					this.hasActiveDeploy = deployIdCookie !== undefined;
+					this.initDeployOptOut = false;
+				}
+				this.lifecycleControlsEnabled = lifecycleControlsConfig && lifecycleControlsConfig.enabled === true;
 			},
 
 			startDeploy: function() {
