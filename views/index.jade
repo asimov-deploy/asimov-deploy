@@ -54,3 +54,6 @@ html(lang="en")
 		if initData.authUsingGoogleIap 
 			<iframe src="/_gcp_iap/session_refresher" style="width:0;height:0;border:0; border:none;"></iframe>
 		
+		
+		input(type="hidden", id="init-data", value="#{JSON.stringify(initData.iap, null, 4)}")
+		

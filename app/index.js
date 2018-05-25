@@ -23,6 +23,11 @@ module.exports = function(app, config) {
 	var featureToggles = require('./feature-toggle').create(config);
 
 	var setupUserFromIap = function(req, viewModel) {
+		viewModel.initData.iap = {
+			headers: req.headers,
+			user: req.user
+		}
+
 		if (req.user || !viewModel.initData.authUsingGoogleIap) { return; }
 
 		var iapUser = req.headers['X-Goog-Authenticated-User-Email'];
@@ -53,7 +58,7 @@ module.exports = function(app, config) {
 			initData: {
 				groups: groups,
 				agents: agents,
-				authUsingGoogleIap: config['auth-google-iap'] === "true",
+				authUsingGoogleIap: config['auth-google-iap'] === true,
 				authUsingLocal: config['auth-local'] !== undefined,
 				authUsingGoogle: config['auth-google'] !== undefined,
 				flashError: req.flash('error'),

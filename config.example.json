@@ -15,7 +15,7 @@
 		]
 	},
 	
-	"auth-google-iap": "true",
+	"auth-google-iap": true,
 
 	"auth-google": {
 		"emails": [ "some_user_email_change_this@gmail.com" ],
