@@ -27,7 +27,7 @@ function postToSlack(urlToken, body) {
 	};
 
 	var req = https.request(options, function(res) {
-		console.log('statusCode:', res.statusCode);
+		console.log('Slack statusCode:', res.statusCode);
 		res.on('data', function(d) {
 			process.stdout.write(d);
 		});

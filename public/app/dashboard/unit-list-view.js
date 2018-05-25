@@ -101,7 +101,7 @@ define([
 				},this);
 
 				app.commands.setHandler('deploy:start-with-callback', function(args){
-					if(this.deployAnnotationsEnabled === false){
+					if(this.lifecycleControlsEnabled === false){
 						args.callback();
 					}
 					else if(this.hasActiveDeploy){
@@ -181,12 +181,14 @@ define([
 			initDeployMode: function() {
 				var featureToggles = app.initData.featureToggles;
 				var annotationConfig = featureToggles.deployAnnotations;
-				if (!featureToggles || !annotationConfig) {
+				var lifecycleControlsConfig = featureToggles.lifecycleControls;
+				if (!featureToggles || !annotationConfig || !lifecycleControlsConfig) {
 					this.deployAnnotationsEnabled = false;
 					return;
 				}
 
 				this.deployAnnotations = annotationConfig.enabled === true;
+				this.lifecycleControlsEnabled = lifecycleControlsConfig.enabled === true;
 
 				var deployIdCookie = $.cookie(annotationConfig.deployIdCookie);
 				this.hasActiveDeploy = deployIdCookie !== undefined;
@@ -245,6 +247,7 @@ define([
 				return {
 					hasActiveDeploy: this.hasActiveDeploy,
 					deployAnnotationsEnabled: this.deployAnnotations,
+					lifecycleControlsEnabled: this.lifecycleControlsEnabled,
 					autopilot: {
 						enabled: app.autopilot.enabled,
 						started: app.autopilot.started

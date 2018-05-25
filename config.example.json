@@ -25,6 +25,9 @@
 	},
 
 	"featureToggles": {
+		"lifecycleControls": {
+			"enabled": true
+		},
 		"deployAnnotations": {
 			"logServerUrl": "http://localhost:9195",
 			"deployIdCookie": "asimov-deploy-id",
