@@ -22,6 +22,23 @@ module.exports = function(app, config) {
 
 	var featureToggles = require('./feature-toggle').create(config);
 
+	var setupUserFromIap = function(req, viewModel) {
+		if (req.user || !viewModel.initData.authUsingGoogleIap) { return; }
+
+		var iapUser = req.headers['X-Goog-Authenticated-User-Email'];
+		if (iapUser) {
+			iapUser = iapUser.replace('accounts.google.com:', '');
+			var user = {};
+			user.name = iapUser;
+			user.email = iapUser;
+
+			var md5sum = crypto.createHash('md5');
+			user.emailHash = md5sum.update(user.email).digest('hex');
+
+			viewModel.initData.user = user;
+		}
+	};
+
 	app.get('/', function(req, res) {
 
 		var agents = _.where(config.agents, { dead: false });
@@ -36,6 +53,7 @@ module.exports = function(app, config) {
 			initData: {
 				groups: groups,
 				agents: agents,
+				authUsingGoogleIap: config['auth-google-iap'] === "true",
 				authUsingLocal: config['auth-local'] !== undefined,
 				authUsingGoogle: config['auth-google'] !== undefined,
 				flashError: req.flash('error'),
@@ -55,6 +73,8 @@ module.exports = function(app, config) {
 
 			viewModel.initData.user = user;
 		}
+
+		setupUserFromIap(req, viewModel);
 
 		if (featureToggles.getActiveFeature('autopilot') && config.autopilot && config.autopilot.settings) {
 			viewModel.initData.autopilot = config.autopilot.settings;
