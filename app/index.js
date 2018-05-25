@@ -30,7 +30,7 @@ module.exports = function(app, config) {
 
 		if (req.user || !viewModel.initData.authUsingGoogleIap) { return; }
 
-		var iapUser = req.headers['X-Goog-Authenticated-User-Email'];
+		var iapUser = req.headers['x-goog-authenticated-user-email'];
 		if (iapUser) {
 			iapUser = iapUser.replace('accounts.google.com:', '');
 			var user = {};
