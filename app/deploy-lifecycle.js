@@ -17,6 +17,7 @@
 module.exports = function(app, config) {
 
 	var lifecycleClient = require('./services/deploy-lifecycle-client').create(config);
+	var slackClient = require('./services/slack-client').create(config);
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
 	var featureToggle = require('./feature-toggle').create(config);
 	var uuid = require('node-uuid');
@@ -32,8 +33,10 @@ module.exports = function(app, config) {
 			body: req.body.description
 		};
 
-		lifecycleSession.init(req.user, deployId);
-		lifecycleClient.send('startDeployLifecycleCommand', data, deployId);
+		lifecycleSession.init(req.user, deployId, data);
+		var command = 'startDeployLifecycleCommand';
+		slackClient.send(command, data, deployId);
+		lifecycleClient.send(command, data, deployId);
 		res.json('ok');
 	});
 
@@ -41,7 +44,9 @@ module.exports = function(app, config) {
 		var deployId = req.cookies[annotationsConfig.deployIdCookie];
 		res.clearCookie(annotationsConfig.deployIdCookie);
 
-		lifecycleClient.send('completeDeployLifecycleCommand', req.body, deployId, function() {
+		var command = 'completeDeployLifecycleCommand';
+		slackClient.send(command, req.body, deployId);
+		lifecycleClient.send(command, req.body, deployId, function() {
 			lifecycleSession.end(deployId);
 		});
 
@@ -51,8 +56,9 @@ module.exports = function(app, config) {
 	app.post("/deploy-lifecycle/cancel", app.ensureLoggedIn, function(req, res) {
 		var deployId = req.cookies[annotationsConfig.deployIdCookie];
 		res.clearCookie(annotationsConfig.deployIdCookie);
-
-		lifecycleClient.send('cancelDeployLifecycleCommand', req.body, deployId, function() {
+		var command = 'cancelDeployLifecycleCommand';
+		slackClient.send(command, req.body, deployId);
+		lifecycleClient.send(command, req.body, deployId, function() {
 			lifecycleSession.end(deployId);
 		});
 

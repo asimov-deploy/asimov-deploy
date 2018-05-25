@@ -19,11 +19,12 @@ var DeployLifecycleSession = function() {
 	var LocalStorage = require('node-localstorage').LocalStorage;
 	var localStorage = new LocalStorage('./active-deploys');
 
-	this.init = function(user, deployId) {
+	this.init = function(user, deployId, data) {
 		var safeUser = user || { name: 'anonymous', id: 'anonymous'};
 		var deployData = {};
 		deployData.correlationId = deployId;
 		deployData.user = safeUser.name || 'anonymous';
+		deployData.data = data;
 
 		var json = JSON.stringify(deployData);
 		localStorage.setItem(deployId, json);
