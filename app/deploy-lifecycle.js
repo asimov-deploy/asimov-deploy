@@ -21,6 +21,7 @@ module.exports = function(app, config) {
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
 	var featureToggle = require('./feature-toggle').create(config);
 	var uuid = require('node-uuid');
+	var iapUtils = require('./auth/iap-utils');
 
 	var annotationsConfig = featureToggle.getActiveFeature('deployAnnotations');
 
@@ -33,7 +34,12 @@ module.exports = function(app, config) {
 			body: req.body.description
 		};
 
-		lifecycleSession.init(req.user, deployId, data);
+		var user = req.user;
+		if (!user && config["auth-google-iap"]) {
+			user = iapUtils.getUserFromRequest(req);
+		}
+
+		lifecycleSession.init(user, deployId, data);
 		var command = 'startDeployLifecycleCommand';
 		slackClient.send(command, data, deployId);
 		lifecycleClient.send(command, data, deployId);
