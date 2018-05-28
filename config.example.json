@@ -26,7 +26,19 @@
 
 	"featureToggles": {
 		"lifecycleControls": {
-			"enabled": true
+			"enabled": true,
+			"Slack": {
+				"channels": [
+					{
+						"urlToken": "T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+						"events": ["started", "completed", "cancelled"]
+					},
+					{
+						"urlToken": "T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+						"events": ["completed"]
+					}
+				]
+			}
 		},
 		"deployAnnotations": {
 			"logServerUrl": "http://localhost:9195",
@@ -35,10 +47,6 @@
 		},
         "autopilot": {
             "enabled" : true
-		},
-		"Slack": {
-			"urlToken": "T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
-			"enabled" : false
 		}
     },
 

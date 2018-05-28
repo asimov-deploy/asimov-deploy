@@ -1,5 +1,6 @@
 
 var https = require('https');
+var _ = require('underscore');
 
 var _colors = {
 	startDeployLifecycleCommand: 'warning',
@@ -7,11 +8,18 @@ var _colors = {
 	cancelDeployLifecycleCommand: 'danger'
 };
 
-var _eventNames = {
+var _slackDisplayEventNames = {
 	startDeployLifecycleCommand: 'releasing',
 	completeDeployLifecycleCommand: 'finished',
 	cancelDeployLifecycleCommand: 'cancelled'
 };
+
+var _lifeCycleNames = {
+	startDeployLifecycleCommand: 'started',
+	completeDeployLifecycleCommand: 'completed',
+	cancelDeployLifecycleCommand: 'cancelled'
+};
+
 
 function postToSlack(urlToken, body) {
 	var postData = JSON.stringify(body);
@@ -44,10 +52,11 @@ function postToSlack(urlToken, body) {
 var SlackClient = function (config) {
 	var lifecycleSession = require('./deploy-lifecycle-session').create();
 	var featureToggle = require('./../feature-toggle').create(config);
-	var slackConfig = featureToggle.getActiveFeature('Slack');
+	var lifecycleConfig = featureToggle.getActiveFeature('lifecycleControls') || {};
+	var slackConfig = lifecycleConfig.Slack || {};
 
 	this.send = function (eventName, eventBody, deployId) {
-		if (slackConfig.enabled !== true) {
+		if (lifecycleConfig.enabled !== true) {
 			return;
 		}
 
@@ -56,7 +65,8 @@ var SlackClient = function (config) {
 			return;
 		}
 
-		var slackEventName = _eventNames[eventName];
+		var lifeCycleEventName = _lifeCycleNames[eventName];
+		var slackEventName = _slackDisplayEventNames[eventName];
 		var username = deployData.user;
 		var title = deployData.data.title;
 		var color = _colors[eventName];
@@ -73,7 +83,12 @@ var SlackClient = function (config) {
 			]
 		};
 
-		postToSlack(slackConfig.urlToken, body);
+		for (var i = slackConfig.channels.length - 1; i >= 0; i--) {
+			var channel = slackConfig.channels[i];
+			if (_.contains(channel.events, lifeCycleEventName)){
+				postToSlack(channel.urlToken, body);
+			}
+		}
 	};
 };
 
