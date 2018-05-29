@@ -15,6 +15,8 @@
 ******************************************************************************/
 
 var express = require('express');
+var favicon = require('express-favicon');
+var logger = require('express-logger');
 var http = require('http');
 var app = express();
 var flash = require('connect-flash');
@@ -27,29 +29,27 @@ var config = new AsimovConfig();
 
 app.vent = new events.EventEmitter();
 
-app.configure(function(){
-	app.set('port', config.port);
-	app.set('views', __dirname + '/views');
-	app.set('view engine', 'jade');
-	app.use(express.favicon(__dirname + '/public/img/logo.png'));
-	app.use(express.logger('dev'));
-	app.use(express.cookieParser());
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
-	app.use(express.cookieSession({
-		secret: config['session-secret'],
-		cookie: {
-			path: '/',
-			httpOnly: true,
-			maxAge: 24 * 60 * 60 * 1000
-		}
-	}));
-	app.use(flash());
-	auth(app, config);
-	app.use(app.router);
-	app.use(express.errorHandler());
-	app.locals.pretty = true;
-});
+app.set('port', config.port);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.use(favicon(__dirname + '/public/img/logo.png'));
+app.use(logger('dev'));
+app.use(express.cookieParser());
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieSession({
+	secret: config['session-secret'],
+	cookie: {
+		path: '/',
+		httpOnly: true,
+		maxAge: 24 * 60 * 60 * 1000
+	}
+}));
+app.use(flash());
+auth(app, config);
+app.use(app.router);
+app.use(express.errorHandler());
+app.locals.pretty = true;
 
 app.use('/app',	express.static(__dirname + '/public/app'));
 app.use('/css',	express.static(__dirname + '/dist/release'));

@@ -123,7 +123,8 @@ module.exports = function(app, config) {
 				title: session.data.title,
 				description: session.data.body
 			}
-			console.log(JSON.stringify(logObj));
+			console.log('Asimov Deploy unitName:' + body.unitName + ' ');
+			console.log('Asimov Deploy unitName:' + body.unitName + ' ');
 		}
 		clientSockets.sockets.volatile.emit('agent:event', body);
 		app.vent.emit('agentEvent:' + body.eventName, body);
