@@ -56,7 +56,7 @@ var SlackClient = function (config) {
 	var slackConfig = lifecycleConfig.Slack || {};
 
 	this.send = function (eventName, eventBody, deployId) {
-		if (lifecycleConfig.enabled !== true) {
+		if (lifecycleConfig.enabled !== true || !deployId) {
 			return;
 		}
 

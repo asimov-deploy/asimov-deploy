@@ -19,6 +19,7 @@ module.exports = function(app, config) {
 	var _ = require('underscore');
 	var agentApiClient = require('./services/agent-api-client').create(config);
 	var deployLifecycleClient = require('./services/deploy-lifecycle-client').create(config);
+	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
 
 	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
 		var agentsResp = [];
@@ -107,9 +108,26 @@ module.exports = function(app, config) {
 	});
 
 	app.post("/agent/event", function(req, res) {
-		clientSockets.sockets.volatile.emit('agent:event', req.body);
-		app.vent.emit('agentEvent:' + req.body.eventName, req.body);
-		deployLifecycleClient.send(req.body.eventName, req.body, req.body.correlationId);
+		var body = req.body;
+		var correlationId = body.correlationId;
+		if (req.body.eventName === 'deployCompleted') {
+			var session = lifecycleSession.getDeploySession(correlationId);
+			var logObj = {
+				unitName: body.unitName,
+				version: body.version,
+				branch: body.branch,
+				correlationId: correlationId,
+				eventName: body.eventName,
+				agentName:  body.agentName,
+				user: session.user,
+				title: session.data.title,
+				description: session.data.body
+			}
+			console.log(JSON.stringify(logObj));
+		}
+		clientSockets.sockets.volatile.emit('agent:event', body);
+		app.vent.emit('agentEvent:' + body.eventName, body);
+		deployLifecycleClient.send(body.eventName, body, correlationId);
 		res.json("ok");
 	});
 
