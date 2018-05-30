@@ -70,13 +70,4 @@ module.exports = function(app, config) {
 		res.json('ok');
 	});
 
-	app.post('/kamel/*', function(req, res) {
-		console.log(JSON.stringify(req.body, null, 4));
-		res.json('ok');
-	});
-
-	app.get('/kamel/*', function(req, res) {
-		console.log(JSON.stringify(req.body, null, 4));
-		res.json('ok');
-	});
 };

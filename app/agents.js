@@ -19,6 +19,7 @@ module.exports = function(app, config) {
 	var _ = require('underscore');
 	var agentApiClient = require('./services/agent-api-client').create(config);
 	var deployLifecycleClient = require('./services/deploy-lifecycle-client').create(config);
+	var stackDriverLogger = require('./services/stackdriver-logger').create(config);
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
 
 	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
@@ -109,12 +110,8 @@ module.exports = function(app, config) {
 			res.json('ok');
 		}
 	});
-
-	app.post("/agent/event", function(req, res) {
-		var body = req.body;
-		var correlationId = body.correlationId;
-		if (req.body.eventName === 'deployCompleted') {
-			var session = lifecycleSession.getDeploySession(correlationId);
+	function logToStackdriver (correlationId, body){
+		var session = lifecycleSession.getDeploySession(correlationId);
 			var logObj = {
 				unitName: body.unitName,
 				version: body.version,
@@ -126,7 +123,15 @@ module.exports = function(app, config) {
 				title: session.data.title,
 				description: session.data.body
 			};
-			console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
+			stackDriverLogger.log(logObj);
+			// console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
+	}
+	app.post("/agent/event", function(req, res) {
+		var body = req.body;
+		var correlationId = body.correlationId;
+
+		if (req.body.eventName === 'deployCompleted') {
+			logToStackdriver(correlationId, req.body);
 		}
 		clientSockets.sockets.volatile.emit('agent:event', body);
 		app.vent.emit('agentEvent:' + body.eventName, body);

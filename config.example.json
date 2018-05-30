@@ -1,55 +1,58 @@
 {
-	"name": "Deploy UI",
+    "name": "Deploy UI",
 
-	"port": 3333,
+    "port": 3333,
 
-	"session-secret": "adssaer32t24f23423",
+    "session-secret": "adssaer32t24f23423",
 
-	"enable-demo": false,
+    "enable-demo": false,
 
-	"auth-anonymous": false,
+    "auth-anonymous": false,
 
-	"auth-local": {
-		"users": [
-			{ "name": "deploy", "password": "secret" }
-		]
-	},
-	
-	"auth-google-iap": true,
+    "auth-local": {
+        "users": [
+            { "name": "deploy", "password": "secret" }
+        ]
+    },
+    
+    "auth-google-iap": true,
 
-	"auth-google": {
-		"emails": [ "some_user_email_change_this@gmail.com" ],
-		"clientID": "clientID from https://console.developers.google.com",
-		"clientSecret": "clientSecret from https://console.developers.google.com",
-		"callbackURL": "callbackURL entered in https://console.developers.google.com, example http://your-host.com/auth/google/callback"
-	},
+    "auth-google": {
+        "emails": [ "some_user_email_change_this@gmail.com" ],
+        "clientID": "clientID from https://console.developers.google.com",
+        "clientSecret": "clientSecret from https://console.developers.google.com",
+        "callbackURL": "callbackURL entered in https://console.developers.google.com, example http://your-host.com/auth/google/callback"
+    },
 
-	"featureToggles": {
-		"lifecycleControls": {
-			"enabled": true,
-			"Slack": {
-				"channels": [
-					{
-						"urlToken": "T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
-						"events": ["started", "completed", "cancelled"]
-					},
-					{
-						"urlToken": "T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
-						"events": ["completed"]
-					}
-				]
-			}
-		},
-		"deployAnnotations": {
-			"logServerUrl": "http://localhost:9195",
-			"enabled" : true
-		},
+    "featureToggles": {
+        "lifecycleControls": {
+            "enabled": true,
+            "Slack": {
+                "channels": [
+                    {
+                        "urlToken": "T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+                        "events": ["started", "completed", "cancelled"]
+                    },
+                    {
+                        "urlToken": "T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+                        "events": ["completed"]
+                    }
+                ]
+            }
+        },
+        "deployAnnotations": {
+            "logServerUrl": "http://localhost:9195",
+            "enabled" : true
+        },
         "autopilot": {
             "enabled" : true
-		}
+        },
+        "stackDriverLogging": {
+            "enabled": true
+        }
     },
 
     "socket-io": {
-    	"logLevel": 2
+        "logLevel": 2
     }
 }
