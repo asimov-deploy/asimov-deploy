@@ -58,19 +58,22 @@ module.exports = function(app, config) {
 		}
 	}
 
+	function createAgentFromRequest(req) {
+		return {
+			name: req.body.name,
+			groups:  req.body.groups || [ req.body.group ],
+			supportsFiltering: req.body.group ? false : true,
+			isLegacyNodeAgent: req.body.version === '1.0.0' && req.body.configVersion === '0.0.1' ? true : false
+		};
+	}
+
 	app.post("/agent/heartbeat", function(req,res) {
 		var existing = true;
 		var agent = config.getAgent(req.body.name);
 
 		if (!agent) {
 			existing = false;
-			agent = {
-                name: req.body.name,
-				groups:  req.body.groups || [ req.body.group ],
-				supportsFiltering: req.body.group ? false : true,
-				isLegacyNodeAgent: req.body.version === '1.0.0' && req.body.configVersion === '0.0.1' ? true : false
-            };
-
+			agent = createAgentFromRequest(req);
 			config.registerAgent(agent);
 		}
 
@@ -84,23 +87,23 @@ module.exports = function(app, config) {
 		handleNewLoadBalancerState(agent, req.body.loadBalancerState);
 
 		if (!existing && agent.supportsFiltering) {
-			agentApiClient.getAgentUnitGroups(agent.name, function (unitGroups) {
+			var addStatuses = function (unitStatuses) {
+				config.addUnitStatuses(unitStatuses);
+				res.json('ok');
+			};
+			var addUnitTags = function (unitTags) {
+				config.addUnitTags(unitTags);
+				agentApiClient.getAgentUnitStatuses(agent.name, addStatuses);
+			};
+			var addUnitTypes = function (unitTypes) {
+				config.addUnitTypes(unitTypes);
+				agentApiClient.getAgentUnitTags(agent.name, addUnitTags);
+			};
+			var addUnitGroups = function (unitGroups) {
 				config.addUnitGroups(unitGroups);
-
-				agentApiClient.getAgentUnitTypes(agent.name, function (unitTypes) {
-					config.addUnitTypes(unitTypes);
-
-					agentApiClient.getAgentUnitTags(agent.name, function (unitTags) {
-						config.addUnitTags(unitTags);
-
-						agentApiClient.getAgentUnitStatuses(agent.name, function (unitStatuses) {
-							config.addUnitStatuses(unitStatuses);
-
-							res.json('ok');
-						});
-					});
-				});
-			});
+				agentApiClient.getAgentUnitTypes(agent.name, addUnitTypes);
+			};
+			agentApiClient.getAgentUnitGroups(agent.name, addUnitGroups);
 		}
 		else {
 			res.json('ok');
@@ -122,9 +125,8 @@ module.exports = function(app, config) {
 				user: session.user,
 				title: session.data.title,
 				description: session.data.body
-			}
-			console.log('Asimov Deploy unitName:' + body.unitName + ' ');
-			console.log('Asimov Deploy unitName:' + body.unitName + ' ');
+			};
+			console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
 		}
 		clientSockets.sockets.volatile.emit('agent:event', body);
 		app.vent.emit('agentEvent:' + body.eventName, body);

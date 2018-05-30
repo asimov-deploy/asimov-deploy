@@ -91,15 +91,6 @@ function($, _, Backbone, when, sequence, app, tasks) {
             completedIterations++;
         }
 
-        this._executeDeploy = function () {
-            var deployIterationTasks = [];
-
-            _.each(this.deployIterations, function (round) {
-                deployIterationTasks.push(_createDeployRoundTask(round));
-            });
-
-            return sequence(deployIterationTasks);
-        };
 
         var _createDeployRoundTask = function (deployIteration) {
             return function() {
@@ -111,6 +102,16 @@ function($, _, Backbone, when, sequence, app, tasks) {
 
                 return sequence(deployIterationStepTasks);
             };
+        };
+        
+        this._executeDeploy = function () {
+            var deployIterationTasks = [];
+
+            _.each(this.deployIterations, function (round) {
+                deployIterationTasks.push(_createDeployRoundTask(round));
+            });
+
+            return sequence(deployIterationTasks);
         };
     };
 

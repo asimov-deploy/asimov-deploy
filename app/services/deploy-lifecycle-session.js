@@ -31,6 +31,9 @@ var DeployLifecycleSession = function() {
 	};
 
 	this.getDeploySession = function(deployId) {
+		if (!deployId) {
+			return null;
+		}
 		var item = localStorage.getItem(deployId);
 		return JSON.parse(item);
 	};

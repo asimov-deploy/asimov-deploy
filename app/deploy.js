@@ -20,8 +20,7 @@ var constants = require('./constants');
 module.exports = function(app, config) {
 
 	var agentApiClient = require('./services/agent-api-client').create(config);
-	var featureToggle = require('./feature-toggle').create(config);
-
+	
 	// { unitName: "<unitName>", versionId: "<versionId>" }
 	app.post("/deploy/to-all-agents", app.ensureLoggedIn, function(req, res) {
 

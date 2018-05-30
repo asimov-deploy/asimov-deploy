@@ -21,11 +21,8 @@ module.exports = function(app, config) {
 	var lifecycleClient = require('./services/deploy-lifecycle-client').create(config);
 	var slackClient = require('./services/slack-client').create(config);
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
-	var featureToggle = require('./feature-toggle').create(config);
 	var uuid = require('node-uuid');
 	var iapUtils = require('./auth/iap-utils');
-
-	var annotationsConfig = featureToggle.getActiveFeature('deployAnnotations');
 
 	app.post("/deploy-lifecycle/start", app.ensureLoggedIn, function(req, res) {
 		var deployId = uuid.v1();

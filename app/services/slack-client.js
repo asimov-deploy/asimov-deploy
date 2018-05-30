@@ -55,12 +55,16 @@ var SlackClient = function (config) {
 	var lifecycleConfig = featureToggle.getActiveFeature('lifecycleControls') || {};
 	var slackConfig = lifecycleConfig.Slack || {};
 
-	this.send = function (eventName, eventBody, deployId) {
+	function getDeployData(deployId) {
 		if (lifecycleConfig.enabled !== true || !deployId) {
-			return;
+			return null;
 		}
+		return lifecycleSession.getDeploySession(deployId);
+	}
 
-		var deployData = lifecycleSession.getDeploySession(deployId);
+	this.send = function (eventName, eventBody, deployId) {
+
+		var deployData = getDeployData(deployId);
 		if (!deployData) {
 			return;
 		}

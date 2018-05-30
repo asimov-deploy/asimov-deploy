@@ -22,6 +22,52 @@ var AutopilotController = function (app, config, agentApiClient) {
         return config.autopilot.deployableUnitSets;
     };
 
+    var _getUnits = function () {
+        var deferred = when.defer();
+
+        agentApiClient.getUnits(null, function (results) {
+            var agents = [];
+
+            results.forEach(function(item) {
+                agents.push({
+                    name: item.agent.name,
+                    loadBalancerState: item.agent.loadBalancerState,
+                    units: item.units
+                });
+            });
+
+            agents = _.sortBy(agents, 'name');
+
+            deferred.resolve(agents);
+        });
+
+        return deferred.promise;
+    };
+
+    var _getUnitVersion = function (agentName, unitName) {
+        var deferred = when.defer();
+
+        agentApiClient.get(agentName, '/versions/' + unitName, function(versions) {
+            var version;
+
+            if (config.autopilot.preferredBranch) {
+                version = _.findWhere(versions, { branch: config.autopilot.preferredBranch });
+            }
+
+            if (!config.autopilot.preferredBranch || !version) {
+                version = _.first(versions);
+            }
+
+            deferred.resolve({
+                agentName: agentName,
+                unitName: unitName,
+                version: version
+            });
+        });
+
+        return deferred.promise;
+    };
+
     this.getDeployableUnitSet = function (deployableUnitSetId) {
         var deferred = when.defer();
         var deployableUnitSet = _.findWhere(config.autopilot.deployableUnitSets, { id: deployableUnitSetId });
@@ -73,52 +119,6 @@ var AutopilotController = function (app, config, agentApiClient) {
                 });
 
                 deferred.resolve(result);
-            });
-        });
-
-        return deferred.promise;
-    };
-
-    var _getUnits = function () {
-        var deferred = when.defer();
-
-        agentApiClient.getUnits(null, function (results) {
-            var agents = [];
-
-            results.forEach(function(item) {
-                agents.push({
-                    name: item.agent.name,
-                    loadBalancerState: item.agent.loadBalancerState,
-                    units: item.units
-                });
-            });
-
-            agents = _.sortBy(agents, 'name');
-
-            deferred.resolve(agents);
-        });
-
-        return deferred.promise;
-    };
-
-    var _getUnitVersion = function (agentName, unitName) {
-        var deferred = when.defer();
-
-        agentApiClient.get(agentName, '/versions/' + unitName, function(versions) {
-            var version;
-
-            if (config.autopilot.preferredBranch) {
-                version = _.findWhere(versions, { branch: config.autopilot.preferredBranch });
-            }
-
-            if (!config.autopilot.preferredBranch || !version) {
-                version = _.first(versions);
-            }
-
-            deferred.resolve({
-                agentName: agentName,
-                unitName: unitName,
-                version: version
             });
         });
 
