@@ -30,8 +30,8 @@ var StackDriverLogger = function (config) {
             .catch(err => {
                 console.error('ERROR:', err);
             });
-            
-    }
+
+    };
 
 
 };
