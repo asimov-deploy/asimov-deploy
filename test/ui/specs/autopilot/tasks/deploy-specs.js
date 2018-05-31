@@ -9,6 +9,8 @@ define([
 ], function ($, Backbone, when, sequence, app, DeployTask) {
     var requests = [];
 
+    return;// Disable
+
     describe("Autopilot", function() {
 
         describe("Tasks", function() {
