@@ -8,16 +8,16 @@ var StackDriverLogger = function (config) {
         // This example targets the "global" resource for simplicity
         type: 'global'
     };
-    const dd = config;
-    console.log(dd);
     this.log = function (logobj) {
         if (!config.featureToggles) {
             return;
         }
         if (!config.featureToggles.stackDriverLogging) {
-            console.log(JSON.stringify(logobj, null, 4));
+            console.log('no stackdriver: ' + JSON.stringify(logobj));
             return;
         }
+        console.log('going to log to stackdriver.');
+
         const entry = log.entry(
             { resource: resource },
             logobj
@@ -30,6 +30,7 @@ var StackDriverLogger = function (config) {
             .catch(err => {
                 console.error('ERROR:', err);
             });
+            
     }
 
 
