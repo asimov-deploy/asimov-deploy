@@ -14,20 +14,19 @@
  * limitations under the License.
  ******************************************************************************/
 
+var constants = require('./constants');
+
 module.exports = function(app, config) {
 
 	var lifecycleClient = require('./services/deploy-lifecycle-client').create(config);
 	var slackClient = require('./services/slack-client').create(config);
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
-	var featureToggle = require('./feature-toggle').create(config);
 	var uuid = require('node-uuid');
 	var iapUtils = require('./auth/iap-utils');
 
-	var annotationsConfig = featureToggle.getActiveFeature('deployAnnotations');
-
 	app.post("/deploy-lifecycle/start", app.ensureLoggedIn, function(req, res) {
 		var deployId = uuid.v1();
-		res.cookie(annotationsConfig.deployIdCookie, deployId);
+		res.cookie(constants.deployIdCookie, deployId);
 
 		var data = {
 			title: req.body.title,
@@ -47,8 +46,8 @@ module.exports = function(app, config) {
 	});
 
 	app.post("/deploy-lifecycle/complete", app.ensureLoggedIn, function(req, res) {
-		var deployId = req.cookies[annotationsConfig.deployIdCookie];
-		res.clearCookie(annotationsConfig.deployIdCookie);
+		var deployId = req.cookies[constants.deployIdCookie];
+		res.clearCookie(constants.deployIdCookie);
 
 		var command = 'completeDeployLifecycleCommand';
 		slackClient.send(command, req.body, deployId);
@@ -60,8 +59,8 @@ module.exports = function(app, config) {
 	});
 
 	app.post("/deploy-lifecycle/cancel", app.ensureLoggedIn, function(req, res) {
-		var deployId = req.cookies[annotationsConfig.deployIdCookie];
-		res.clearCookie(annotationsConfig.deployIdCookie);
+		var deployId = req.cookies[constants.deployIdCookie];
+		res.clearCookie(constants.deployIdCookie);
 		var command = 'cancelDeployLifecycleCommand';
 		slackClient.send(command, req.body, deployId);
 		lifecycleClient.send(command, req.body, deployId, function() {
@@ -70,4 +69,5 @@ module.exports = function(app, config) {
 
 		res.json('ok');
 	});
+
 };

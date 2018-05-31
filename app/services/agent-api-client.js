@@ -19,7 +19,7 @@ var _ = require('underscore');
 
 var AgentApiClient = function(config, restify) {
 
-	restify = restify || require("restify");
+	restify = restify || require("restify-clients");
 
 	this.get = function(agentName, url, dataCallback) {
 		var agent =  config.getAgent(agentName);
@@ -59,24 +59,38 @@ var AgentApiClient = function(config, restify) {
 		return url + queryStrings.join('&');
 	};
 
-	this.getUnits = function(filters, skipStatusRefresh, dataCallback) {
-		filters = filters || {};
-		var result = [];
-		var agents = config.agents;
-
-		if (filters.agentGroups) {
-			agents = _.filter(agents, function (agent) {
+	function filterAgentGroups(agents, filterAgentGroups) {
+		if (filterAgentGroups) {
+			return _.filter(agents, function (agent) {
 				return _.find(agent.groups, function (g) {
-					return filters.agentGroups.indexOf(g) !== -1;
+					return filterAgentGroups.indexOf(g) !== -1;
 				});
 			});
 		}
+		return agents;
+	}
 
-		if (filters.unitGroups || filters.unitTypes || filters.tags || filters.units || filters.unitStatus) {
-			agents = _.filter(agents, function (agent) {
-				return agent.supportsFiltering;
-			});
-		}
+	function supportsFiltering(agent) {
+		return agent.supportsFiltering;
+	}
+
+	function filtersExist(filters) {
+		return filters.unitGroups || filters.unitTypes || filters.tags || filters.units || filters.unitStatus;
+	}
+
+	function filterOnFilterSupport(filters, agents) {
+		var result = agents;
+		if (filtersExist(filters)) {
+			result = _.filter(agents, supportsFiltering);
+		}		
+		return result;
+	}
+
+	this.getUnits = function(filters, skipStatusRefresh, dataCallback) {
+		filters = filters || {};
+		var result = [];
+		var agents = filterAgentGroups(config.agents, filters.agentGroups);
+		agents = filterOnFilterSupport(filters, agents);
 
 		var url = _getUnitListUrl(filters, skipStatusRefresh);
 

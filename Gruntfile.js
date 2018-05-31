@@ -6,11 +6,11 @@ module.exports = function(grunt) {
 
 		less: {
 			bootstrap: {
-				options: { paths: ["public/css/bootstrap/"]  },
+				options: { paths: ["public/css/bootstrap/"], javascriptEnabled: true  },
 				files: { 'dist/debug/bootstrap.css' : 'public/css/bootstrap/bootstrap.less'  }
 			},
 			asimov: {
-				options: { paths: ["public/css/", "public/css/bootstrap/"] },
+				options: { paths: ["public/css/", "public/css/bootstrap/"], javascriptEnabled: true },
 				files: { 'dist/debug/asimov.css' : 'public/css/asimov.less' }
 			}
 		},

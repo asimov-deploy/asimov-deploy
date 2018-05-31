@@ -15,6 +15,11 @@
 ******************************************************************************/
 
 var express = require('express');
+var favicon = require('express-favicon');
+// var logger = require('express-logger');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var cookieSession = require('cookie-session');
 var http = require('http');
 var app = express();
 var flash = require('connect-flash');
@@ -27,37 +32,41 @@ var config = new AsimovConfig();
 
 app.vent = new events.EventEmitter();
 
-app.configure(function(){
-	app.set('port', config.port);
-	app.set('views', __dirname + '/views');
-	app.set('view engine', 'jade');
-	app.use(express.favicon(__dirname + '/public/img/logo.png'));
-	app.use(express.logger('dev'));
-	app.use(express.cookieParser());
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
-	app.use(express.cookieSession({
-		secret: config['session-secret'],
-		cookie: {
-			path: '/',
-			httpOnly: true,
-			maxAge: 24 * 60 * 60 * 1000
-		}
-	}));
-	app.use(flash());
-	auth(app, config);
-	app.use(app.router);
-	app.use(express.errorHandler());
-	app.locals.pretty = true;
+app.set('port', config.port);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.use(favicon(__dirname + '/public/img/logo.png'));
+// app.use(logger('dev'));
+app.use(cookieParser());
+app.use(bodyParser());
+app.use(require('express-method-override')());
+app.use(cookieSession({
+	secret: config['session-secret'],
+	cookie: {
+		path: '/',
+		httpOnly: true,
+		maxAge: 24 * 60 * 60 * 1000
+	}
+}));
+app.use(flash());
+auth(app, config);
+// app.use(app.router);
+app.use(function (err, req, res, next) {
+	if (req.xhr) {
+		res.status(500).send({ error: 'Something failed!' });
+	} else {
+		next(err);
+	}
 });
+app.locals.pretty = true;
 
-app.use('/app',	express.static(__dirname + '/public/app'));
-app.use('/css',	express.static(__dirname + '/dist/release'));
-app.use('/css',	express.static(__dirname + '/dist/debug'));
-app.use('/img',	express.static(__dirname + '/public/img'));
-app.use('/libs',	express.static(__dirname + '/dist/release'));
-app.use('/libs',	express.static(__dirname + '/dist/debug'));
-app.use('/libs',	express.static(__dirname + '/public/libs'));
+app.use('/app', express.static(__dirname + '/public/app'));
+app.use('/css', express.static(__dirname + '/dist/release'));
+app.use('/css', express.static(__dirname + '/dist/debug'));
+app.use('/img', express.static(__dirname + '/public/img'));
+app.use('/libs', express.static(__dirname + '/dist/release'));
+app.use('/libs', express.static(__dirname + '/dist/debug'));
+app.use('/libs', express.static(__dirname + '/public/libs'));
 
 if (config['enable-demo']) {
 	require('./app/demo-mode/demo-mode')(app, config);
@@ -72,7 +81,7 @@ require('./app/versions')(app, config);
 require('./app/index')(app, config);
 require('./app/autopilot').create(app, config);
 
-_.each(config.plugins, function(plugin) {
+_.each(config.plugins, function (plugin) {
 	require(plugin.module)(app, plugin, config);
 });
 

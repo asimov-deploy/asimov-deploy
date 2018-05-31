@@ -20,9 +20,13 @@ define([
 ],
 function($, app) {
 
-	var aPressed = false;
-	var lastKey = '';
-	var isCtrl = false;
+	function isCtrlKey(evt) {
+		return evt.ctrlKey;
+	}
+
+	function isKey(evt, keyChar) {
+		return evt.key === keyChar;
+	}
 
 	$(document)
 		.keydown(function(e) {
@@ -31,41 +35,9 @@ function($, app) {
 				return;
 			}
 
-			if (e.ctrlKey) {
-				isCtrl = true;
-			}
-
-			if (e.key === 'a') {
-				aPressed = true;
-			}
-
-			if ((e.key === 'f' && isCtrl) ||
-				(aPressed || lastKey === 'a') && e.key === 's') {
+			if (isCtrlKey(e) && isKey(e, 's')) {
 				app.vent.trigger('focus-search-field');
 				return false;
 			}
-
-			if ((aPressed || lastKey === 'a') && e.key === 'c') {
-				app.vent.trigger('units:collapse');
-			}
-
-			if ((aPressed || lastKey === 'a') && e.key === 'e') {
-				app.vent.trigger('units:expand');
-			}
-		})
-		.keyup(function(e) {
-			if ($('#asimov-modal').is(":visible")) {
-				return;
-			}
-
-			if (e.ctrlKey) {
-				isCtrl = false;
-			}
-
-			if (e.key === 'a') {
-				aPressed = false;
-			}
-
-			lastKey = e.key;
 		});
 });

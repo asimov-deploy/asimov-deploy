@@ -75,6 +75,9 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
     var configurationDialogView = null;
     var changeVersionForUnitName = null;
 
+    function fallback(value, fallback) {
+        return value || fallback;
+    }
     app.on('initialize:before', function() {
         var featureToggles = app.initData.featureToggles;
 
@@ -88,95 +91,16 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
         if (autopilot.enabled) {
             var s = app.initData.autopilot || {};
 
-            autopilot.loadBalancerTimeout = s.loadBalancerTimeout || defaultLoadBalancerTimeout;
-            autopilot.enableLoadBalancerPostDelay = s.enableLoadBalancerPostDelay || defaultEnableLoadBalancerPostDelay;
-            autopilot.disableLoadBalancerPostDelay = s.disableLoadBalancerPostDelay || defaultDisableLoadBalancerPostDelay;
-            autopilot.deployRetryOnFailure = s.deployRetryOnFailure || defaultDeployRetryOnFailure;
-            autopilot.deployFailureRetries = s.deployFailureRetries || defaultDeployFailureRetries;
-            autopilot.verifyPostDelay = s.verifyPostDelay || defaultVerifyPostDelay;
-            autopilot.verifyRetryOnFailure = s.verifyRetryOnFailure || defaultVerifyRetryOnFailure;
-            autopilot.verifyFailureRetries = s.verifyFailureRetries || defaultVerifyFailureRetries;
+            autopilot.loadBalancerTimeout = fallback(s.loadBalancerTimeout, defaultLoadBalancerTimeout);
+            autopilot.enableLoadBalancerPostDelay = fallback(s.enableLoadBalancerPostDelay, defaultEnableLoadBalancerPostDelay);
+            autopilot.disableLoadBalancerPostDelay = fallback(s.disableLoadBalancerPostDelay, defaultDisableLoadBalancerPostDelay);
+            autopilot.deployRetryOnFailure = fallback(s.deployRetryOnFailure, defaultDeployRetryOnFailure);
+            autopilot.deployFailureRetries = fallback(s.deployFailureRetries, defaultDeployFailureRetries);
+            autopilot.verifyPostDelay = fallback(s.verifyPostDelay, defaultVerifyPostDelay);
+            autopilot.verifyRetryOnFailure = fallback(s.verifyRetryOnFailure, defaultVerifyRetryOnFailure);
+            autopilot.verifyFailureRetries = fallback(s.verifyFailureRetries, defaultVerifyFailureRetries);
         }
     });
-
-    app.vent.on("autopilot:configure", function() {
-        if (!autopilot.deployableUnitSets) {
-            autopilot.deployableUnitSets = new DeployableUnitSetCollection();
-            autopilot.deployableUnitSets.fetch();
-        }
-
-        var deployableUnitSetDialogView = new DeployableUnitSetDialogView({ collection: autopilot.deployableUnitSets });
-        deployableUnitSetDialogView.on('deployableUnitSetSelected', deployableUnitSetSelected, this);
-        deployableUnitSetDialogView.show();
-    });
-
-    app.vent.on('autopilot:deploy-started', function() {
-        app.autopilot.started = true;
-
-        var controlView = new ControlView();
-        controlView.show();
-    });
-
-    app.vent.on('autopilot:pause-deploy', function() {
-        app.autopilot.paused = true;
-    });
-
-    app.vent.on('autopilot:continue-deploy', function() {
-        app.autopilot.paused = false;
-    });
-
-    var deployEnded = function() {
-        app.autopilot.started = false;
-        app.autopilot.paused = false;
-        app.vent.trigger('autopilot:deploy-ended');
-    };
-
-    app.vent.on('autopilot:deploy-completed', deployEnded);
-    app.vent.on('autopilot:deploy-aborted', deployEnded);
-    app.vent.on('autopilot:deploy-failed', deployEnded);
-
-    var deployableUnitSetSelected = function (deployableUnitSetId) {
-        autopilot.selectedDeployableUnitSet = autopilot.deployableUnitSets.get(deployableUnitSetId);
-
-        autopilot.deployableUnits = new autopilot.Collections.DeployableUnitCollection({
-            deployableUnitSetId: autopilot.selectedDeployableUnitSet.get('id')
-        });
-        autopilot.deployableUnits.fetch();
-
-        showConfigurationDialog();
-    };
-
-    var toggleUnitSelection = function (payload) {
-        var model = autopilot.deployableUnits.get(payload.unitName);
-        var selected = model.get('selected');
-        model.set('selected', !selected);
-    };
-
-    var changeVersion = function (payload) {
-        changeVersionForUnitName = payload.unitName;
-        configurationDialogView.close();
-
-        var versionView = new VersionDialogView(payload);
-        versionView.on("versionSelected", versionSelected, this);
-        versionView.on("closed", versionSelectionClosed, this);
-        versionView.show();
-    };
-
-    var versionSelected = function (id, version, branch) {
-        var model = autopilot.deployableUnits.get(changeVersionForUnitName);
-        var selectedVersion = model.get('selectedVersion');
-        selectedVersion.id = id;
-        selectedVersion.version = version;
-        selectedVersion.branch = branch;
-        model.set('selectedVersion', selectedVersion);
-
-        configurationDialogView.close();
-        showConfigurationDialog();
-    };
-
-    var versionSelectionClosed = function () {
-        showConfigurationDialog();
-    };
 
     var showConfigurationDialog = function () {
         configurationDialogView = new ConfigurationDialogView({
@@ -189,7 +113,46 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
         configurationDialogView.on('submit', configurationStepCompleted, this);
         configurationDialogView.show();
     };
+    
+    var versionSelected = function (id, version, branch) {
+        var model = autopilot.deployableUnits.get(changeVersionForUnitName);
+        var selectedVersion = model.get('selectedVersion');
+        selectedVersion.id = id;
+        selectedVersion.version = version;
+        selectedVersion.branch = branch;
+        model.set('selectedVersion', selectedVersion);
 
+        configurationDialogView.close();
+        showConfigurationDialog();
+    };
+
+    var changeVersion = function (payload) {
+        changeVersionForUnitName = payload.unitName;
+        configurationDialogView.close();
+
+        var versionView = new VersionDialogView(payload);
+        versionView.on("versionSelected", versionSelected, this);
+        versionView.on("closed", showConfigurationDialog, this);
+        versionView.show();
+    };
+  
+    var deployableUnitSetSelected = function (deployableUnitSetId) {
+        autopilot.selectedDeployableUnitSet = autopilot.deployableUnitSets.get(deployableUnitSetId);
+
+        autopilot.deployableUnits = new autopilot.Collections.DeployableUnitCollection({
+            deployableUnitSetId: autopilot.selectedDeployableUnitSet.get('id')
+        });
+        autopilot.deployableUnits.fetch();
+
+        showConfigurationDialog();
+    };
+    
+    
+    var allArraysAlike = function (arrays) {
+        return _.all(arrays, function(array) {
+            return array.length === arrays[0].length && _.difference(array, arrays[0]).length === 0;
+        });
+    };
     var configurationStepCompleted = function (payload) {
         var deployableUnitSet = autopilot.selectedDeployableUnitSet.toJSON();
         var verificationSteps = _.map(deployableUnitSet.verificationSteps, function (taskName) {
@@ -234,12 +197,49 @@ function(_, Backbone, app, ControlView, DeployableUnitSetDialogView, Configurati
         });
         confirmDialogView.show();
     };
-
-    var allArraysAlike = function (arrays) {
-        return _.all(arrays, function(array) {
-            return array.length === arrays[0].length && _.difference(array, arrays[0]).length === 0;
-        });
+    var toggleUnitSelection = function (payload) {
+        var model = autopilot.deployableUnits.get(payload.unitName);
+        var selected = model.get('selected');
+        model.set('selected', !selected);
     };
+
+    
+    app.vent.on("autopilot:configure", function() {
+        if (!autopilot.deployableUnitSets) {
+            autopilot.deployableUnitSets = new DeployableUnitSetCollection();
+            autopilot.deployableUnitSets.fetch();
+        }
+
+        var deployableUnitSetDialogView = new DeployableUnitSetDialogView({ collection: autopilot.deployableUnitSets });
+        deployableUnitSetDialogView.on('deployableUnitSetSelected', deployableUnitSetSelected, this);
+        deployableUnitSetDialogView.show();
+    });
+
+    app.vent.on('autopilot:deploy-started', function() {
+        app.autopilot.started = true;
+
+        var controlView = new ControlView();
+        controlView.show();
+    });
+
+    app.vent.on('autopilot:pause-deploy', function() {
+        app.autopilot.paused = true;
+    });
+
+    app.vent.on('autopilot:continue-deploy', function() {
+        app.autopilot.paused = false;
+    });
+
+    var deployEnded = function() {
+        app.autopilot.started = false;
+        app.autopilot.paused = false;
+        app.vent.trigger('autopilot:deploy-ended');
+    };
+
+    app.vent.on('autopilot:deploy-completed', deployEnded);
+    app.vent.on('autopilot:deploy-aborted', deployEnded);
+    app.vent.on('autopilot:deploy-failed', deployEnded);
+
 
     app.autopilot = autopilot;
 

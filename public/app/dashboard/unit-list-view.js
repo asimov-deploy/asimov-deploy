@@ -190,7 +190,7 @@ define([
 				}
 				else {
 					this.deployAnnotations = annotationConfig.enabled === true;
-					var deployIdCookie = $.cookie(annotationConfig.deployIdCookie);
+					var deployIdCookie = $.cookie('asimov-deploy-id');
 					this.hasActiveDeploy = deployIdCookie !== undefined;
 					this.initDeployOptOut = false;
 				}

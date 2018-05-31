@@ -19,6 +19,8 @@ module.exports = function(app, config) {
 	var _ = require('underscore');
 	var agentApiClient = require('./services/agent-api-client').create(config);
 	var deployLifecycleClient = require('./services/deploy-lifecycle-client').create(config);
+	var stackDriverLogger = require('./services/stackdriver-logger').create(config);
+	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
 
 	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
 		var agentsResp = [];
@@ -57,19 +59,22 @@ module.exports = function(app, config) {
 		}
 	}
 
+	function createAgentFromRequest(req) {
+		return {
+			name: req.body.name,
+			groups:  req.body.groups || [ req.body.group ],
+			supportsFiltering: req.body.group ? false : true,
+			isLegacyNodeAgent: req.body.version === '1.0.0' && req.body.configVersion === '0.0.1' ? true : false
+		};
+	}
+
 	app.post("/agent/heartbeat", function(req,res) {
 		var existing = true;
 		var agent = config.getAgent(req.body.name);
 
 		if (!agent) {
 			existing = false;
-			agent = {
-                name: req.body.name,
-				groups:  req.body.groups || [ req.body.group ],
-				supportsFiltering: req.body.group ? false : true,
-				isLegacyNodeAgent: req.body.version === '1.0.0' && req.body.configVersion === '0.0.1' ? true : false
-            };
-
+			agent = createAgentFromRequest(req);
 			config.registerAgent(agent);
 		}
 
@@ -83,33 +88,54 @@ module.exports = function(app, config) {
 		handleNewLoadBalancerState(agent, req.body.loadBalancerState);
 
 		if (!existing && agent.supportsFiltering) {
-			agentApiClient.getAgentUnitGroups(agent.name, function (unitGroups) {
+			var addStatuses = function (unitStatuses) {
+				config.addUnitStatuses(unitStatuses);
+				res.json('ok');
+			};
+			var addUnitTags = function (unitTags) {
+				config.addUnitTags(unitTags);
+				agentApiClient.getAgentUnitStatuses(agent.name, addStatuses);
+			};
+			var addUnitTypes = function (unitTypes) {
+				config.addUnitTypes(unitTypes);
+				agentApiClient.getAgentUnitTags(agent.name, addUnitTags);
+			};
+			var addUnitGroups = function (unitGroups) {
 				config.addUnitGroups(unitGroups);
-
-				agentApiClient.getAgentUnitTypes(agent.name, function (unitTypes) {
-					config.addUnitTypes(unitTypes);
-
-					agentApiClient.getAgentUnitTags(agent.name, function (unitTags) {
-						config.addUnitTags(unitTags);
-
-						agentApiClient.getAgentUnitStatuses(agent.name, function (unitStatuses) {
-							config.addUnitStatuses(unitStatuses);
-
-							res.json('ok');
-						});
-					});
-				});
-			});
+				agentApiClient.getAgentUnitTypes(agent.name, addUnitTypes);
+			};
+			agentApiClient.getAgentUnitGroups(agent.name, addUnitGroups);
 		}
 		else {
 			res.json('ok');
 		}
 	});
-
+	function logToStackdriver (correlationId, body){
+		var session = lifecycleSession.getDeploySession(correlationId);
+			var logObj = {
+				unitName: body.unitName,
+				version: body.version,
+				branch: body.branch,
+				correlationId: correlationId,
+				eventName: body.eventName,
+				agentName:  body.agentName,
+				user: session.user,
+				title: session.data.title,
+				description: session.data.body
+			};
+			stackDriverLogger.log(logObj);
+			// console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
+	}
 	app.post("/agent/event", function(req, res) {
-		clientSockets.sockets.volatile.emit('agent:event', req.body);
-		app.vent.emit('agentEvent:' + req.body.eventName, req.body);
-		deployLifecycleClient.send(req.body.eventName, req.body, req.body.correlationId);
+		var body = req.body;
+		var correlationId = body.correlationId;
+
+		if (req.body.eventName === 'deployCompleted') {
+			logToStackdriver(correlationId, req.body);
+		}
+		clientSockets.sockets.volatile.emit('agent:event', body);
+		app.vent.emit('agentEvent:' + body.eventName, body);
+		deployLifecycleClient.send(body.eventName, body, correlationId);
 		res.json("ok");
 	});
 

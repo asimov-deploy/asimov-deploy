@@ -18,7 +18,7 @@ var DeployLifecycleClient = function(config, restify) {
 
 	var lifecycleSession = require('./deploy-lifecycle-session').create();
 	var featureToggle = require('./../feature-toggle').create(config);
-	restify = restify || require("restify");
+	restify = restify || require("restify-clients");
 
 	var actionUrlMappings = [];
 	actionUrlMappings.startDeployLifecycleCommand = '/deploy/start';
