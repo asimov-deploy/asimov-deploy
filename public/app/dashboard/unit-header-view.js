@@ -77,22 +77,22 @@ define([
                 var allSelected = selectedInstances.length === this.instances.length;
 
                 if (evt.ctrlKey) {
-                    this.instances.forEach((instance) => {
+                    this.instances.forEach(function (instance) {
                         instance.set({ selected: !instance.changed.selected });
                     });
                     return;
                 }
                 if (evt.shiftKey) {
-                    let half = this.instances.length / 2;
-                    let count = 0;
-                    this.instances.forEach((instance) => {
-                        let first = count < half;
+                    var mid = this.instances.length / 2;
+                    var count = 0;
+                    this.instances.forEach(function (instance) {
+                        var first = count < mid;
                         instance.set({ selected: first ? allSelected : !allSelected });
                         count++;
                     });
                     return;
                 }
-                this.instances.forEach((instance) => {
+                this.instances.forEach(function (instance) {
                     instance.set({ selected: !allSelected });
                 });
             },
