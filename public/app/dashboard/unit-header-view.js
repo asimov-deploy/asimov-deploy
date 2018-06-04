@@ -83,10 +83,10 @@ define([
                     return;
                 }
                 if (evt.shiftKey) {
-                    let half = this.instances.length / 2;
-                    let count = 0;
+                    var mid = this.instances.length / 2;
+                    var count = 0;
                     this.instances.forEach(function (instance) {
-                        let first = count < half;
+                        var first = count < mid;
                         instance.set({ selected: first ? allSelected : !allSelected });
                         count++;
                     });
