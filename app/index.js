@@ -21,51 +21,52 @@ var iapUtils = require('./auth/iap-utils');
 
 module.exports = function(app, config) {
 
-	var featureToggles = require('./feature-toggle').create(config);
-	app.get('/', function(req, res) {
+    var featureToggles = require('./feature-toggle').create(config);
+    app.get('/', function(req, res) {
 
-		var agents = _.where(config.agents, { dead: false });
-		var groups = _.uniq(_.pluck(agents, ["group"])).sort();
+        var agents = _.where(config.agents, { dead: false });
+        var groups = _.uniq(_.pluck(agents, ["group"])).sort();
 
-		agents = _.pluck(agents, ["name"]);
+        agents = _.pluck(agents, ["name"]);
 
-		var viewModel = {
-			hostName: req.headers.host.replace(/:\d+/, ''),
-			version: packageInfo.version,
-			port: config.port,
-			initData: {
-				groups: groups,
-				agents: agents,
-				authUsingGoogleIap: config['auth-google-iap'] === true,
-				authUsingLocal: config['auth-local'] !== undefined,
-				authUsingGoogle: config['auth-google'] !== undefined,
-				flashError: req.flash('error'),
-				featureToggles: featureToggles.getActiveFeatures()
-			}
-		};
+        var viewModel = {
+            hostName: req.headers.host.replace(/:\d+/, ''),
+            version: packageInfo.version,
+            port: config.port,
+            initData: {
+                groups: groups,
+                agents: agents,
+                authUsingGoogleIap: config['auth-google-iap'] === true,
+                authUsingLocal: config['auth-local'] !== undefined,
+                authUsingGoogle: config['auth-google'] !== undefined,
+                flashError: req.flash('error'),
+                featureToggles: featureToggles.getActiveFeatures(),
+                environment: config.environment
+            }
+        };
 
-		if (req.user) {
-			var user = {};
-			user.name = req.user.name;
-			user.email = req.user.email;
+        if (req.user) {
+            var user = {};
+            user.name = req.user.name;
+            user.email = req.user.email;
 
-			if (user.email) {
-				var md5sum = crypto.createHash('md5');
-				user.emailHash = md5sum.update(user.email).digest('hex');
-			}
+            if (user.email) {
+                var md5sum = crypto.createHash('md5');
+                user.emailHash = md5sum.update(user.email).digest('hex');
+            }
 
-			viewModel.initData.user = user;
-		}
+            viewModel.initData.user = user;
+        }
 
-		if (!req.user && viewModel.initData.authUsingGoogleIap) {
-			viewModel.initData.user = iapUtils.getUserFromRequest(req);
-		}
+        if (!req.user && viewModel.initData.authUsingGoogleIap) {
+            viewModel.initData.user = iapUtils.getUserFromRequest(req);
+        }
 
-		if (featureToggles.getActiveFeature('autopilot') && config.autopilot && config.autopilot.settings) {
-			viewModel.initData.autopilot = config.autopilot.settings;
-		}
+        if (featureToggles.getActiveFeature('autopilot') && config.autopilot && config.autopilot.settings) {
+            viewModel.initData.autopilot = config.autopilot.settings;
+        }
 
-		res.render('index', viewModel);
-	});
+        res.render('index', viewModel);
+    });
 
 };

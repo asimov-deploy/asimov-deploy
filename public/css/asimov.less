@@ -11,9 +11,9 @@ html {
 }
 
 body {
-  	padding-top: 40px;
-  	padding-bottom: 160px;
-  	font-size: 14px;
+      padding-top: 40px;
+      padding-bottom: 160px;
+      font-size: 14px;
     background: @bodyBackground;
 }
 
@@ -22,16 +22,16 @@ body {
 
 .navbar-inverse .nav-collapse {
 
-	.nav li.dropdown.open > .dropdown-toggle,
-	.nav li.dropdown.active > .dropdown-toggle,
-	.nav li.dropdown.open.active > .dropdown-toggle {
-		background-color: #111;
-	}
+    .nav li.dropdown.open > .dropdown-toggle,
+    .nav li.dropdown.active > .dropdown-toggle,
+    .nav li.dropdown.open.active > .dropdown-toggle {
+        background-color: #111;
+    }
 
-	.nav > li > .dropdown-menu::before,
-	.nav > li > .dropdown-menu::after {
-		display: none;
-	}
+    .nav > li > .dropdown-menu::before,
+    .nav > li > .dropdown-menu::after {
+        display: none;
+    }
 }
 
 .navbar .brand {
@@ -59,17 +59,17 @@ body {
 // -----------------------------------------------------
 
 .dropdown-menu {
-	background-color: #191A1A;
-	.box-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+    background-color: #191A1A;
+    .box-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
 }
 
 .dropdown-menu li > a:hover {
-	color: @white;
-	background: transparent;
+    color: @white;
+    background: transparent;
 }
 
 .dropdown-menu li > a {
-	color: #ADAFAE;
+    color: #ADAFAE;
 }
 
 // Alerts
@@ -82,12 +82,12 @@ body {
 // -----------------------------------------------------
 
 .well, .hero-unit {
-	.border-radius(1px);
+    .border-radius(1px);
 }
 
 .well, .hero-unit {
-	border-top: solid 1px lighten(@grayDark, 5%);
-	.box-shadow(0 2px 4px rgba(0,0,0,.8));
+    border-top: solid 1px lighten(@grayDark, 5%);
+    .box-shadow(0 2px 4px rgba(0,0,0,.8));
 }
 
 
@@ -123,11 +123,11 @@ li#instance-selection .caret {
 }
 
 .unit-status-success {
-	.buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
+    .buttonBackground(@btnSuccessBackground, @btnSuccessBackgroundHighlight);
 }
 
 a {
-	text-shadow: 1px 1px 7px @blueDark;
+    text-shadow: 1px 1px 7px @blueDark;
 }
 a:hover {
   text-decoration:none;
@@ -188,3 +188,15 @@ a:hover {
 @import "autopilot.less";
 @import "select2.less";
 
+.notify-badge{
+    position: absolute;
+    right:15px;
+    top:2px;
+    // background:red;
+    text-align: center;
+    border-radius: 10px 10px 10px 10px;
+    color:orange;
+    padding:2px 2px;
+    font-size:12px;
+    font-weight: bold;
+}
