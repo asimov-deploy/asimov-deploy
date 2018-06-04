@@ -77,7 +77,7 @@ define([
                 var allSelected = selectedInstances.length === this.instances.length;
 
                 if (evt.ctrlKey) {
-                    this.instances.forEach((instance) => {
+                    this.instances.forEach(function (instance) {
                         instance.set({ selected: !instance.changed.selected });
                     });
                     return;
@@ -85,14 +85,14 @@ define([
                 if (evt.shiftKey) {
                     let half = this.instances.length / 2;
                     let count = 0;
-                    this.instances.forEach((instance) => {
+                    this.instances.forEach(function (instance) {
                         let first = count < half;
                         instance.set({ selected: first ? allSelected : !allSelected });
                         count++;
                     });
                     return;
                 }
-                this.instances.forEach((instance) => {
+                this.instances.forEach(function (instance) {
                     instance.set({ selected: !allSelected });
                 });
             },
