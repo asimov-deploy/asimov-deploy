@@ -1,6 +1,9 @@
 {
     "name": "Deploy UI",
-
+    "environment": {
+        "name": "test",
+        "color": "yello"
+    },
     "port": 3333,
 
     "session-secret": "adssaer32t24f23423",

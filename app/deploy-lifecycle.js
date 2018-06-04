@@ -21,11 +21,11 @@ module.exports = function(app, config) {
 	var lifecycleClient = require('./services/deploy-lifecycle-client').create(config);
 	var slackClient = require('./services/slack-client').create(config);
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
-	var uuid = require('node-uuid');
+	var uuid = require('uuid/v1');
 	var iapUtils = require('./auth/iap-utils');
 
 	app.post("/deploy-lifecycle/start", app.ensureLoggedIn, function(req, res) {
-		var deployId = uuid.v1();
+		var deployId = uuid();
 		res.cookie(constants.deployIdCookie, deployId);
 
 		var data = {

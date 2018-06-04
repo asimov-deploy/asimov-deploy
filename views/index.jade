@@ -1,59 +1,61 @@
 doctype html
 html(lang="en")
-	head
-		title Asimov Deploy
+    head
+        title Asimov Deploy
 
-		link(rel='icon', href='/img/logo.png', type='image/png')
+        link(rel='icon', href='/img/logo.png', type='image/png')
 
-		link(type='text/css', href='/css/bootstrap.css', rel='stylesheet')
-		link(type='text/css', href='/css/asimov.css', rel='stylesheet')
+        link(type='text/css', href='/css/bootstrap.css', rel='stylesheet')
+        link(type='text/css', href='/css/asimov.css', rel='stylesheet')
 
-		script(data-main='/app/config', src='/libs/require.js')
+        script(data-main='/app/config', src='/libs/require.js')
 
-	body
-		.navbar.navbar-inverse.navbar-fixed-top
-			.navbar-inner
-				.container-fluid
-					a.brand(href='#')
-						img(src='/img/full_logo.png')
-					.nav-collapse
-						ul.nav
-							li
-								a(href='dashboard') Dashboard
-							li.divider-vertical
-							li
-								a(href='loadbalancer') Load Balancer
-							li.divider-vertical
-							li
-								a(href='agents') Agents
+    body
+        .navbar.navbar-inverse.navbar-fixed-top
+            .navbar-inner
+                .container-fluid
+                    a.brand(href='#')
+                        if initData.environment
+                            span(class="notify-badge", style="color:#{initData.environment.color}") #{initData.environment.name}
+                        img(src='/img/full_logo.png')
+                    .nav-collapse
+                        ul.nav
+                            li
+                                a(href='dashboard') Dashboard
+                            li.divider-vertical
+                            li
+                                a(href='loadbalancer') Load Balancer
+                            li.divider-vertical
+                            li
+                                a(href='agents') Agents
 
-						ul.nav.pull-right
-							li#current-user
-							li.divider-vertical
-							li.dropdown#instance-selection
+                        ul.nav.pull-right
+                            li#current-user
+                            li.divider-vertical
+                            li.dropdown#instance-selection
 
-		#main-region
+        #main-region
 
-		.live-log-wrapper
-			.live-log-header
-				span.pull-left Live Log
-				a.pull-left.btn-live-log-filter(href="#", title="show/hide filters", data-bypass=1)
-					i.icon-filter.icon-white
-				ul.live-log-filter-selection.pull-left(style='display: none')
-				#asimov-version.pull-right
-					| v#{version}
-				.clearfix
-			.live-log
+        .live-log-wrapper
+            .live-log-header
+                span.pull-left Live Log
+                a.pull-left.btn-live-log-filter(href="#", title="show/hide filters", data-bypass=1)
+                    i.icon-filter.icon-white
+                ul.live-log-filter-selection.pull-left(style='display: none')
+                #asimov-version.pull-right
+                    | v#{version}
+                .clearfix
+            .live-log
 
-		.modal.hide#asimov-modal
+        .modal.hide#asimov-modal
 
-		.autopilot-control.hide#asimov-autopilot-control
+        .autopilot-control.hide#asimov-autopilot-control
 
-		input(type="hidden", id="init-data", value="#{JSON.stringify(initData)}")
+        input(type="hidden", id="init-data", value="#{JSON.stringify(initData)}")
 
-		if initData.authUsingGoogleIap 
-			<iframe src="/_gcp_iap/session_refresher" style="width:0;height:0;border:0; border:none;"></iframe>
-		
-		
-		input(type="hidden", id="init-data", value="#{JSON.stringify(initData.iap, null, 4)}")
-		
+        if initData.authUsingGoogleIap 
+            <iframe src="/_gcp_iap/session_refresher" style="width:0;height:0;border:0; border:none;"></iframe>
+        
+        
+        input(type="hidden", id="init-data", value="#{JSON.stringify(initData, null, 4)}")
+        
