@@ -87,7 +87,7 @@ define([
                     var count = 0;
                     this.instances.forEach(function (instance) {
                         var first = count < mid;
-                        instance.set({ selected: first ? allSelected : !allSelected });
+                        instance.set({ selected: first });
                         count++;
                     });
                     return;
