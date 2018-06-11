@@ -74,11 +74,16 @@ define([
 
             toggleSelectAll: function (evt) {
                 var selectedInstances = this.instances.where({ selected: true });
+                
                 var allSelected = selectedInstances.length === this.instances.length;
 
                 if (evt.ctrlKey) {
-                    this.instances.forEach(function (instance) {
-                        instance.set({ selected: !instance.changed.selected });
+                    var unselectedInstances = this.instances.where({ selected: false });
+                    selectedInstances.forEach(function (instance) {
+                        instance.set({ selected: false });
+                    });
+                    unselectedInstances.forEach(function (instance) {
+                        instance.set({ selected: true });
                     });
                     return;
                 }
