@@ -190,10 +190,10 @@ define([
 				}
 				else {
 					this.deployAnnotations = annotationConfig.enabled === true;
-					var deployIdCookie = $.cookie('asimov-deploy-id');
-					this.hasActiveDeploy = deployIdCookie !== undefined;
-					this.initDeployOptOut = false;
-				}
+                }
+                var deployIdCookie = $.cookie('asimov-deploy-id');
+                this.hasActiveDeploy = deployIdCookie !== undefined;
+                this.initDeployOptOut = false;
 				this.lifecycleControlsEnabled = lifecycleControlsConfig && lifecycleControlsConfig.enabled === true;
 			},
 
