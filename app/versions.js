@@ -20,13 +20,10 @@ module.exports = function (app, config) {
     var agentApiClient = require('./services/agent-api-client').create(config);
 
     app.get('/deploylog/file', app.ensureLoggedIn, function (req, res) {
-
-        var agent = config.getAgent(req.query.agentName);
         var unitName = querystring.escape(req.query.unitName);
-
         agentApiClient.getDeployLog(
             req.query.agentName,
-            req.query.unitName,
+            unitName,
             req.query.position,
             function (data) {
                 if(data == null){
@@ -34,7 +31,7 @@ module.exports = function (app, config) {
                     return;
                 }
                 res.type('text').send(data);
-            })
+            });
     });
 
 };

@@ -153,7 +153,7 @@ var AgentApiClient = function(config, restify) {
 			}
 			dataCallback(data);
 		});
-	} 
+	};
 
 	this.test = function(agentName) {
 		return config.getAgent(agentName);
