@@ -118,7 +118,7 @@ module.exports = function(app, config) {
 				data: {
 					title: "Unknown session"
 				}
-			}
+			};
 		}
 		var logObj = {
 			unitName: body.unitName,

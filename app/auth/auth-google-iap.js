@@ -104,7 +104,7 @@ module.exports = function (app, passport, config) {
                     console.error(err);
                 }
                 next();
-            })
+            });
         })(req, res, next);
     });
 };
