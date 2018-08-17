@@ -27,7 +27,7 @@ var AgentApiClient = function(config, restify) {
 		client.get(url, function(err, req, _, data) {
 			if (err) {
 				agent.dead = true;
-				console.log("Error in trying to query agent");
+				console.log("Error in trying to query agent",err);
 			}
 			dataCallback(data);
 		});
@@ -136,6 +136,23 @@ var AgentApiClient = function(config, restify) {
 
 	this.getAgentUnitStatuses = function (agentName, dataCallback) {
 		this.get(agentName, '/unit-statuses', dataCallback);
+	};
+
+	this.getDeployLog = function(agentName, unitName, position, dataCallback){
+		var agent =  config.getAgent(agentName);
+		if(agent == null ){
+			console.error("Attempt to get log from unknown agent",agentName);
+			dataCallback(null);
+			return;
+		}
+		var client = restify.createStringClient({ url: agent.url, connectTimeout: 200 });
+		var url = '/deploylog/file/' + unitName + '/' + position;
+		client.get(url, function(err, req, _, data) {
+			if (err) {
+				console.log("Error in trying to query agent",err);
+			}
+			dataCallback(data);
+		});
 	};
 
 	this.test = function(agentName) {
