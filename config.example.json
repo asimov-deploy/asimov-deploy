@@ -26,7 +26,7 @@
     },
 
     "auth-google-iap": {
-        "audience": "Expected audience. See https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_jwt_payload"
+        "audience": "Expected audience. See https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_jwt_payload. Leave empty to skip jwt audience verification"
     },
 
 

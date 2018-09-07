@@ -57,7 +57,7 @@ module.exports = function (app, passport, config) {
 
     var audience = config['auth-google-iap'].audience;
     if (!audience) {
-        throw new Error('Missing google iap audience in google iap auth config');
+        console.warn('auth-google-iap configured without audience. The jwt payload audience will not be verified. See https://cloud.google.com/iap/docs/signed-headers-howto#verify_the_jwt_payload');
     }
 
     var opts = {};
@@ -65,7 +65,9 @@ module.exports = function (app, passport, config) {
     opts.secretOrKeyProvider = getIapKey;
     opts.issuer = 'https://cloud.google.com/iap';
     opts.algorithms = 'ES256';
-    opts.audience = audience;
+    if(audience) {
+        opts.audience = audience;
+    }
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
         var user = jwt_payload.email;
         if (user) {
