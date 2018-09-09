@@ -22,6 +22,7 @@
     "passport": "~0.4.0",
     "passport-google": "~0.3.0",
     "passport-google-oauth2": "~0.1.4",
+    "passport-jwt": "^4.0.0",
     "passport-local": "~1.0.0",
     "restify": "7.2.0",
     "restify-clients": "^2.0.2",

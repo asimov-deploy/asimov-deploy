@@ -27,7 +27,6 @@ module.exports = function(app, http, config) {
 	});
 
 	server.on("listening", function() {
-
 		io = io.listen(server);
 		if (config['socket-io'] && config['socket-io'].logLevel !== undefined) {
 			io.set('log level', config['socket-io'].logLevel);

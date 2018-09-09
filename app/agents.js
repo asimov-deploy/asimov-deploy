@@ -112,19 +112,27 @@ module.exports = function(app, config) {
 	});
 	function logToStackdriver (correlationId, body){
 		var session = lifecycleSession.getDeploySession(correlationId);
-			var logObj = {
-				unitName: body.unitName,
-				version: body.version,
-				branch: body.branch,
-				correlationId: correlationId,
-				eventName: body.eventName,
-				agentName:  body.agentName,
-				user: session.user,
-				title: session.data.title,
-				description: session.data.body
+		if(!session){
+			session = {
+				user: "Unknown user",
+				data: {
+					title: "Unknown session"
+				}
 			};
-			stackDriverLogger.log(logObj);
-			// console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
+		}
+		var logObj = {
+			unitName: body.unitName,
+			version: body.version,
+			branch: body.branch,
+			correlationId: correlationId,
+			eventName: body.eventName,
+			agentName:  body.agentName,
+			user: session.user,
+			title: session.data.title,
+			description: session.data.body
+		};
+		stackDriverLogger.log(logObj);
+		// console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
 	}
 	app.post("/agent/event", function(req, res) {
 		var body = req.body;
