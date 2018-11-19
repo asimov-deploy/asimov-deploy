@@ -112,9 +112,7 @@ module.exports = function (app, config) {
 	});
 
 	app.post("/agent/shutdown", function (req, res) {
-		var existing = true;
 		var agent = config.getAgent(req.body.name);
-
 		if (!agent) {
 			res.json('ok');
 		}
