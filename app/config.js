@@ -29,21 +29,21 @@ function Config(configOverrides) {
 }
 
 Config.prototype.defaults = {
-	'name':				'Deploy UI',
-	'enable-demo':		false,
-	'port':				process.env.PORT || 3333,
+	'name': 'Deploy UI',
+	'enable-demo': false,
+	'port': process.env.PORT || 3333,
 	'session-secret': 'asdasdad3242352jji3o2hkjo1n2b3',
-	'auth-anonymous':	true,
+	'auth-anonymous': true,
 	'plugins': []
 };
 
-Config.prototype._applyConfig = function(cfg) {
-	Object.keys(cfg).forEach(function(key) {
+Config.prototype._applyConfig = function (cfg) {
+	Object.keys(cfg).forEach(function (key) {
 		this[key] = cfg[key];
 	}.bind(this));
 };
 
-Config.prototype._loadConfigFromFile = function(configOverrides) {
+Config.prototype._loadConfigFromFile = function (configOverrides) {
 	var appPath = path.dirname(process.mainModule.filename);
 	var configPath = path.join(appPath, 'config.json');
 
@@ -62,19 +62,25 @@ Config.prototype._loadConfigFromFile = function(configOverrides) {
 Config.prototype.registerAgent = function (agent) {
 	this.agents.push(agent);
 
-	agent.groups.forEach(function(g) {
+	agent.groups.forEach(function (g) {
 		this.addAgentGroup(g);
 	}, this);
 };
 
-Config.prototype.getAgent = function(name) {
-	return _.find(this.agents, function(agent) { return agent.name === name; });
+Config.prototype.deregisterAgent = function (agent) {
+	this.agents = _.without(this.agents, _.findWhere(this.agents, {
+		name: agent.name
+	}));
+
+};
+Config.prototype.getAgent = function (name) {
+	return _.find(this.agents, function (agent) { return agent.name === name; });
 };
 
-Config.prototype.getAgentList = function() {
+Config.prototype.getAgentList = function () {
 	var agentsResp = [];
 
-	this.agents.forEach(function(agent) {
+	this.agents.forEach(function (agent) {
 		if (agent.dead) {
 			return;
 		}

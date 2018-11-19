@@ -14,7 +14,7 @@
 * limitations under the License.
 ******************************************************************************/
 
-module.exports = function(app, config) {
+module.exports = function (app, config) {
 
 	var _ = require('underscore');
 	var agentApiClient = require('./services/agent-api-client').create(config);
@@ -22,10 +22,10 @@ module.exports = function(app, config) {
 	var stackDriverLogger = require('./services/stackdriver-logger').create(config);
 	var lifecycleSession = require('./services/deploy-lifecycle-session').create();
 
-	app.get("/agents/list", app.ensureLoggedIn, function(req, res) {
+	app.get("/agents/list", app.ensureLoggedIn, function (req, res) {
 		var agentsResp = [];
 
-		config.agents.forEach(function(agent) {
+		config.agents.forEach(function (agent) {
 			agentsResp.push({
 				name: agent.name,
 				agentGroups: agent.groups,
@@ -62,13 +62,13 @@ module.exports = function(app, config) {
 	function createAgentFromRequest(req) {
 		return {
 			name: req.body.name,
-			groups:  req.body.groups || [ req.body.group ],
+			groups: req.body.groups || [req.body.group],
 			supportsFiltering: req.body.group ? false : true,
 			isLegacyNodeAgent: req.body.version === '1.0.0' && req.body.configVersion === '0.0.1' ? true : false
 		};
 	}
 
-	app.post("/agent/heartbeat", function(req,res) {
+	app.post("/agent/heartbeat", function (req, res) {
 		var existing = true;
 		var agent = config.getAgent(req.body.name);
 
@@ -110,23 +110,38 @@ module.exports = function(app, config) {
 			res.json('ok');
 		}
 	});
-	function logToStackdriver (correlationId, body){
+
+	app.post("/agent/shutdown", function (req, res) {
+		var existing = true;
+		var agent = config.getAgent(req.body.name);
+
+		if (!agent) {
+			res.json('ok');
+		}
+		agent.dead = true;
+
+		config.deregisterAgent(agent);
+
+		res.json('ok');
+	});
+
+	function logToStackdriver(correlationId, body) {
 		var session = lifecycleSession.getDeploySession(correlationId);
-			var logObj = {
-				unitName: body.unitName,
-				version: body.version,
-				branch: body.branch,
-				correlationId: correlationId,
-				eventName: body.eventName,
-				agentName:  body.agentName,
-				user: session.user,
-				title: session.data.title,
-				description: session.data.body
-			};
-			stackDriverLogger.log(logObj);
-			// console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
+		var logObj = {
+			unitName: body.unitName,
+			version: body.version,
+			branch: body.branch,
+			correlationId: correlationId,
+			eventName: body.eventName,
+			agentName: body.agentName,
+			user: session.user,
+			title: session.data.title,
+			description: session.data.bodyc
+		};
+		stackDriverLogger.log(logObj);
+		// console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
 	}
-	app.post("/agent/event", function(req, res) {
+	app.post("/agent/event", function (req, res) {
 		var body = req.body;
 		var correlationId = body.correlationId;
 
@@ -139,19 +154,19 @@ module.exports = function(app, config) {
 		res.json("ok");
 	});
 
-	app.post("/agent/log", function(req, res) {
+	app.post("/agent/log", function (req, res) {
 		clientSockets.sockets.volatile.emit('agent:log', req.body);
 		res.json("ok");
 	});
 
-	app.post("/agent/action", app.ensureLoggedIn, function(req, res) {
+	app.post("/agent/action", app.ensureLoggedIn, function (req, res) {
 		agentApiClient.sendCommand(req.body.agentName, '/action', req.body, req.user);
 		res.json('ok');
 	});
 
 	// query params: agentName, url
-	app.get("/agent/query", app.ensureLoggedIn, function(req, res) {
-		agentApiClient.get(req.query.agentName, req.query.url, function(data) {
+	app.get("/agent/query", app.ensureLoggedIn, function (req, res) {
+		agentApiClient.get(req.query.agentName, req.query.url, function (data) {
 			res.json(data);
 		});
 	});
