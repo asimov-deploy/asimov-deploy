@@ -132,9 +132,9 @@ module.exports = function (app, config) {
 			correlationId: correlationId,
 			eventName: body.eventName,
 			agentName: body.agentName,
-			user: session.user,
-			title: session.data.title,
-			description: session.data.bodyc
+			user: session ? session.user : body.userName,
+			title: session ? session.data.title : '',
+			description: session ? session.data.body : ''
 		};
 		stackDriverLogger.log(logObj);
 		// console.log('Asimov Deploy unitName:' + body.unitName + ' ' + logObj);
