@@ -114,13 +114,16 @@ module.exports = function (app, config) {
 	app.post("/agent/shutdown", function (req, res) {
 		var agent = config.getAgent(req.body.name);
 		if (!agent) {
+			res.json('ok (not found)');
+			return;
+		}
+		else {
+			agent.dead = true;
+
+			config.deregisterAgent(agent);
+
 			res.json('ok');
 		}
-		agent.dead = true;
-
-		config.deregisterAgent(agent);
-
-		res.json('ok');
 	});
 
 	function logToStackdriver(correlationId, body) {
