@@ -114,7 +114,9 @@ module.exports = function (app, config) {
 	app.post("/agent/shutdown", function (req, res) {
 		var agent = config.getAgent(req.body.name);
 		if (!agent) {
+			console.log(`Attempt to shutdown unknown agent ${req.body.name}. Available agents: ${config.agents.map(a=>a.name)}`);
 			res.json('ok');
+			return;
 		}
 		agent.dead = true;
 
