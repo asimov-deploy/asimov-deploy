@@ -27,7 +27,7 @@
     "restify-clients": "^2.0.2",
     "socket.io": "2.1.1",
     "socket.io-client": "2.1.1",
-    "underscore": "1.9.0",
+    "underscore": "1.12.1",
     "uuid": "^3.2.1",
     "when": "^3.7.3"
   },
